@@ -1,0 +1,132 @@
+<link rel="stylesheet" href="__ROOT__/js/picker/jquery.datetimepicker.css">
+<script src="__ROOT__/js/jquery.js"></script>
+<script src="__ROOT__/js/picker/jquery.datetimepicker.js"></script>
+<div class="page-content">
+    <div class="col-sm-2 pull-right">
+
+        <button class="btn btn-sm btn-primary pull-right" onclick="javascript:window.history.back(-1);">
+            返回列表
+            <i class="icon-reply icon-only"></i>
+        </button>
+
+    </div>
+    <div class="row">
+        <form action="{:url('likemasterid')}" method="post" name='myfrom4'>
+            <div class="col-lg-2">
+                <div class="input-group ">
+                    <input type="text" class="form-control" name='masterid'  placeholder="房主id查询">
+	                    <span class="input-group-btn">
+	                        <button class="btn btn-default" type="button" id='but4'>搜一搜</button>
+	                    </span>
+                </div>
+            </div>
+
+        </form>
+        <form action="{:url('likeroomid')}" method="post" name='myfrom1'>
+            <div class="col-lg-2">
+                <div class="input-group ">
+                    <input type="text" class="form-control" name='roomid'  placeholder="房间号查询">
+	                    <span class="input-group-btn">
+	                        <button class="btn btn-default" type="button" id='but1'>搜一搜</button>
+	                    </span>
+                </div>
+            </div>
+        </form>
+
+        <form class="form-inline" role="form" action="{:url('liketime')}" method="post" name="myfrom2">
+            <div class="form-group">
+                <label class="sr-only" for="name">起始时间</label>
+                <input type="text" class="form-control" id="name" name="create_time" placeholder="起始时间">
+            </div>
+            <div class="form-group">
+                <label class="sr-only" for="name1">结束时间</label>
+                <input type="text" class="form-control" id="name1" name="e_time" placeholder="结束时间，可不填">
+            </div>
+            <button class="btn btn-default" type="button" id='but2'>搜一搜</button>
+        </form>
+    </div>
+    <div class="top-20"></div>
+    <div class="row">
+        <div class="col-xs-12">
+            <!-- PAGE CONTENT BEGINS -->
+            <div class="row">
+                <div class="col-xs-12">
+                    <table id="simple-table" class="table  table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>房间UUID</th>
+                            <th>房主昵称 || ID</th>
+                            <th class="hidden-480">房间号</th>
+                            <!--<th class="hidden-480">创建时间</th>-->
+                            <th>消费房卡</th>
+                            <th>创建时间</th>
+                            <th>游戏详情</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist name="GameInfo" id="vo"}
+                        <tr>
+                            <td>{$vo.id}</td>
+                            <td>{$vo.roomuuid}</td>
+                            <td>{$vo.playername}   ||   {$vo.playerid}</td>
+                            <td>{$vo.roomid}</td>
+                            <td>{$vo.roomcardnum}</td>
+                            <td>{$vo.time|date="Y-m-d H:i:s",###}</td>
+                            <td><a href="{:url('gameInfo')}?roomuuid={$vo.roomuuid}">每局详情</a></td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                    {$page}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $("#but5").click(function(){
+        if($("input[name='playerid']").val()==''){
+            alert('玩家id不能为空');
+            $("input[name='playerid']").focus();
+        }else{
+            document.myfrom5.submit();
+        }
+    });
+    $("#but1").click(function(){
+        if($("input[name='roomid']").val()==''){
+            alert('房间号不能为空');
+            $("input[name='roomid']").focus();
+        }else{
+            document.myfrom1.submit();
+        }
+    });
+    $("#but2").click(function(){
+        if($("input[name='create_time']").val()==''){
+            alert('时间不能为空');
+            $("input[name='create_time']").focus();
+        }else{
+            document.myfrom2.submit();
+        }
+    });
+    $("#but4").click(function(){
+        if($("input[name='masterid']").val()==''){
+            alert('房主id不能为空');
+            $("input[name='masterid']").focus();
+        }else{
+            document.myfrom4.submit();
+        }
+    });
+    $('#name').datetimepicker({
+        dayOfWeekStart : 1,
+        lang:'ch',
+        startDate:	'2016/11/21 '
+    });
+    $('#name1').datetimepicker({
+        dayOfWeekStart : 1,
+        lang:'ch',
+        startDate:	'2016/11/21 '
+    });
+</script>
+

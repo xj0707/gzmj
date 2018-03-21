@@ -1,0 +1,52 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Administrator
+ * Date: 2017/2/21
+ * Time: 10:28
+ */
+namespace application\admin\controller;
+use application\admin\model\Users;
+
+class UsersController extends CommonController{
+    //所有玩家
+    public function index(){
+        $res=Users::where("userid>1")->paginate(20);
+        $this->assign('UserInfo',$res);
+        return $this->fetch();
+    }
+    //userid查询玩家
+    public function likeuserid(){
+        $userid=input('post.userid/d');
+        $res=Users::where("userid",'like',"%$userid%")->paginate(20);
+        $this->assign('UserInfo',$res);
+        return $this->fetch('index');
+    }
+    //账号查询玩家
+    public function likeaccount(){
+        $account=input('post.account/s');
+        $res=Users::where("account",'like',"%$account%")->paginate(20);
+        $this->assign('UserInfo',$res);
+        return $this->fetch('index');
+    }
+    //昵称查询玩家
+    public function likename(){
+        $name=input('post.name/s');
+        $res=Users::where("name",'like',"%$name%")->paginate(20);
+        $this->assign('UserInfo',$res);
+        return $this->fetch('index');
+    }
+    //添加金币或者钻石
+    public function addcoins(){
+        $userid=input('get.userid');
+        if($userid){
+            return $userid;
+        }else{
+            return 0;
+        }
+    }
+    //查看玩家游戏详情
+    public function gameinfo(){
+        $userid=input('get.userid');
+    }
+}

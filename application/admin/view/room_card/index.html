@@ -1,0 +1,98 @@
+<link rel="stylesheet" href="__ROOT__/js/picker/jquery.datetimepicker.css">
+<script src="__ROOT__/js/jquery.js"></script>
+<script src="__ROOT__/js/picker/jquery.datetimepicker.js"></script>
+<div class="page-content">
+    <div class="col-sm-2 pull-right">
+
+        <button class="btn btn-sm btn-primary pull-right" onclick="javascript:window.history.back(-1);">
+            返回列表
+            <i class="icon-reply icon-only"></i>
+        </button>
+
+    </div>
+    <div class="row">
+
+        <form action="{:url('likeplayerid')}" method="post" name='myfrom5'>
+            <div class="col-lg-2">
+                <div class="input-group ">
+                    <input type="text" class="form-control" name='playerid'  placeholder="玩家id查询">
+	                    <span class="input-group-btn">
+	                        <button class="btn btn-default" type="button" id='but5'>搜一搜</button>
+	                    </span>
+                </div>
+            </div>
+
+        </form>
+
+        <form action="{:url('liketime')}" method="post" name="myfrom2">
+            <div class="col-lg-2">
+                <div class="input-group ">
+                    <input type="text" class="form-control" id="start_time" name='create_time'  placeholder="起始时间">
+	                    <span class="input-group-btn">
+	                        <button class="btn btn-default" type="button" id='but2'>搜一搜</button>
+	                    </span>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="top-20"></div>
+    <div class="row">
+        <div class="col-xs-12">
+            <!-- PAGE CONTENT BEGINS -->
+            <div class="row">
+                <div class="col-xs-12">
+                    <table id="simple-table" class="table  table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th class="hidden-480">时间</th>
+                            <th>玩家ID/玩家昵称</th>
+                            <th>房间UUID</th>
+                            <th>房间号</th>
+                            <th>消费房卡</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist name="GameCards" id="vo"}
+                        <tr>
+                            <td>{$vo.id}</td>
+                            <td>{:date('Y-m-d H:i:s',$vo.time)}</td>
+                            <td>{$vo.playerid} /  {$vo.playeridname}</td>
+                            <td>{$vo.roomuuid}</td>
+                            <td>{$vo.roomid}</td>
+                            <td>{$vo.roomcardnum}</td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                    {$page}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $("#but5").click(function(){
+        if($("input[name='playerid']").val()==''){
+            alert('玩家id不能为空');
+            $("input[name='playerid']").focus();
+        }else{
+            document.myfrom5.submit();
+        }
+    });
+    $("#but2").click(function(){
+        if($("input[name='create_time']").val()==''){
+            alert('时间不能为空');
+            $("input[name='create_time']").focus();
+        }else{
+            document.myfrom2.submit();
+        }
+    });
+    $('#start_time').datetimepicker({
+        dayOfWeekStart : 1,
+        lang:'ch',
+        startDate:	'2016/11/21 '
+    });
+</script>
+

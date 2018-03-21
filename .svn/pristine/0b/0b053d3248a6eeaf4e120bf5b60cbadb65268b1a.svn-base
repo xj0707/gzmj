@@ -1,0 +1,97 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Administrator
+ * Date: 2017/2/21
+ * Time: 10:28
+ */
+namespace application\admin\controller;
+use application\admin\model\Users;
+use think\Db;
+
+class UsersController extends CommonController{
+    //所有玩家
+    public function index(){
+        $res=Users::where("userid>1")->paginate(20);
+        $this->assign('UserInfo',$res);
+        return $this->fetch();
+    }
+    //userid查询玩家
+    public function likeuserid(){
+        $userid=input('post.userid/d');
+        $res=Users::where("userid",'like',"%$userid%")->paginate(20);
+        $this->assign('UserInfo',$res);
+        return $this->fetch('index');
+    }
+    //账号查询玩家
+//    public function likeaccount(){
+//        $account=input('post.account/s');
+//        $res=Users::where("account",'like',"%$account%")->paginate(20);
+//        $this->assign('UserInfo',$res);
+//        return $this->fetch('index');
+//    }
+    //昵称查询玩家
+    public function likename(){
+        $name=base64_encode(input('post.name/s'));
+        $res=Users::where("name",'like',"%$name%")->paginate(20);
+        $this->assign('UserInfo',$res);
+        return $this->fetch('index');
+    }
+    //添加金币或者钻石
+    public function addcoins(){
+        $userid=input('get.userid');
+        $form_data=input('post.form_data');
+        $data=array();
+        parse_str($form_data, $data);
+        if($data['gems']>=0){
+            $user = Users::get($userid);
+            $user->gems     += $data['gems'];
+            if($user->save()){
+                //记录购买日志
+                $time=time();
+                $log=array(
+                    'admin_id'=>session('user_id'),
+                    'user_id'=>$userid,
+                    'user_name'=>$user->name,
+                    'gem_number'=>$data['gems'],
+                    'create_time'=>$time
+                );
+                Db::name('BuyLog')->insert($log);
+                echo $code=1;
+            }else{
+                echo $code=0;
+            }
+        }else{
+            echo $code=0;
+        }
+    }
+    //查看玩家游戏详情
+    public function gameinfo(){
+        $userid=input('get.userid');
+        $info=Db::name('users')->where('userid',$userid)->find();
+       // var_dump($info['history']);exit;
+        if($info['history']){
+            $data=json_decode($info['history']);
+            //var_dump($data);
+            $arr=array();
+            foreach($data as $k=>$v){
+                $arr[$k]['uuid']=$v->uuid;
+                $arr[$k]['id']=$v->id;
+                $arr[$k]['time']=$v->time;
+                $arr1=array();
+                foreach($v->seats as $k1=>$v1){
+                    $arr1[$k1]['userid']=$v1->userid;
+                    $arr1[$k1]['name']=base64_decode($v1->name);
+                    $arr1[$k1]['score']=$v1->score;
+                }
+                $arr[$k]['seats']=$arr1;
+            }
+            $this->assign('GameInfo',$arr);
+            return $this->fetch();
+        }else{
+            echo "<script>alert('还没有参加任何游戏');window.history.back(-1); </script>";
+        }
+
+    }
+
+}

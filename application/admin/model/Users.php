@@ -1,0 +1,23 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Administrator
+ * Date: 2017/2/21
+ * Time: 10:48
+ */
+namespace application\admin\model;
+use think\Model;
+class Users extends Model{
+    //得到性别
+    public function getSexAttr($value)
+    {
+        $status = [0=>'保密',1=>'男',2=>'女'];
+        return $status[$value];
+    }
+    //解密
+    public function getNameAttr($value){
+        return base64_decode($value);
+    }
+
+
+}

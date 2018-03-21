@@ -1,0 +1,713 @@
+/*
+Navicat MySQL Data Transfer
+
+Source Server         : 127.0.0.1
+Source Server Version : 50617
+Source Host           : localhost:3306
+Source Database       : gzmj
+
+Target Server Type    : MYSQL
+Target Server Version : 50617
+File Encoding         : 65001
+
+Date: 2017-02-22 13:12:18
+*/
+
+SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for t_accounts
+-- ----------------------------
+DROP TABLE IF EXISTS `t_accounts`;
+CREATE TABLE `t_accounts` (
+  `account` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  PRIMARY KEY (`account`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_accounts
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for t_admin
+-- ----------------------------
+DROP TABLE IF EXISTS `t_admin`;
+CREATE TABLE `t_admin` (
+  `id` mediumint(6) unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(20) NOT NULL DEFAULT '',
+  `password` varchar(32) NOT NULL DEFAULT '',
+  `encrypt` varchar(6) NOT NULL DEFAULT '',
+  `lastloginip` int(10) NOT NULL DEFAULT '0',
+  `lastlogintime` int(10) unsigned NOT NULL DEFAULT '0',
+  `email` varchar(40) NOT NULL DEFAULT '',
+  `mobile` varchar(11) NOT NULL DEFAULT '',
+  `realname` varchar(50) NOT NULL DEFAULT '',
+  `openid` varchar(255) NOT NULL DEFAULT '',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否有效(2:无效,1:有效)',
+  `updatetime` int(10) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `username` (`username`),
+  KEY `status` (`status`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_admin
+-- ----------------------------
+INSERT INTO `t_admin` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', '', '2130706433', '1487734311', '5552123@qq.com', '18888873646', '阿杜', '', '1', '1477623198');
+INSERT INTO `t_admin` VALUES ('2', 'zhenxun', 'c2785bf6585103658d34413683ac36f8', '', '2130706433', '1476067533', '', '18888873646', '', '', '1', '1476067742');
+INSERT INTO `t_admin` VALUES ('3', 'zhangsan', '01d7f40760960e7bd9443513f22ab9af', '', '0', '0', '', '', '', '', '1', '0');
+
+-- ----------------------------
+-- Table structure for t_admin_group
+-- ----------------------------
+DROP TABLE IF EXISTS `t_admin_group`;
+CREATE TABLE `t_admin_group` (
+  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `description` text,
+  `rules` varchar(500) NOT NULL DEFAULT '' COMMENT '用户组拥有的规则id，多个规则 , 隔开',
+  `listorder` smallint(5) unsigned NOT NULL DEFAULT '0',
+  `updatetime` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `listorder` (`listorder`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_admin_group
+-- ----------------------------
+INSERT INTO `t_admin_group` VALUES ('1', '普通管理员', '密码加密只是MD5', '', '0', '1477622552');
+INSERT INTO `t_admin_group` VALUES ('2', '工作人员', '仅拥有日志管理权限', '18,23,27', '0', '1476067479');
+
+-- ----------------------------
+-- Table structure for t_admin_group_access
+-- ----------------------------
+DROP TABLE IF EXISTS `t_admin_group_access`;
+CREATE TABLE `t_admin_group_access` (
+  `uid` int(10) unsigned NOT NULL COMMENT '用户id',
+  `group_id` mediumint(8) unsigned NOT NULL COMMENT '用户组id',
+  UNIQUE KEY `uid_group_id` (`uid`,`group_id`),
+  KEY `uid` (`uid`),
+  KEY `group_id` (`group_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_admin_group_access
+-- ----------------------------
+INSERT INTO `t_admin_group_access` VALUES ('2', '2');
+INSERT INTO `t_admin_group_access` VALUES ('3', '2');
+
+-- ----------------------------
+-- Table structure for t_admin_log
+-- ----------------------------
+DROP TABLE IF EXISTS `t_admin_log`;
+CREATE TABLE `t_admin_log` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `m` varchar(15) NOT NULL,
+  `c` varchar(20) NOT NULL,
+  `a` varchar(20) NOT NULL,
+  `querystring` varchar(255) NOT NULL,
+  `userid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `username` varchar(20) NOT NULL,
+  `ip` int(10) NOT NULL,
+  `time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=309 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_admin_log
+-- ----------------------------
+INSERT INTO `t_admin_log` VALUES ('1', 'admin', 'Index', 'favicon.ico', '', '1', 'admin', '2130706433', '2017-02-21 09:54:15');
+INSERT INTO `t_admin_log` VALUES ('2', 'admin', 'Admin', 'public_edit_info', '', '1', 'admin', '2130706433', '2017-02-21 09:56:21');
+INSERT INTO `t_admin_log` VALUES ('3', 'admin', 'Admin', 'favicon.ico', '', '1', 'admin', '2130706433', '2017-02-21 09:56:22');
+INSERT INTO `t_admin_log` VALUES ('4', 'admin', 'Admin', 'public_edit_info', '', '1', 'admin', '2130706433', '2017-02-21 09:58:15');
+INSERT INTO `t_admin_log` VALUES ('5', 'admin', 'Admin', 'public_edit_info', '', '1', 'admin', '2130706433', '2017-02-21 09:59:21');
+INSERT INTO `t_admin_log` VALUES ('6', 'admin', 'Admin', 'public_edit_info', '', '1', 'admin', '2130706433', '2017-02-21 09:59:26');
+INSERT INTO `t_admin_log` VALUES ('7', 'admin', 'Admin', 'public_edit_info', '', '1', 'admin', '2130706433', '2017-02-21 10:01:43');
+INSERT INTO `t_admin_log` VALUES ('8', 'admin', 'Admin', 'public_edit_info', '', '1', 'admin', '2130706433', '2017-02-21 10:01:55');
+INSERT INTO `t_admin_log` VALUES ('9', 'admin', 'Index', 'favicon.ico', '', '1', 'admin', '2130706433', '2017-02-21 10:08:34');
+INSERT INTO `t_admin_log` VALUES ('10', 'admin', 'Menu', 'favicon.ico', '', '1', 'admin', '2130706433', '2017-02-21 10:24:14');
+INSERT INTO `t_admin_log` VALUES ('11', 'admin', 'Admin', 'index', '', '1', 'admin', '2130706433', '2017-02-21 10:24:16');
+INSERT INTO `t_admin_log` VALUES ('12', 'admin', 'Admin', 'favicon.ico', '', '1', 'admin', '2130706433', '2017-02-21 10:24:18');
+INSERT INTO `t_admin_log` VALUES ('13', 'admin', 'Admin', 'index', '', '1', 'admin', '2130706433', '2017-02-21 10:24:31');
+INSERT INTO `t_admin_log` VALUES ('14', 'admin', 'Group', 'index', '', '1', 'admin', '2130706433', '2017-02-21 10:24:47');
+INSERT INTO `t_admin_log` VALUES ('15', 'admin', 'Group', 'favicon.ico', '', '1', 'admin', '2130706433', '2017-02-21 10:24:48');
+INSERT INTO `t_admin_log` VALUES ('16', 'admin', 'Admin', 'public_edit_info', '', '1', 'admin', '2130706433', '2017-02-21 10:24:48');
+INSERT INTO `t_admin_log` VALUES ('17', 'admin', 'Admin', 'index', '', '1', 'admin', '2130706433', '2017-02-21 10:25:12');
+INSERT INTO `t_admin_log` VALUES ('18', 'admin', 'Group', 'index', '', '1', 'admin', '2130706433', '2017-02-21 10:25:14');
+INSERT INTO `t_admin_log` VALUES ('19', 'admin', 'Group', 'info', '?id=1', '1', 'admin', '2130706433', '2017-02-21 10:25:19');
+INSERT INTO `t_admin_log` VALUES ('20', 'admin', 'Group', 'index', '', '1', 'admin', '2130706433', '2017-02-21 10:25:25');
+INSERT INTO `t_admin_log` VALUES ('21', 'admin', 'Group', 'rule', '?gid=1', '1', 'admin', '2130706433', '2017-02-21 10:25:28');
+INSERT INTO `t_admin_log` VALUES ('22', 'admin', 'Group', 'index', '', '1', 'admin', '2130706433', '2017-02-21 10:25:33');
+INSERT INTO `t_admin_log` VALUES ('23', 'admin', 'Admin', 'index', '', '1', 'admin', '2130706433', '2017-02-21 10:25:39');
+INSERT INTO `t_admin_log` VALUES ('24', 'admin', 'Menu', 'info', '', '1', 'admin', '2130706433', '2017-02-21 10:25:48');
+INSERT INTO `t_admin_log` VALUES ('25', 'admin', 'Menu', 'add', '', '1', 'admin', '2130706433', '2017-02-21 10:28:06');
+INSERT INTO `t_admin_log` VALUES ('26', 'admin', 'User', 'index', '', '1', 'admin', '2130706433', '2017-02-21 10:47:15');
+INSERT INTO `t_admin_log` VALUES ('27', 'admin', 'User', 'favicon.ico', '', '1', 'admin', '2130706433', '2017-02-21 10:47:16');
+INSERT INTO `t_admin_log` VALUES ('28', 'admin', 'Menu', 'info', '?id=32', '1', 'admin', '2130706433', '2017-02-21 10:58:06');
+INSERT INTO `t_admin_log` VALUES ('29', 'admin', 'Menu', 'edit', '', '1', 'admin', '2130706433', '2017-02-21 10:58:12');
+INSERT INTO `t_admin_log` VALUES ('30', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 10:59:50');
+INSERT INTO `t_admin_log` VALUES ('31', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:04:16');
+INSERT INTO `t_admin_log` VALUES ('32', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:08:17');
+INSERT INTO `t_admin_log` VALUES ('33', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:09:15');
+INSERT INTO `t_admin_log` VALUES ('34', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:09:37');
+INSERT INTO `t_admin_log` VALUES ('35', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:14:35');
+INSERT INTO `t_admin_log` VALUES ('36', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:17:12');
+INSERT INTO `t_admin_log` VALUES ('37', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:17:14');
+INSERT INTO `t_admin_log` VALUES ('38', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:18:25');
+INSERT INTO `t_admin_log` VALUES ('39', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:21:35');
+INSERT INTO `t_admin_log` VALUES ('40', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:32:35');
+INSERT INTO `t_admin_log` VALUES ('41', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:32:55');
+INSERT INTO `t_admin_log` VALUES ('42', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:33:12');
+INSERT INTO `t_admin_log` VALUES ('43', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:33:15');
+INSERT INTO `t_admin_log` VALUES ('44', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:33:52');
+INSERT INTO `t_admin_log` VALUES ('45', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:35:07');
+INSERT INTO `t_admin_log` VALUES ('46', 'admin', 'Users', 'favicon.ico', '', '1', 'admin', '2130706433', '2017-02-21 11:35:08');
+INSERT INTO `t_admin_log` VALUES ('47', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:35:36');
+INSERT INTO `t_admin_log` VALUES ('48', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:38:19');
+INSERT INTO `t_admin_log` VALUES ('49', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:39:12');
+INSERT INTO `t_admin_log` VALUES ('50', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:39:34');
+INSERT INTO `t_admin_log` VALUES ('51', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:40:07');
+INSERT INTO `t_admin_log` VALUES ('52', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 13:14:42');
+INSERT INTO `t_admin_log` VALUES ('53', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 13:21:25');
+INSERT INTO `t_admin_log` VALUES ('54', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 13:22:50');
+INSERT INTO `t_admin_log` VALUES ('55', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 13:23:39');
+INSERT INTO `t_admin_log` VALUES ('56', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 13:29:57');
+INSERT INTO `t_admin_log` VALUES ('57', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 13:35:04');
+INSERT INTO `t_admin_log` VALUES ('58', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 13:36:20');
+INSERT INTO `t_admin_log` VALUES ('59', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 13:36:54');
+INSERT INTO `t_admin_log` VALUES ('60', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 13:37:11');
+INSERT INTO `t_admin_log` VALUES ('61', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 13:37:30');
+INSERT INTO `t_admin_log` VALUES ('62', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 13:37:41');
+INSERT INTO `t_admin_log` VALUES ('63', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 13:37:51');
+INSERT INTO `t_admin_log` VALUES ('64', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 13:38:00');
+INSERT INTO `t_admin_log` VALUES ('65', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 13:38:13');
+INSERT INTO `t_admin_log` VALUES ('66', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 13:38:24');
+INSERT INTO `t_admin_log` VALUES ('67', 'admin', 'Users', 'index', '?page=2', '1', 'admin', '2130706433', '2017-02-21 13:38:27');
+INSERT INTO `t_admin_log` VALUES ('68', 'admin', 'Users', 'index', '?page=1', '1', 'admin', '2130706433', '2017-02-21 13:38:31');
+INSERT INTO `t_admin_log` VALUES ('69', 'admin', 'Users', 'index', '?page=1', '1', 'admin', '2130706433', '2017-02-21 13:39:44');
+INSERT INTO `t_admin_log` VALUES ('70', 'admin', 'Users', 'index', '?page=1', '1', 'admin', '2130706433', '2017-02-21 13:50:48');
+INSERT INTO `t_admin_log` VALUES ('71', 'admin', 'Users', 'likeuserid', '', '1', 'admin', '2130706433', '2017-02-21 13:50:53');
+INSERT INTO `t_admin_log` VALUES ('72', 'admin', 'Users', 'likeuserid', '', '1', 'admin', '2130706433', '2017-02-21 13:51:07');
+INSERT INTO `t_admin_log` VALUES ('73', 'admin', 'Users', 'likeuserid', '', '1', 'admin', '2130706433', '2017-02-21 13:52:31');
+INSERT INTO `t_admin_log` VALUES ('74', 'admin', 'Users', 'index', '?page=1', '1', 'admin', '2130706433', '2017-02-21 13:52:33');
+INSERT INTO `t_admin_log` VALUES ('75', 'admin', 'Users', 'likeuserid', '', '1', 'admin', '2130706433', '2017-02-21 13:52:39');
+INSERT INTO `t_admin_log` VALUES ('76', 'admin', 'Users', 'index', '?page=1', '1', 'admin', '2130706433', '2017-02-21 13:52:41');
+INSERT INTO `t_admin_log` VALUES ('77', 'admin', 'Users', 'likeuserid', '', '1', 'admin', '2130706433', '2017-02-21 13:52:50');
+INSERT INTO `t_admin_log` VALUES ('78', 'admin', 'Users', 'index', '?page=1', '1', 'admin', '2130706433', '2017-02-21 13:52:53');
+INSERT INTO `t_admin_log` VALUES ('79', 'admin', 'Users', 'likeuserid', '', '1', 'admin', '2130706433', '2017-02-21 13:55:02');
+INSERT INTO `t_admin_log` VALUES ('80', 'admin', 'Users', 'likeuserid', '', '1', 'admin', '2130706433', '2017-02-21 13:55:56');
+INSERT INTO `t_admin_log` VALUES ('81', 'admin', 'Users', 'index', '?page=1', '1', 'admin', '2130706433', '2017-02-21 13:57:03');
+INSERT INTO `t_admin_log` VALUES ('82', 'admin', 'Users', 'likeuserid', '', '1', 'admin', '2130706433', '2017-02-21 13:57:11');
+INSERT INTO `t_admin_log` VALUES ('83', 'admin', 'Users', 'index', '?page=1', '1', 'admin', '2130706433', '2017-02-21 13:58:03');
+INSERT INTO `t_admin_log` VALUES ('84', 'admin', 'Users', 'index', '?page=1', '1', 'admin', '2130706433', '2017-02-21 13:58:35');
+INSERT INTO `t_admin_log` VALUES ('85', 'admin', 'Users', 'likeuserid', '', '1', 'admin', '2130706433', '2017-02-21 13:58:41');
+INSERT INTO `t_admin_log` VALUES ('86', 'admin', 'Users', 'likeuserid', '', '1', 'admin', '2130706433', '2017-02-21 14:01:48');
+INSERT INTO `t_admin_log` VALUES ('87', 'admin', 'Users', 'likeuserid', '', '1', 'admin', '2130706433', '2017-02-21 14:02:06');
+INSERT INTO `t_admin_log` VALUES ('88', 'admin', 'Users', 'likeuserid', '', '1', 'admin', '2130706433', '2017-02-21 14:02:22');
+INSERT INTO `t_admin_log` VALUES ('89', 'admin', 'Users', 'likeuserid', '', '1', 'admin', '2130706433', '2017-02-21 14:02:30');
+INSERT INTO `t_admin_log` VALUES ('90', 'admin', 'Users', 'details', '?id=wx_oJ4m7v5lphKBERWqnNMFobY4qKrU', '1', 'admin', '2130706433', '2017-02-21 14:04:06');
+INSERT INTO `t_admin_log` VALUES ('91', 'admin', 'Users', 'likeaccount', '', '1', 'admin', '2130706433', '2017-02-21 14:04:14');
+INSERT INTO `t_admin_log` VALUES ('92', 'admin', 'Users', 'likeaccount', '', '1', 'admin', '2130706433', '2017-02-21 14:05:08');
+INSERT INTO `t_admin_log` VALUES ('93', 'admin', 'Users', 'likename', '', '1', 'admin', '2130706433', '2017-02-21 14:05:46');
+INSERT INTO `t_admin_log` VALUES ('94', 'admin', 'Menu', 'info', '', '1', 'admin', '2130706433', '2017-02-21 14:26:51');
+INSERT INTO `t_admin_log` VALUES ('95', 'admin', 'Menu', 'add', '', '1', 'admin', '2130706433', '2017-02-21 14:29:01');
+INSERT INTO `t_admin_log` VALUES ('96', 'admin', 'Menu', 'info', '?id=33', '1', 'admin', '2130706433', '2017-02-21 14:29:55');
+INSERT INTO `t_admin_log` VALUES ('97', 'admin', 'Menu', 'info', '?id=33', '1', 'admin', '2130706433', '2017-02-21 14:32:06');
+INSERT INTO `t_admin_log` VALUES ('98', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 14:32:09');
+INSERT INTO `t_admin_log` VALUES ('99', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 14:32:32');
+INSERT INTO `t_admin_log` VALUES ('100', 'admin', 'GameRoom', 'favicon.ico', '', '1', 'admin', '2130706433', '2017-02-21 14:32:33');
+INSERT INTO `t_admin_log` VALUES ('101', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 14:51:57');
+INSERT INTO `t_admin_log` VALUES ('102', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 14:56:43');
+INSERT INTO `t_admin_log` VALUES ('103', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 14:57:19');
+INSERT INTO `t_admin_log` VALUES ('104', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 14:58:51');
+INSERT INTO `t_admin_log` VALUES ('105', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 14:59:51');
+INSERT INTO `t_admin_log` VALUES ('106', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 15:00:43');
+INSERT INTO `t_admin_log` VALUES ('107', 'admin', 'GameRoom', 'likeroomuuid', '', '1', 'admin', '2130706433', '2017-02-21 15:10:51');
+INSERT INTO `t_admin_log` VALUES ('108', 'admin', 'GameRoom', 'likeroomuuid', '', '1', 'admin', '2130706433', '2017-02-21 15:12:02');
+INSERT INTO `t_admin_log` VALUES ('109', 'admin', 'GameRoom', 'likeroomuuid', '', '1', 'admin', '2130706433', '2017-02-21 15:12:10');
+INSERT INTO `t_admin_log` VALUES ('110', 'admin', 'GameRoom', 'likeroomuuid', '', '1', 'admin', '2130706433', '2017-02-21 15:12:14');
+INSERT INTO `t_admin_log` VALUES ('111', 'admin', 'GameRoom', 'likeroomid', '', '1', 'admin', '2130706433', '2017-02-21 15:14:20');
+INSERT INTO `t_admin_log` VALUES ('112', 'admin', 'GameRoom', 'likeroomid', '', '1', 'admin', '2130706433', '2017-02-21 15:14:24');
+INSERT INTO `t_admin_log` VALUES ('113', 'admin', 'GameRoom', 'likeroomid', '', '1', 'admin', '2130706433', '2017-02-21 15:14:29');
+INSERT INTO `t_admin_log` VALUES ('114', 'admin', 'GameRoom', 'likeroomid', '', '1', 'admin', '2130706433', '2017-02-21 15:21:00');
+INSERT INTO `t_admin_log` VALUES ('115', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 15:21:19');
+INSERT INTO `t_admin_log` VALUES ('116', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 15:23:23');
+INSERT INTO `t_admin_log` VALUES ('117', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 15:26:29');
+INSERT INTO `t_admin_log` VALUES ('118', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 15:28:42');
+INSERT INTO `t_admin_log` VALUES ('119', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 15:28:45');
+INSERT INTO `t_admin_log` VALUES ('120', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 15:28:48');
+INSERT INTO `t_admin_log` VALUES ('121', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 15:29:00');
+INSERT INTO `t_admin_log` VALUES ('122', 'admin', 'Index', 'favicon.ico', '', '1', 'admin', '2130706433', '2017-02-21 15:31:59');
+INSERT INTO `t_admin_log` VALUES ('123', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 15:32:00');
+INSERT INTO `t_admin_log` VALUES ('124', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 15:40:03');
+INSERT INTO `t_admin_log` VALUES ('125', 'admin', 'Index', 'favicon.ico', '', '1', 'admin', '0', '2017-02-21 15:40:43');
+INSERT INTO `t_admin_log` VALUES ('126', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 15:40:44');
+INSERT INTO `t_admin_log` VALUES ('127', 'admin', 'GameRoom', 'favicon.ico', '', '1', 'admin', '0', '2017-02-21 15:40:45');
+INSERT INTO `t_admin_log` VALUES ('128', 'admin', 'GameRoom', 'favicon.ico', '', '1', 'admin', '0', '2017-02-21 15:41:33');
+INSERT INTO `t_admin_log` VALUES ('129', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 15:42:53');
+INSERT INTO `t_admin_log` VALUES ('130', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 15:45:13');
+INSERT INTO `t_admin_log` VALUES ('131', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 15:45:46');
+INSERT INTO `t_admin_log` VALUES ('132', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 15:47:53');
+INSERT INTO `t_admin_log` VALUES ('133', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 15:48:15');
+INSERT INTO `t_admin_log` VALUES ('134', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 15:49:08');
+INSERT INTO `t_admin_log` VALUES ('135', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 15:52:56');
+INSERT INTO `t_admin_log` VALUES ('136', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 15:53:32');
+INSERT INTO `t_admin_log` VALUES ('137', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 15:53:56');
+INSERT INTO `t_admin_log` VALUES ('138', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 15:56:35');
+INSERT INTO `t_admin_log` VALUES ('139', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 15:56:41');
+INSERT INTO `t_admin_log` VALUES ('140', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 15:56:45');
+INSERT INTO `t_admin_log` VALUES ('141', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 15:58:22');
+INSERT INTO `t_admin_log` VALUES ('142', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 15:58:28');
+INSERT INTO `t_admin_log` VALUES ('143', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 15:59:39');
+INSERT INTO `t_admin_log` VALUES ('144', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 15:59:52');
+INSERT INTO `t_admin_log` VALUES ('145', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:04:09');
+INSERT INTO `t_admin_log` VALUES ('146', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 16:04:28');
+INSERT INTO `t_admin_log` VALUES ('147', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:05:11');
+INSERT INTO `t_admin_log` VALUES ('148', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:05:35');
+INSERT INTO `t_admin_log` VALUES ('149', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:05:41');
+INSERT INTO `t_admin_log` VALUES ('150', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:05:59');
+INSERT INTO `t_admin_log` VALUES ('151', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:06:51');
+INSERT INTO `t_admin_log` VALUES ('152', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:07:36');
+INSERT INTO `t_admin_log` VALUES ('153', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:08:26');
+INSERT INTO `t_admin_log` VALUES ('154', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:09:37');
+INSERT INTO `t_admin_log` VALUES ('155', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:10:00');
+INSERT INTO `t_admin_log` VALUES ('156', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 16:10:12');
+INSERT INTO `t_admin_log` VALUES ('157', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:12:23');
+INSERT INTO `t_admin_log` VALUES ('158', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:12:42');
+INSERT INTO `t_admin_log` VALUES ('159', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:13:36');
+INSERT INTO `t_admin_log` VALUES ('160', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:14:48');
+INSERT INTO `t_admin_log` VALUES ('161', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 16:17:15');
+INSERT INTO `t_admin_log` VALUES ('162', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:17:50');
+INSERT INTO `t_admin_log` VALUES ('163', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:18:11');
+INSERT INTO `t_admin_log` VALUES ('164', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:18:42');
+INSERT INTO `t_admin_log` VALUES ('165', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 16:20:10');
+INSERT INTO `t_admin_log` VALUES ('166', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 16:20:46');
+INSERT INTO `t_admin_log` VALUES ('167', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 16:21:24');
+INSERT INTO `t_admin_log` VALUES ('168', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 16:22:50');
+INSERT INTO `t_admin_log` VALUES ('169', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 16:23:16');
+INSERT INTO `t_admin_log` VALUES ('170', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 16:23:45');
+INSERT INTO `t_admin_log` VALUES ('171', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 16:24:24');
+INSERT INTO `t_admin_log` VALUES ('172', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 16:25:02');
+INSERT INTO `t_admin_log` VALUES ('173', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 16:25:18');
+INSERT INTO `t_admin_log` VALUES ('174', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 16:25:28');
+INSERT INTO `t_admin_log` VALUES ('175', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 16:25:57');
+INSERT INTO `t_admin_log` VALUES ('176', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:25:59');
+INSERT INTO `t_admin_log` VALUES ('177', 'admin', 'GameRoom', 'liketime', '', '1', 'admin', '2130706433', '2017-02-21 16:26:28');
+INSERT INTO `t_admin_log` VALUES ('178', 'admin', 'GameRoom', 'liketime', '', '1', 'admin', '2130706433', '2017-02-21 16:27:24');
+INSERT INTO `t_admin_log` VALUES ('179', 'admin', 'GameRoom', 'liketime', '', '1', 'admin', '2130706433', '2017-02-21 16:27:37');
+INSERT INTO `t_admin_log` VALUES ('180', 'admin', 'GameRoom', 'liketime', '', '1', 'admin', '2130706433', '2017-02-21 16:27:57');
+INSERT INTO `t_admin_log` VALUES ('181', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:28:11');
+INSERT INTO `t_admin_log` VALUES ('182', 'admin', 'GameRoom', 'liketime', '', '1', 'admin', '2130706433', '2017-02-21 16:28:20');
+INSERT INTO `t_admin_log` VALUES ('183', 'admin', 'GameRoom', 'liketime', '', '1', 'admin', '2130706433', '2017-02-21 16:29:38');
+INSERT INTO `t_admin_log` VALUES ('184', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:39:35');
+INSERT INTO `t_admin_log` VALUES ('185', 'admin', 'Users', 'index', '?page=2', '1', 'admin', '2130706433', '2017-02-21 16:39:43');
+INSERT INTO `t_admin_log` VALUES ('186', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:39:48');
+INSERT INTO `t_admin_log` VALUES ('187', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:39:54');
+INSERT INTO `t_admin_log` VALUES ('188', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:39:57');
+INSERT INTO `t_admin_log` VALUES ('189', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:40:02');
+INSERT INTO `t_admin_log` VALUES ('190', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:40:28');
+INSERT INTO `t_admin_log` VALUES ('191', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:40:31');
+INSERT INTO `t_admin_log` VALUES ('192', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:40:34');
+INSERT INTO `t_admin_log` VALUES ('193', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:49:10');
+INSERT INTO `t_admin_log` VALUES ('194', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:50:48');
+INSERT INTO `t_admin_log` VALUES ('195', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:53:04');
+INSERT INTO `t_admin_log` VALUES ('196', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 17:04:02');
+INSERT INTO `t_admin_log` VALUES ('197', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 17:05:54');
+INSERT INTO `t_admin_log` VALUES ('198', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 17:10:56');
+INSERT INTO `t_admin_log` VALUES ('199', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 17:15:05');
+INSERT INTO `t_admin_log` VALUES ('200', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 17:17:43');
+INSERT INTO `t_admin_log` VALUES ('201', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 17:19:02');
+INSERT INTO `t_admin_log` VALUES ('202', 'admin', 'Users', 'likename', '', '1', 'admin', '2130706433', '2017-02-21 17:19:08');
+INSERT INTO `t_admin_log` VALUES ('203', 'admin', 'Users', 'likename', '', '1', 'admin', '2130706433', '2017-02-21 17:19:29');
+INSERT INTO `t_admin_log` VALUES ('204', 'admin', 'Index', 'favicon.ico', '', '1', 'admin', '0', '2017-02-21 17:20:35');
+INSERT INTO `t_admin_log` VALUES ('205', 'admin', 'Users', 'index', '', '1', 'admin', '0', '2017-02-21 17:20:36');
+INSERT INTO `t_admin_log` VALUES ('206', 'admin', 'Users', 'favicon.ico', '', '1', 'admin', '0', '2017-02-21 17:20:38');
+INSERT INTO `t_admin_log` VALUES ('207', 'admin', 'Users', 'likename', '', '1', 'admin', '2130706433', '2017-02-21 17:24:06');
+INSERT INTO `t_admin_log` VALUES ('208', 'admin', 'Users', 'index', '', '1', 'admin', '0', '2017-02-21 17:24:24');
+INSERT INTO `t_admin_log` VALUES ('209', 'admin', 'Users', 'index', '', '1', 'admin', '0', '2017-02-21 17:29:31');
+INSERT INTO `t_admin_log` VALUES ('210', 'admin', 'Users', 'index', '', '1', 'admin', '0', '2017-02-21 17:30:03');
+INSERT INTO `t_admin_log` VALUES ('211', 'admin', 'Users', 'index', '', '1', 'admin', '0', '2017-02-21 17:30:29');
+INSERT INTO `t_admin_log` VALUES ('212', 'admin', 'Users', 'index', '', '1', 'admin', '0', '2017-02-21 17:34:28');
+INSERT INTO `t_admin_log` VALUES ('213', 'admin', 'Users', 'index', '', '1', 'admin', '0', '2017-02-21 17:34:49');
+INSERT INTO `t_admin_log` VALUES ('214', 'admin', 'Users', 'index', '', '1', 'admin', '0', '2017-02-21 17:42:42');
+INSERT INTO `t_admin_log` VALUES ('215', 'admin', 'Users', 'index', '', '1', 'admin', '0', '2017-02-21 17:44:54');
+INSERT INTO `t_admin_log` VALUES ('216', 'admin', 'Users', 'index', '', '1', 'admin', '0', '2017-02-21 17:46:15');
+INSERT INTO `t_admin_log` VALUES ('217', 'admin', 'Users', 'likename', '', '1', 'admin', '2130706433', '2017-02-21 17:56:27');
+INSERT INTO `t_admin_log` VALUES ('218', 'admin', 'Users', 'likename', '', '1', 'admin', '2130706433', '2017-02-21 17:58:27');
+INSERT INTO `t_admin_log` VALUES ('219', 'admin', 'Users', 'likename', '', '1', 'admin', '2130706433', '2017-02-21 17:58:42');
+INSERT INTO `t_admin_log` VALUES ('220', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:00:24');
+INSERT INTO `t_admin_log` VALUES ('221', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:00:31');
+INSERT INTO `t_admin_log` VALUES ('222', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:00:45');
+INSERT INTO `t_admin_log` VALUES ('223', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:00:51');
+INSERT INTO `t_admin_log` VALUES ('224', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:03:35');
+INSERT INTO `t_admin_log` VALUES ('225', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:03:49');
+INSERT INTO `t_admin_log` VALUES ('226', 'admin', 'Users', 'index', '', '1', 'admin', '0', '2017-02-21 18:04:12');
+INSERT INTO `t_admin_log` VALUES ('227', 'admin', 'Users', 'index', '', '1', 'admin', '0', '2017-02-21 18:04:23');
+INSERT INTO `t_admin_log` VALUES ('228', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:04:52');
+INSERT INTO `t_admin_log` VALUES ('229', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:06:49');
+INSERT INTO `t_admin_log` VALUES ('230', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:06:57');
+INSERT INTO `t_admin_log` VALUES ('231', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:09:10');
+INSERT INTO `t_admin_log` VALUES ('232', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:12:48');
+INSERT INTO `t_admin_log` VALUES ('233', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:14:29');
+INSERT INTO `t_admin_log` VALUES ('234', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:15:48');
+INSERT INTO `t_admin_log` VALUES ('235', 'admin', 'Users', 'addcoins', '', '1', 'admin', '2130706433', '2017-02-21 18:16:05');
+INSERT INTO `t_admin_log` VALUES ('236', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:17:53');
+INSERT INTO `t_admin_log` VALUES ('237', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:18:13');
+INSERT INTO `t_admin_log` VALUES ('238', 'admin', 'Users', 'addcoins', '', '1', 'admin', '2130706433', '2017-02-21 18:18:20');
+INSERT INTO `t_admin_log` VALUES ('239', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:19:36');
+INSERT INTO `t_admin_log` VALUES ('240', 'admin', 'Users', 'addcoins', '', '1', 'admin', '2130706433', '2017-02-21 18:19:42');
+INSERT INTO `t_admin_log` VALUES ('241', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:20:35');
+INSERT INTO `t_admin_log` VALUES ('242', 'admin', 'Users', 'addcoins', '', '1', 'admin', '2130706433', '2017-02-21 18:20:45');
+INSERT INTO `t_admin_log` VALUES ('243', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:21:36');
+INSERT INTO `t_admin_log` VALUES ('244', 'admin', 'Users', 'addcoins', '?r=userid/100000', '1', 'admin', '2130706433', '2017-02-21 18:21:42');
+INSERT INTO `t_admin_log` VALUES ('245', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:22:42');
+INSERT INTO `t_admin_log` VALUES ('246', 'admin', 'Users', 'addcoins,', '', '1', 'admin', '2130706433', '2017-02-21 18:22:51');
+INSERT INTO `t_admin_log` VALUES ('247', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:23:01');
+INSERT INTO `t_admin_log` VALUES ('248', 'admin', 'Users', 'addcoins', '', '1', 'admin', '2130706433', '2017-02-21 18:23:08');
+INSERT INTO `t_admin_log` VALUES ('249', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:24:07');
+INSERT INTO `t_admin_log` VALUES ('250', 'admin', 'Users', 'addcoins', '', '1', 'admin', '2130706433', '2017-02-21 18:24:16');
+INSERT INTO `t_admin_log` VALUES ('251', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:25:23');
+INSERT INTO `t_admin_log` VALUES ('252', 'admin', 'Users', 'addcoins', '', '1', 'admin', '2130706433', '2017-02-21 18:25:33');
+INSERT INTO `t_admin_log` VALUES ('253', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:26:11');
+INSERT INTO `t_admin_log` VALUES ('254', 'admin', 'Users', 'addcoins', '', '1', 'admin', '2130706433', '2017-02-21 18:26:20');
+INSERT INTO `t_admin_log` VALUES ('255', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:27:34');
+INSERT INTO `t_admin_log` VALUES ('256', 'admin', 'Users', 'addcoins', '?userid=100000', '1', 'admin', '2130706433', '2017-02-21 18:27:41');
+INSERT INTO `t_admin_log` VALUES ('257', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:29:10');
+INSERT INTO `t_admin_log` VALUES ('258', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:29:54');
+INSERT INTO `t_admin_log` VALUES ('259', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:30:40');
+INSERT INTO `t_admin_log` VALUES ('260', 'admin', 'Users', 'addcoins', '?userid=100000', '1', 'admin', '2130706433', '2017-02-21 18:31:00');
+INSERT INTO `t_admin_log` VALUES ('261', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:32:33');
+INSERT INTO `t_admin_log` VALUES ('262', 'admin', 'Users', 'addcoins', '?userid=100000', '1', 'admin', '2130706433', '2017-02-21 18:32:40');
+INSERT INTO `t_admin_log` VALUES ('263', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:32:42');
+INSERT INTO `t_admin_log` VALUES ('264', 'admin', 'Users', 'addcoins', '?userid=100000', '1', 'admin', '2130706433', '2017-02-21 18:32:55');
+INSERT INTO `t_admin_log` VALUES ('265', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:33:01');
+INSERT INTO `t_admin_log` VALUES ('266', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:33:27');
+INSERT INTO `t_admin_log` VALUES ('267', 'admin', 'Users', 'addcoins', '?userid=100000', '1', 'admin', '2130706433', '2017-02-21 18:33:33');
+INSERT INTO `t_admin_log` VALUES ('268', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:33:35');
+INSERT INTO `t_admin_log` VALUES ('269', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:34:27');
+INSERT INTO `t_admin_log` VALUES ('270', 'admin', 'Users', 'addcoins', '?userid=100000', '1', 'admin', '2130706433', '2017-02-21 18:34:35');
+INSERT INTO `t_admin_log` VALUES ('271', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:34:38');
+INSERT INTO `t_admin_log` VALUES ('272', 'admin', 'Users', 'addcoins', '?userid=100000', '1', 'admin', '2130706433', '2017-02-21 18:34:47');
+INSERT INTO `t_admin_log` VALUES ('273', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:34:49');
+INSERT INTO `t_admin_log` VALUES ('274', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:49:51');
+INSERT INTO `t_admin_log` VALUES ('275', 'admin', 'Users', 'addcoins', '?userid=100000', '1', 'admin', '2130706433', '2017-02-21 18:50:24');
+INSERT INTO `t_admin_log` VALUES ('276', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:50:26');
+INSERT INTO `t_admin_log` VALUES ('277', 'admin', 'Users', 'addcoins', '?userid=100000', '1', 'admin', '2130706433', '2017-02-21 18:50:33');
+INSERT INTO `t_admin_log` VALUES ('278', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:50:35');
+INSERT INTO `t_admin_log` VALUES ('279', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:50:59');
+INSERT INTO `t_admin_log` VALUES ('280', 'admin', 'Users', 'addcoins', '?userid=100000', '1', 'admin', '2130706433', '2017-02-21 18:51:07');
+INSERT INTO `t_admin_log` VALUES ('281', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:51:10');
+INSERT INTO `t_admin_log` VALUES ('282', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:56:19');
+INSERT INTO `t_admin_log` VALUES ('283', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:58:11');
+INSERT INTO `t_admin_log` VALUES ('284', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:59:02');
+INSERT INTO `t_admin_log` VALUES ('285', 'admin', 'Users', 'addcoins', '?userid=100004', '1', 'admin', '2130706433', '2017-02-21 18:59:10');
+INSERT INTO `t_admin_log` VALUES ('286', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:59:13');
+INSERT INTO `t_admin_log` VALUES ('287', 'admin', 'Index', 'favicon.ico', '', '1', 'admin', '2130706433', '2017-02-22 10:20:35');
+INSERT INTO `t_admin_log` VALUES ('288', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-22 10:24:46');
+INSERT INTO `t_admin_log` VALUES ('289', 'admin', 'Users', 'favicon.ico', '', '1', 'admin', '2130706433', '2017-02-22 10:24:47');
+INSERT INTO `t_admin_log` VALUES ('290', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-22 10:38:14');
+INSERT INTO `t_admin_log` VALUES ('291', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-22 10:38:15');
+INSERT INTO `t_admin_log` VALUES ('292', 'admin', 'GameRoom', 'favicon.ico', '', '1', 'admin', '2130706433', '2017-02-22 10:38:16');
+INSERT INTO `t_admin_log` VALUES ('293', 'admin', 'Admin', 'index', '', '1', 'admin', '2130706433', '2017-02-22 10:38:18');
+INSERT INTO `t_admin_log` VALUES ('294', 'admin', 'Admin', 'favicon.ico', '', '1', 'admin', '2130706433', '2017-02-22 10:38:19');
+INSERT INTO `t_admin_log` VALUES ('295', 'admin', 'Group', 'index', '', '1', 'admin', '2130706433', '2017-02-22 10:38:20');
+INSERT INTO `t_admin_log` VALUES ('296', 'admin', 'Group', 'favicon.ico', '', '1', 'admin', '2130706433', '2017-02-22 10:38:21');
+INSERT INTO `t_admin_log` VALUES ('297', 'admin', 'Group', 'index', '', '1', 'admin', '2130706433', '2017-02-22 10:38:21');
+INSERT INTO `t_admin_log` VALUES ('298', 'admin', 'Admin', 'public_edit_info', '', '1', 'admin', '2130706433', '2017-02-22 10:38:24');
+INSERT INTO `t_admin_log` VALUES ('299', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-22 10:38:31');
+INSERT INTO `t_admin_log` VALUES ('300', 'admin', 'Admin', 'public_edit_info', '', '1', 'admin', '2130706433', '2017-02-22 10:38:37');
+INSERT INTO `t_admin_log` VALUES ('301', 'admin', 'Admin', 'index', '', '1', 'admin', '2130706433', '2017-02-22 10:38:40');
+INSERT INTO `t_admin_log` VALUES ('302', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-22 10:38:43');
+INSERT INTO `t_admin_log` VALUES ('303', 'admin', 'Index', 'favicon.ico', '', '1', 'admin', '0', '2017-02-22 11:00:58');
+INSERT INTO `t_admin_log` VALUES ('304', 'admin', 'Log', 'favicon.ico', '', '1', 'admin', '2130706433', '2017-02-22 11:10:09');
+INSERT INTO `t_admin_log` VALUES ('305', 'admin', 'Index', 'favicon.ico', '', '1', 'admin', '2130706433', '2017-02-22 11:22:25');
+INSERT INTO `t_admin_log` VALUES ('306', 'admin', 'Index', 'favicon.ico', '', '1', 'admin', '0', '2017-02-22 11:23:38');
+INSERT INTO `t_admin_log` VALUES ('307', 'admin', 'Users', 'index', '', '1', 'admin', '0', '2017-02-22 13:02:52');
+INSERT INTO `t_admin_log` VALUES ('308', 'admin', 'Users', 'favicon.ico', '', '1', 'admin', '0', '2017-02-22 13:02:53');
+
+-- ----------------------------
+-- Table structure for t_app
+-- ----------------------------
+DROP TABLE IF EXISTS `t_app`;
+CREATE TABLE `t_app` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `keyword` varchar(100) NOT NULL DEFAULT '',
+  `price` decimal(10,0) NOT NULL DEFAULT '0',
+  `icon` varchar(100) NOT NULL DEFAULT '' COMMENT '图标',
+  `total` int(11) NOT NULL DEFAULT '0' COMMENT '数量',
+  `type` tinyint(2) NOT NULL DEFAULT '1' COMMENT '1软件，2游戏，3付费',
+  `add_time` datetime NOT NULL COMMENT '添加时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  `user_id` int(11) NOT NULL COMMENT '发布人ID',
+  `position` smallint(5) NOT NULL DEFAULT '0' COMMENT '位置',
+  `remark` varchar(255) NOT NULL DEFAULT '' COMMENT '标记说明',
+  `start_time` datetime DEFAULT NULL,
+  `end_time` datetime DEFAULT NULL COMMENT '开始时间',
+  `s_time` time DEFAULT NULL,
+  `date_total` int(11) DEFAULT NULL,
+  `time_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '时间类型：1全天，2时间段',
+  PRIMARY KEY (`id`),
+  KEY `nums` (`total`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_app
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for t_config
+-- ----------------------------
+DROP TABLE IF EXISTS `t_config`;
+CREATE TABLE `t_config` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '配置ID',
+  `name` varchar(30) NOT NULL DEFAULT '' COMMENT '配置名称',
+  `type` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '配置类型',
+  `title` varchar(50) NOT NULL DEFAULT '' COMMENT '配置说明',
+  `group` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '配置分组',
+  `extra` varchar(255) NOT NULL DEFAULT '' COMMENT '配置值',
+  `remark` varchar(100) NOT NULL COMMENT '配置说明',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '状态',
+  `value` text NOT NULL COMMENT '配置值',
+  `sort` smallint(3) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_name` (`name`),
+  KEY `type` (`type`),
+  KEY `group` (`group`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_config
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for t_games
+-- ----------------------------
+DROP TABLE IF EXISTS `t_games`;
+CREATE TABLE `t_games` (
+  `room_uuid` char(20) NOT NULL,
+  `game_index` smallint(6) NOT NULL,
+  `base_info` varchar(1024) NOT NULL,
+  `create_time` int(11) NOT NULL,
+  `snapshots` char(255) DEFAULT NULL,
+  `action_records` varchar(2048) DEFAULT NULL,
+  `result` char(255) DEFAULT NULL,
+  PRIMARY KEY (`room_uuid`,`game_index`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_games
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for t_games_archive
+-- ----------------------------
+DROP TABLE IF EXISTS `t_games_archive`;
+CREATE TABLE `t_games_archive` (
+  `room_uuid` char(20) NOT NULL,
+  `game_index` smallint(6) NOT NULL,
+  `base_info` varchar(1024) NOT NULL,
+  `create_time` int(11) NOT NULL,
+  `snapshots` char(255) DEFAULT NULL,
+  `action_records` varchar(2048) DEFAULT NULL,
+  `result` char(255) DEFAULT NULL,
+  PRIMARY KEY (`room_uuid`,`game_index`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_games_archive
+-- ----------------------------
+INSERT INTO `t_games_archive` VALUES ('1486740039722357968', '0', '{\"type\":\"zjmj\",\"button\":0,\"index\":0,\"mahjongs\":[12,13,10,17,17,6,8,2,1,20,14,7,2,0,11,9,15,3,11,26,14,14,25,18,21,20,3,4,1,25,9,19,6,25,12,18,22,11,20,16,5,25,22,12,3,24,10,4,6,15,22,21,14,2,8,19,5,19,8,24,23,18,13,26,26,5,7,23,0,15,9,4,23,16,20,6,7,4,16,10,15,21,7,24,23,1,0,17,22,10,5,19,13,18,24,26,11,0,9,1,17,3,16,12,13,21,2,8],\"game_seats\":[[12,10,17,8,1,14,2,11,15,11,14,25,21,3],[13,17,6,2,20,7,0,9,3,26,14,18,20]]}', '1486740457', null, '[0,1,2,1,2,4,1,1,9,0,2,1,0,1,3,1,2,25,1,1,17,0,2,9,0,1,9,1,2,19,1,1,0,0,2,6,0,1,8,1,2,25,1,1,26,0,2,12,0,1,10,1,2,18,1,1,14,0,3,14,0,1,15,1,2,22,1,1,13,0,2,11,0,1,17,1,2,20,1,1,22,0,2,16,0,1,16,1,2,5,1,1,19,0,2,25,0,1,21,1,2,22,1,1,22,0,2,12,0,1,6,1,2,3,1,1,3,0,2,24,0,1,11,1,2,10,1,1,10,0,2,4,0,1,24,1,2,6,1,1,6,0,2,15,0,1,15,1,2,22,1,1,22,0,2,21,0,1,21,1,2,14,1,1,14,0,2,2,0,1,2,1,2,8,1,1,18,0,2,19,0,1,19,1,2,5,1,1,18,0,2,19,0,1,19,1,2,8,1,1,5,0,2,24,0,1,4,1,2,23,1,1,23,0,2,18,0,1,18,1,2,13,1,1,13,0,2,26,0,1,1,1,2,26,1,1,26,0,2,5,0,1,5,1,2,7,1,1,7,0,2,23,0,1,1,1,2,0,1,1,0,0,2,15,0,1,15,1,2,9,1,1,9,0,2,4,0,1,4,1,2,23,1,1,23,0,2,16,0,1,16,1,2,20,1,4,20,1,2,6,1,1,8,0,2,7,0,1,7,1,5,7]', '[-7,7,0,0]');
+INSERT INTO `t_games_archive` VALUES ('1486740560148691404', '0', '{\"type\":\"zjmj\",\"button\":0,\"index\":0,\"mahjongs\":[2,24,10,5,5,3,1,7,11,5,26,23,16,10,8,19,26,23,12,7,21,6,9,4,0,25,6,22,0,1,18,9,18,20,2,17,19,18,16,20,22,14,22,23,26,3,4,5,13,21,24,14,0,19,6,22,24,23,12,25,15,13,2,11,13,10,17,26,10,15,11,7,16,11,16,1,6,25,20,18,12,3,4,25,8,4,15,24,14,8,8,9,17,14,1,21,7,15,0,3,20,2,21,12,19,9,17,13],\"game_seats\":[[2,10,5,1,11,16,8,12,9,0,6,10,7,7],[24,5,3,5,23,19,23,6,4,25,26,26,21]]}', '1486740791', null, '[0,1,16,1,2,22,1,1,19,0,2,0,0,1,9,1,2,1,1,1,1,0,2,18,0,1,18,1,2,9,1,1,9,0,2,18,0,1,18,1,2,20,1,1,20,0,2,2,0,1,10,1,2,17,1,1,17,0,2,19,0,1,19,1,2,18,1,1,18,0,2,16,0,1,16,1,2,20,1,1,20,0,2,22,0,1,22,1,2,14,1,1,14,0,2,22,0,1,22,1,2,23,1,1,23,0,2,26,0,1,26,1,2,3,1,1,3,0,2,4,0,1,10,1,2,5,1,1,5,0,2,13,0,1,11,1,2,21,1,1,21,0,2,24,0,1,24,1,2,14,1,1,14,0,2,0,0,1,12,1,2,19,1,1,19,0,2,6,0,1,13,1,2,22,1,1,22,0,2,24,0,1,24,1,2,23,1,1,23,0,2,12,0,1,12,1,2,25,1,1,25,0,2,15,0,1,15,1,2,13,1,1,13,0,2,2,0,1,1,1,2,11,1,1,11,0,2,13,0,1,13,1,2,10,1,1,10,0,2,17,0,1,17,1,2,26,1,1,26,0,2,10,0,1,10,1,2,15,1,1,15,0,2,11,0,1,11,1,2,7,1,1,7,0,5,7]', '[28,-28,0,0]');
+INSERT INTO `t_games_archive` VALUES ('1486740560148691404', '1', '{\"type\":\"zjmj\",\"button\":0,\"index\":1,\"mahjongs\":[26,8,10,26,14,3,3,6,17,24,17,7,8,11,18,6,8,5,1,6,16,4,9,26,24,2,16,12,7,0,22,15,25,3,18,12,25,20,22,11,13,20,13,0,1,14,5,1,4,13,18,24,17,21,17,11,12,24,14,15,10,9,22,16,7,10,6,21,14,20,7,21,22,0,25,10,3,2,23,15,15,16,19,5,2,18,4,19,23,4,8,9,11,2,25,9,23,21,23,1,12,19,20,0,26,19,5,13],\"game_seats\":[[10,14,3,17,17,8,8,1,16,9,16,24,26,26],[8,3,6,7,11,6,5,6,4,2,26,24,18]]}', '1486741204', null, '[0,1,26,1,2,12,1,1,11,0,2,7,0,1,26,1,2,0,1,1,12,0,2,22,0,1,24,1,2,15,1,1,15,0,2,25,0,1,22,1,2,3,1,1,18,0,2,18,0,1,18,1,2,12,1,1,12,0,2,25,0,1,25,1,2,20,1,1,20,0,2,22,0,1,22,1,2,11,1,1,11,0,2,13,0,1,25,1,2,20,1,1,20,0,2,13,0,1,9,1,2,0,1,1,26,0,2,1,0,1,10,1,2,14,1,1,14,0,2,5,0,1,14,1,2,1,1,1,24,0,2,4,0,1,7,1,2,13,1,1,13,0,3,13,0,1,16,1,2,18,1,1,18,0,2,24,0,1,24,1,2,17,1,1,17,0,3,17,0,1,16,1,2,21,1,1,21,0,2,17,0,4,17,0,2,11,0,1,11,1,2,12,1,1,12,0,2,24,0,1,24,1,2,14,1,1,14,0,2,15,0,1,15,1,2,10,1,1,10,0,2,9,0,1,9,1,2,22,1,1,22,0,2,16,0,1,16,1,2,7,1,1,0,0,2,10,0,1,10,1,2,6,1,4,6,1,2,21,1,1,21,0,2,14,0,1,14,1,2,20,1,1,20,0,2,7,0,1,7,1,3,7,1,1,8,0,5,8]', '[5,-5,0,0]');
+INSERT INTO `t_games_archive` VALUES ('1486740560148691404', '2', '{\"type\":\"zjmj\",\"button\":0,\"index\":2,\"mahjongs\":[23,6,17,13,0,17,9,18,13,25,16,11,22,7,20,11,8,2,14,6,3,17,26,23,15,12,5,25,24,20,11,23,9,10,15,16,10,6,4,16,25,2,0,13,26,5,12,22,8,21,4,1,20,8,5,19,5,23,3,21,14,1,13,26,15,18,0,1,3,10,25,9,14,7,9,24,11,20,22,18,14,21,1,2,0,7,16,12,24,19,7,10,24,4,6,15,26,18,19,4,2,8,22,19,17,12,3,21],\"game_seats\":[[23,17,9,13,16,22,20,14,26,15,5,18,23,25],[6,13,17,11,7,11,2,6,17,12,8,3,0]]}', '1486741533', null, '[0,1,5,1,2,25,1,1,25,0,2,24,0,1,9,1,2,20,1,1,20,0,2,11,0,1,11,1,3,11,1,1,0,0,2,23,0,1,18,1,2,9,1,1,9,0,2,10,0,1,10,1,2,15,1,1,15,0,2,16,0,1,20,1,2,10,1,1,10,0,2,6,0,1,6,1,3,6,1,1,8,0,2,4,0,1,4,1,2,16,1,1,7,0,2,25,0,1,25,1,2,2,1,1,16,0,3,16,0,1,17,1,3,17,1,1,3,0,2,0,0,1,0,1,2,13,1,1,12,0,2,26,0,1,26,1,2,5,1,1,5,0,2,12,0,1,12,1,2,22,1,1,22,0,2,8,0,1,8,1,2,21,1,1,21,0,2,4,0,1,4,1,2,1,1,1,1,0,2,20,0,1,20,1,2,8,1,1,8,0,2,5,0,1,5,1,2,19,1,1,19,0,2,5,0,1,5,1,2,23,1,1,23,0,4,23,0,2,3,0,1,3,1,2,21,1,1,21,0,2,14,0,1,14,1,2,1,1,1,1,0,2,13,0,1,22,1,2,26,1,1,26,0,2,15,0,1,13,1,5,13]', '[-9,9,0,0]');
+INSERT INTO `t_games_archive` VALUES ('1486904509698242829', '0', '{\"type\":\"zjmj\",\"button\":0,\"index\":0,\"mahjongs\":[18,15,16,21,4,23,14,12,8,9,14,19,26,18,21,10,2,24,1,11,13,17,8,22,7,16,25,15,6,24,2,0,16,9,12,4,1,21,8,3,14,9,6,19,17,20,18,15,8,25,9,21,0,11,24,12,2,14,5,5,26,25,17,20,10,3,0,11,10,13,3,4,26,7,1,23,11,24,23,6,22,20,19,22,19,22,5,25,12,4,6,2,17,10,1,3,13,7,23,0,13,7,26,5,16,18,15,20],\"game_seats\":[[18,21,14,9,26,10,1,17,7,15,2,9,1,3],[15,4,12,14,18,2,11,8,16,6,0,12,21],[16,23,8,19,21,24,13,22,25,24,16,4,8]]}', '1486904982', null, '[0,1,18,1,2,14,1,1,18,2,2,9,2,1,9,0,3,9,0,1,21,1,2,6,1,1,21,2,2,19,2,1,13,0,2,17,0,1,26,1,2,20,1,1,20,2,2,18,2,1,18,0,2,15,0,1,7,1,2,8,1,1,0,2,2,25,2,1,4,0,2,9,0,4,9,0,2,21,0,1,21,1,2,0,1,1,0,2,2,11,2,1,11,0,2,24,0,1,24,2,3,24,2,1,16,0,2,12,0,1,1,1,2,2,1,1,4,2,2,14,2,1,14,0,2,5,0,1,5,1,2,5,1,1,14,2,2,26,2,1,16,0,2,25,0,1,25,2,3,25,2,1,8,1,3,8,1,1,5,2,2,17,2,1,17,0,3,17,0,1,14,1,2,20,1,1,20,2,2,10,2,1,8,0,2,3,0,1,3,1,2,0,1,1,0,2,2,11,2,1,11,0,5,11]', '[17,-8,-9,0]');
+INSERT INTO `t_games_archive` VALUES ('1486904509698242829', '1', '{\"type\":\"zjmj\",\"button\":0,\"index\":1,\"mahjongs\":[21,0,22,20,3,7,12,16,21,1,7,12,5,22,18,7,22,11,2,2,20,17,11,19,24,19,9,9,15,5,17,14,15,2,2,11,16,23,23,21,0,3,6,25,9,14,8,1,10,5,17,13,4,11,6,17,10,25,23,25,5,24,13,9,0,6,8,4,10,8,4,15,26,23,16,19,26,3,12,18,4,19,24,7,25,1,10,14,20,18,21,20,16,26,24,14,22,3,0,6,26,1,8,13,13,18,12,15],\"game_seats\":[[21,20,12,1,5,7,2,17,24,9,17,2,16,21],[0,3,16,7,22,22,2,11,19,15,14,2,23],[22,7,21,12,18,11,20,19,9,5,15,11,23]]}', '1486905251', null, '[0,1,24,1,2,0,1,1,7,2,2,3,2,1,3,0,2,6,0,1,21,1,2,25,1,1,19,2,2,9,2,1,5,0,2,14,0,1,21,1,2,8,1,1,8,2,2,1,2,1,7,0,2,10,0,1,20,1,2,5,1,1,11,2,3,11,2,1,1,0,2,17,0,1,9,2,3,9,2,1,12,0,2,13,0,1,10,1,2,4,1,1,25,2,2,11,2,4,11,2,2,6,2,1,6,0,2,17,0,4,17,0,2,10,0,1,10,1,2,25,1,1,25,2,2,23,2,1,15,0,2,25,0,1,25,1,2,5,1,1,23,2,5,23]', '[-10,-7,17,0]');
+INSERT INTO `t_games_archive` VALUES ('1486904509698242829', '2', '{\"type\":\"zjmj\",\"button\":2,\"index\":2,\"mahjongs\":[9,17,2,15,23,6,18,0,7,20,22,25,26,19,13,18,21,17,5,9,6,19,25,0,7,9,5,26,8,11,15,4,19,24,14,22,3,21,8,10,21,6,20,16,24,11,25,26,14,17,21,26,16,25,2,1,20,13,10,18,8,12,10,9,3,3,18,4,23,5,14,12,15,23,13,24,4,17,7,23,16,22,12,10,0,2,1,5,24,7,15,22,13,11,8,1,14,0,20,16,6,3,4,1,2,12,11,19],\"game_seats\":[[17,23,0,22,19,21,9,25,9,8,4,14,21],[2,6,7,25,13,17,6,0,5,11,19,22,8],[9,15,18,20,26,18,5,19,7,26,15,24,3,10]]}', '1486905835', null, '[2,1,18,0,2,21,0,1,0,1,2,6,1,1,17,2,2,20,2,1,7,0,2,16,0,1,8,1,2,24,1,1,24,2,2,11,2,1,3,0,2,25,0,1,4,1,2,26,1,1,26,2,3,26,2,1,5,0,2,14,0,1,19,1,2,17,1,1,17,2,2,21,2,1,24,0,2,26,0,1,26,1,2,16,1,1,16,2,2,25,2,1,25,0,3,25,0,1,17,1,2,2,1,1,13,2,2,1,2,1,1,0,2,20,0,1,16,1,2,13,1,1,13,2,2,10,2,1,10,0,2,18,0,1,18,1,2,8,1,1,11,2,2,12,2,1,9,0,3,9,0,1,20,1,2,10,1,1,10,2,2,9,2,1,9,0,2,3,0,1,3,1,2,3,1,1,19,2,2,18,2,1,18,0,2,4,0,1,4,1,2,23,1,1,25,2,2,5,2,1,5,0,2,14,0,6,14]', '[10,-6,-4,0]');
+INSERT INTO `t_games_archive` VALUES ('1486904509698242829', '3', '{\"type\":\"zjmj\",\"button\":0,\"index\":3,\"mahjongs\":[8,17,20,25,13,11,21,19,4,12,18,1,20,10,23,0,19,12,2,13,15,10,6,3,24,9,8,0,11,6,17,22,18,8,15,7,10,1,19,19,0,14,17,4,1,23,26,22,5,24,14,6,26,2,16,15,20,7,10,25,4,21,17,15,4,3,1,21,9,11,25,7,13,13,9,23,8,2,26,21,24,18,12,20,25,11,22,14,14,5,3,23,26,12,5,3,5,6,0,7,16,9,16,2,22,16,24,18],\"game_seats\":[[8,25,21,12,20,0,2,10,24,0,17,8,10,19],[17,13,19,18,10,19,13,6,9,11,22,15,1],[20,11,4,1,23,12,15,3,8,6,18,7,19]]}', '1486906135', null, '[0,1,17,1,2,0,1,1,0,0,3,0,0,1,2,1,2,14,1,1,1,2,2,17,2,1,23,0,2,4,0,1,4,1,2,1,1,1,6,2,2,23,2,1,1,0,2,26,0,1,12,1,2,22,1,1,1,2,2,5,2,1,23,0,2,24,0,1,24,1,2,14,1,1,18,2,2,6,2,1,6,0,2,26,0,1,26,1,2,2,1,1,2,2,2,16,2,1,12,0,2,15,0,1,15,1,2,20,1,1,17,2,2,7,2,1,7,0,2,10,0,6,10]', '[8,-4,-4,0]');
+INSERT INTO `t_games_archive` VALUES ('1486904509698242829', '4', '{\"type\":\"zjmj\",\"button\":0,\"index\":4,\"mahjongs\":[5,22,4,11,17,22,8,12,1,1,23,18,7,13,26,15,10,26,20,0,15,2,11,1,12,5,22,6,13,21,16,11,25,9,21,20,15,0,19,8,3,4,1,12,4,6,10,21,25,8,26,23,17,25,7,17,6,26,12,4,3,13,24,11,14,8,14,20,23,24,19,24,24,9,20,15,25,2,18,10,16,2,0,3,5,16,16,9,19,3,19,14,13,18,5,22,2,6,7,21,7,9,23,0,14,10,17,18],\"game_seats\":[[5,11,8,1,7,15,20,2,12,6,16,9,15,8],[22,17,12,23,13,10,0,11,5,13,11,21,0],[4,22,1,18,26,26,15,1,22,21,25,20,19]]}', '1486906288', null, '[0,1,9,1,2,3,1,1,23,2,2,4,2,1,15,0,3,15,0,1,16,1,2,1,1,1,22,2,3,22,2,1,4,0,2,12,0,1,20,1,2,4,1,1,21,2,2,6,2,1,6,0,2,10,0,1,12,1,2,21,1,1,21,2,2,25,2,1,4,0,2,8,0,1,1,1,2,26,1,1,26,2,3,26,2,1,1,0,2,23,0,1,23,1,2,17,1,1,1,2,2,25,2,1,1,0,2,7,0,1,2,1,2,17,1,1,13,2,2,6,2,1,6,0,2,26,0,1,26,1,2,12,1,6,12]', '[3,3,-6,0]');
+INSERT INTO `t_games_archive` VALUES ('1486904509698242829', '5', '{\"type\":\"zjmj\",\"button\":1,\"index\":5,\"mahjongs\":[9,13,1,6,16,11,5,25,22,4,6,17,0,11,20,24,24,16,11,7,16,19,25,3,9,14,12,1,19,2,6,13,19,10,12,14,18,7,10,8,1,9,12,20,0,25,0,0,1,23,14,26,22,21,22,4,2,10,3,18,22,8,21,17,12,20,15,5,8,18,24,4,5,18,3,23,9,8,23,14,2,4,26,7,21,17,5,6,2,16,7,15,23,15,26,3,25,13,15,26,24,19,21,20,11,17,10,13],\"game_seats\":[[1,11,22,17,20,16,16,3,12,2,19,14,10],[9,6,5,4,0,24,11,19,9,1,6,10,18,8],[13,16,25,6,11,24,7,25,14,19,13,12,7]]}', '1486907004', null, '[1,1,24,2,2,1,2,1,1,0,2,9,0,1,22,1,2,12,1,1,8,2,2,20,2,1,6,0,2,0,0,1,0,1,2,25,1,1,25,2,3,25,2,1,7,0,2,0,0,1,17,1,2,0,1,1,6,2,2,1,2,1,7,0,2,23,0,1,23,1,2,14,1,1,14,2,2,26,2,1,1,0,2,22,0,1,22,1,2,21,1,1,18,2,2,22,2,1,16,0,2,4,0,1,12,1,2,2,1,1,0,2,2,10,2,1,26,0,2,3,0,1,14,1,2,18,1,1,18,2,2,22,2,1,24,0,2,8,0,1,8,1,2,21,1,1,21,2,2,17,2,1,17,0,2,12,0,1,9,1,3,9,1,1,21,2,2,20,2,1,13,0,2,15,0,1,15,1,2,5,1,1,5,2,2,8,2,1,8,0,2,18,0,1,3,1,2,24,1,1,24,2,2,4,2,1,4,0,2,5,0,6,5]', '[1,6,-7,0]');
+INSERT INTO `t_games_archive` VALUES ('1486904509698242829', '6', '{\"type\":\"zjmj\",\"button\":0,\"index\":6,\"mahjongs\":[0,20,12,5,16,19,13,13,3,1,6,11,22,7,14,20,1,15,7,24,18,15,25,7,3,17,16,13,18,17,14,8,22,21,17,16,8,18,22,11,5,12,25,15,26,0,8,25,7,6,6,6,22,19,12,20,10,3,4,11,4,18,10,26,15,14,20,2,26,17,23,5,8,4,24,2,23,13,14,2,19,1,16,9,10,21,9,5,26,9,23,2,12,9,1,0,23,10,3,21,25,19,24,11,21,4,0,24],\"game_seats\":[[0,5,13,1,22,20,7,15,3,13,14,21,8,11],[20,16,13,6,7,1,24,25,17,18,8,17,18],[12,19,3,11,14,15,18,7,16,17,22,16,22]]}', '1486907362', null, '[0,1,0,1,2,5,1,1,1,2,2,12,2,1,7,0,2,25,0,1,25,1,2,15,1,1,13,2,2,26,2,1,26,0,2,0,0,1,0,1,2,8,1,1,17,2,2,25,2,1,25,0,2,7,0,1,8,1,3,8,1,1,20,2,2,6,2,1,6,0,2,6,0,1,1,1,2,6,1,1,6,2,2,22,2,1,3,0,2,19,0,1,19,1,2,12,1,1,12,2,3,12,2,1,11,0,2,20,0,1,20,1,2,10,1,1,10,2,2,3,2,1,3,0,2,4,0,1,3,1,2,11,1,1,11,2,2,4,2,1,18,1,3,18,1,1,24,2,2,18,2,1,18,0,2,10,0,1,13,1,2,26,1,1,26,2,2,15,2,1,19,0,2,14,0,1,14,1,2,20,1,1,25,2,2,2,2,1,2,0,2,26,0,1,26,1,2,17,1,1,17,2,2,23,2,1,23,0,2,5,0,1,5,1,2,8,1,4,8,1,2,4,1,1,4,2,5,4]', '[1,-3,2,0]');
+INSERT INTO `t_games_archive` VALUES ('1486904509698242829', '7', '{\"type\":\"zjmj\",\"button\":2,\"index\":7,\"mahjongs\":[23,24,26,5,17,4,7,16,5,16,6,9,0,21,22,23,12,20,18,15,19,8,18,15,14,21,4,14,23,3,13,1,16,26,24,3,13,8,17,7,9,24,19,21,10,9,18,13,2,20,14,25,9,25,5,11,3,6,8,13,11,0,2,1,24,20,12,11,21,22,3,15,7,19,25,19,16,20,11,23,4,6,14,1,17,10,4,8,17,22,0,10,7,0,6,26,18,22,25,26,1,15,12,2,10,2,12,5],\"game_seats\":[[24,17,16,6,21,12,15,18,21,23,1,24,8],[26,4,5,9,22,20,19,15,4,3,16,3,17],[23,5,7,16,0,23,18,8,14,14,13,26,13,7]]}', '1486907756', null, '[2,1,0,0,2,9,0,1,9,1,2,24,1,1,9,2,2,19,2,1,26,0,2,21,0,1,1,1,2,10,1,1,10,2,2,9,2,1,9,0,2,18,0,1,12,1,2,13,1,1,13,2,3,13,2,1,8,0,2,2,0,1,2,1,2,20,1,1,26,2,2,14,2,1,16,0,2,25,0,1,24,1,2,9,1,1,9,2,2,25,2,1,25,0,2,5,0,1,8,1,2,11,1,1,11,2,2,3,2,1,18,0,3,18,0,1,6,1,2,6,1,1,19,2,2,8,2,1,8,0,2,13,0,1,13,1,2,11,1,1,11,2,2,0,2,1,0,0,2,2,0,1,2,1,2,1,1,1,1,2,2,24,2,1,19,0,2,20,0,1,5,1,2,12,1,1,12,2,2,11,2,1,11,0,2,21,0,4,21,0,2,22,0,1,20,1,3,20,1,1,4,2,2,3,2,1,5,0,2,15,0,1,15,1,2,7,1,1,4,2,2,19,2,1,19,0,2,25,0,6,25]', '[10,4,-14,0]');
+INSERT INTO `t_games_archive` VALUES ('1486908009260353827', '0', '{\"type\":\"2dg\",\"button\":0,\"index\":0,\"mahjongs\":[22,9,14,12,3,24,0,14,20,22,0,3,7,1,22,5,25,4,21,2,1,1,23,26,1,10,20,19,15,5,0,15,3,24,7,5,13,23,2,26,19,21,8,21,6,11,8,10,12,23,4,0,13,4,15,13,11,22,19,20,5,8,10,3,18,11,17,11,24,19,2,17,7,12,24,23,9,14,17,20,21,16,17,4,26,9,10,25,8,26,6,7,16,18,6,18,2,16,16,15,14,9,25,18,25,6,13,12],\"game_seats\":[[22,14,3,0,20,0,7,22,25,21,1,23,1,20],[9,12,24,14,22,3,1,5,4,2,1,26,10]]}', '1486908140', null, '[0,1,7,1,2,19,1,1,19,0,2,15,0,1,3,1,2,5,1,1,9,0,2,0,0,1,25,1,2,15,1,1,10,0,2,3,0,1,3,1,2,24,1,1,12,0,2,7,0,1,7,1,2,5,1,1,26,0,2,13,0,1,20,1,2,23,1,1,24,0,2,2,0,1,2,1,2,26,1,1,26,0,2,19,0,1,22,1,2,21,1,1,24,0,2,8,0,1,8,1,2,21,1,1,21,0,2,6,0,1,6,1,2,11,1,1,11,0,2,8,0,1,8,1,2,10,1,1,10,0,2,12,0,1,12,1,2,23,1,1,23,0,2,4,0,1,4,1,2,0,1,1,0,0,4,0,0,2,13,0,1,13,1,5,13]', '[-6,6,0,0]');
+INSERT INTO `t_games_archive` VALUES ('1486910868461770651', '0', '{\"type\":\"2dg\",\"button\":0,\"index\":0,\"mahjongs\":[18,15,9,25,19,20,0,2,26,21,4,17,16,18,9,15,11,5,21,23,7,14,5,6,23,7,8,10,19,18,1,14,25,4,12,17,23,21,1,24,24,25,23,20,17,2,20,26,22,0,6,11,3,2,12,1,18,16,24,4,4,3,22,25,21,0,11,13,8,1,15,15,5,9,7,6,24,7,2,5,10,16,20,22,8,14,6,16,26,8,10,13,14,10,3,0,19,19,12,3,22,13,13,26,11,17,12,9],\"game_seats\":[[18,9,19,0,26,4,16,9,11,21,7,5,23,8],[15,25,20,2,21,17,18,15,5,23,14,6,7]]}', '1486911003', null, '[0,1,26,1,2,10,1,1,10,0,2,19,0,1,16,1,2,18,1,1,17,0,2,1,0,1,18,1,3,18,1,1,2,0,2,14,0,1,14,1,2,25,1,1,23,0,2,4,0,1,8,1,2,12,1,1,12,0,2,17,0,1,17,1,2,23,1,1,23,0,2,21,0,1,11,1,2,1,1,1,1,0,2,24,0,1,7,1,2,24,1,1,24,0,2,25,0,1,0,1,2,23,1,1,23,0,2,20,0,1,1,1,2,17,1,1,17,0,2,2,0,1,2,1,2,20,1,1,20,0,2,26,0,1,26,1,2,22,1,1,15,0,2,0,0,1,0,1,2,6,1,1,6,0,2,11,0,1,11,1,2,3,1,1,3,0,2,2,0,1,2,1,2,12,1,1,12,0,2,1,0,1,1,1,2,18,1,4,18,1,2,16,1,6,16]', '[-8,8,0,0]');
+INSERT INTO `t_games_archive` VALUES ('1486910868461770651', '1', '{\"type\":\"2dg\",\"button\":1,\"index\":1,\"mahjongs\":[15,13,7,8,0,0,11,10,9,0,19,17,3,17,15,23,15,21,20,16,13,9,24,6,5,2,26,8,10,1,15,19,19,1,16,8,1,10,25,7,2,3,6,12,5,24,14,5,21,13,14,22,2,4,10,7,17,12,24,11,18,26,22,4,16,14,9,18,6,1,17,25,23,19,14,2,22,23,8,20,4,6,12,23,25,18,26,3,5,21,7,11,25,22,13,12,3,18,20,26,4,24,11,21,0,16,9,20],\"game_seats\":[[13,8,0,10,0,17,17,23,21,16,9,6,2],[15,7,0,11,9,19,3,15,15,20,13,24,5,26]]}', '1486911243', null, '[1,1,0,0,3,0,0,1,13,1,2,8,1,1,8,0,2,10,0,1,2,1,2,1,1,1,7,0,2,15,0,1,17,1,2,19,1,1,26,0,2,19,0,1,9,1,2,1,1,1,24,0,2,16,0,1,16,1,2,8,1,1,8,0,2,1,0,1,1,1,3,1,1,1,20,0,2,10,0,1,23,1,2,25,1,1,25,0,2,7,0,1,21,1,2,2,1,1,2,0,2,3,0,1,3,1,2,6,1,1,3,0,2,12,0,1,19,1,3,19,1,1,9,0,2,5,0,1,12,1,2,24,1,1,24,0,2,14,0,1,17,1,2,5,1,1,6,0,2,21,0,1,21,1,2,13,1,1,11,0,2,14,0,1,14,1,2,22,1,1,22,0,2,2,0,1,2,1,2,4,1,1,4,0,2,10,0,4,10,0,2,7,0,1,7,1,2,17,1,1,17,0,2,12,0,1,12,1,2,24,1,1,24,0,2,11,0,1,11,1,2,18,1,1,18,0,2,26,0,1,26,1,2,22,1,1,22,0,2,4,0,1,4,1,2,16,1,1,16,0,2,14,0,1,5,1,5,5]', '[3,-3,0,0]');
+INSERT INTO `t_games_archive` VALUES ('1486910868461770651', '2', '{\"type\":\"2dg\",\"button\":1,\"index\":2,\"mahjongs\":[26,14,10,15,15,15,18,0,4,20,17,16,24,26,8,5,4,23,22,21,7,24,20,1,23,16,18,1,16,8,12,15,20,0,13,1,8,4,25,23,25,24,2,20,24,14,13,1,14,9,22,5,14,0,19,21,10,7,22,11,8,11,21,23,26,6,6,10,25,19,17,12,12,21,6,18,11,17,12,25,9,2,10,19,2,3,9,22,0,3,2,3,18,16,5,9,5,7,17,6,7,26,13,4,19,3,13,11],\"game_seats\":[[14,15,15,0,20,16,26,5,23,21,24,1,16],[26,10,15,18,4,17,24,8,4,22,7,20,23,18]]}', '1486911667', null, '[1,1,10,0,2,1,0,1,5,1,2,16,1,1,26,0,2,8,0,1,8,1,2,12,1,1,12,0,2,15,0,1,26,1,2,20,1,1,8,0,2,0,0,1,14,1,2,13,1,1,13,0,2,1,0,1,20,1,3,20,1,1,7,0,2,8,0,1,8,1,2,4,1,6,4]', '[-3,3,0,0]');
+INSERT INTO `t_games_archive` VALUES ('1486910868461770651', '3', '{\"type\":\"2dg\",\"button\":1,\"index\":3,\"mahjongs\":[18,24,9,25,0,18,15,4,21,2,25,14,26,0,21,22,11,18,1,0,24,12,8,23,13,13,9,25,2,15,8,24,7,20,23,6,7,23,15,12,20,11,10,25,19,13,10,11,1,23,8,13,2,3,1,17,5,16,17,21,2,21,22,5,15,26,9,14,19,14,3,16,7,26,19,7,5,16,17,6,22,16,4,6,19,3,12,26,10,0,10,4,3,14,4,9,8,12,6,11,17,20,24,5,1,18,20,22],\"game_seats\":[[24,25,18,4,2,14,0,22,18,0,12,23,13],[18,9,0,15,21,25,26,21,11,1,24,8,13,9]]}', '1486911754', null, '[1,1,8,0,2,25,0,1,4,1,2,2,1,1,18,0,3,18,0,1,2,1,2,15,1,1,13,0,2,8,0,1,8,1,2,24,1,1,24,0,2,7,0,1,7,1,2,20,1,1,11,0,2,23,0,1,25,1,2,6,1,1,6,0,2,7,0,1,7,1,2,23,1,1,26,0,2,15,0,1,15,1,3,15,1,1,21,0,2,12,0,1,12,1,2,20,1,1,20,0,2,11,0,1,11,1,2,10,1,1,10,0,2,25,0,1,25,1,2,19,1,6,19]', '[-3,3,0,0]');
+INSERT INTO `t_games_archive` VALUES ('1486910868461770651', '4', '{\"type\":\"2dg\",\"button\":1,\"index\":4,\"mahjongs\":[15,8,17,6,14,12,7,21,18,24,4,15,8,16,4,4,13,24,23,9,9,9,19,10,23,24,17,11,25,2,18,1,21,9,8,26,16,13,24,25,25,6,7,1,0,7,13,23,1,5,2,25,11,17,16,0,0,12,3,26,20,23,3,4,22,21,10,1,13,22,15,12,19,5,7,6,26,2,10,14,20,6,19,11,18,14,21,19,12,18,3,20,11,2,20,5,15,22,8,16,3,10,26,5,17,14,0,22],\"game_seats\":[[8,6,12,21,24,15,16,4,24,9,9,10,24],[15,17,14,7,18,4,8,4,13,23,9,19,23,17]]}', '1486911890', null, '[1,1,9,0,3,9,0,1,21,1,2,11,1,1,11,0,2,25,0,1,25,1,2,2,1,1,8,0,2,18,0,1,18,1,2,1,1,1,7,0,2,21,0,1,21,1,2,9,1,1,9,0,2,8,0,1,10,1,2,26,1,1,26,0,2,16,0,1,12,1,2,13,1,1,18,0,2,24,0,4,24,0,2,25,0,1,25,1,2,25,1,1,25,0,2,6,0,1,4,1,3,4,1,1,19,0,2,7,0,1,15,1,2,1,1,1,2,0,2,0,0,1,0,1,2,7,1,1,7,0,5,7]', '[9,-9,0,0]');
+INSERT INTO `t_games_archive` VALUES ('1486910868461770651', '5', '{\"type\":\"2dg\",\"button\":0,\"index\":5,\"mahjongs\":[16,15,23,1,0,21,11,13,21,14,9,3,23,5,22,12,23,13,4,21,0,16,20,26,11,25,18,19,21,26,20,7,5,19,6,4,1,15,7,7,24,2,9,6,19,20,3,17,15,4,3,11,18,1,22,10,2,0,2,16,24,20,9,2,23,14,26,7,18,22,12,12,14,16,18,25,6,22,0,4,6,25,12,10,17,14,5,10,26,10,13,8,1,25,24,8,8,17,11,17,13,5,8,3,24,15,9,19],\"game_seats\":[[16,23,0,11,21,9,23,22,23,4,0,20,11,18],[15,1,21,13,14,3,5,12,13,21,16,26,25]]}', '1486912094', null, '[0,1,9,1,2,19,1,1,19,0,2,21,0,1,16,1,2,26,1,1,25,0,2,20,0,1,4,1,2,7,1,1,7,0,2,5,0,1,5,1,2,19,1,1,19,0,2,6,0,1,6,1,2,4,1,1,1,0,2,1,0,1,18,1,2,15,1,1,12,0,2,7,0,1,7,1,2,7,1,1,7,0,2,24,0,1,24,1,2,2,1,1,2,0,2,9,0,1,1,1,2,6,1,1,6,0,2,19,0,1,9,1,2,20,1,1,20,0,2,3,0,1,3,1,2,17,1,1,13,0,2,15,0,1,15,1,2,4,1,1,4,0,2,3,0,1,3,1,2,11,1,1,11,0,2,18,0,1,18,1,2,1,1,1,1,0,2,22,0,1,19,1,2,10,1,1,10,0,2,2,0,1,2,1,2,0,1,1,0,0,2,2,0,1,2,1,2,16,1,1,16,0,2,24,0,1,24,1,2,20,1,1,20,0,2,9,0,1,9,1,2,2,1,1,2,0,2,23,0,6,23]', '[24,-24,0,0]');
+INSERT INTO `t_games_archive` VALUES ('1486910868461770651', '6', '{\"type\":\"2dg\",\"button\":0,\"index\":6,\"mahjongs\":[11,14,21,3,12,1,8,15,24,5,16,14,0,7,19,25,15,9,6,20,10,22,12,9,18,18,4,13,23,2,19,13,21,26,15,25,6,9,9,23,26,17,26,8,22,5,19,4,3,16,17,19,2,11,0,24,4,10,16,0,5,12,20,11,3,13,2,1,17,14,23,15,1,13,17,2,24,10,20,10,7,22,26,20,5,21,7,11,22,12,16,4,0,8,25,14,18,6,1,6,25,24,8,3,23,18,21,7],\"game_seats\":[[11,21,12,8,24,16,0,19,15,6,10,12,18,4],[14,3,1,15,5,14,7,25,9,20,22,9,18]]}', '1486912247', null, '[0,1,0,1,2,13,1,1,25,0,2,23,0,1,18,1,2,2,1,1,14,0,2,19,0,1,21,1,2,13,1,1,13,0,2,21,0,1,21,1,2,26,1,1,26,0,2,15,0,1,8,1,2,25,1,1,25,0,2,6,0,1,4,1,2,9,1,1,18,0,2,9,0,1,9,1,4,9,1,2,23,1,1,20,0,2,26,0,1,26,1,2,17,1,1,17,0,2,26,0,1,26,1,2,8,1,1,8,0,2,22,0,1,10,1,2,5,1,1,7,0,2,19,0,1,11,1,2,4,1,1,4,0,2,3,0,1,16,1,2,16,1,1,16,0,2,17,0,1,17,1,2,19,1,1,19,0,4,19,0,2,2,0,1,2,1,2,11,1,1,11,0,2,0,0,1,0,1,2,24,1,6,24]', '[-15,15,0,0]');
+INSERT INTO `t_games_archive` VALUES ('1486910868461770651', '7', '{\"type\":\"2dg\",\"button\":1,\"index\":7,\"mahjongs\":[15,10,5,15,0,22,2,19,18,6,11,10,0,0,23,26,14,4,21,0,10,17,14,4,21,11,1,12,6,7,8,8,13,19,19,26,20,3,7,24,4,15,20,26,4,5,22,11,25,3,1,13,25,16,21,9,15,18,16,14,7,8,6,5,18,3,6,25,17,23,16,20,12,17,22,9,22,10,24,3,19,24,12,2,23,12,9,1,21,26,2,7,17,2,18,13,8,13,14,16,9,25,23,20,11,24,5,1],\"game_seats\":[[10,15,22,19,6,10,0,26,4,0,17,4,11],[15,5,0,2,18,11,0,23,14,21,10,14,21,1]]}', '1486912478', null, '[1,1,5,0,2,12,0,1,26,1,2,6,1,1,6,0,2,7,0,1,19,1,2,8,1,1,8,0,2,8,0,1,22,1,2,13,1,1,18,0,2,19,0,1,19,1,2,19,1,1,19,0,2,26,0,1,26,1,2,20,1,1,23,0,2,3,0,1,17,1,2,7,1,1,7,0,2,24,0,1,24,1,2,4,1,1,4,0,3,4,0,1,15,1,2,15,1,1,0,0,3,0,0,1,3,1,2,20,1,1,10,0,3,10,0,1,12,1,2,26,1,1,26,0,2,4,0,4,4,0,2,5,0,1,11,1,2,22,1,1,11,0,2,11,0,1,11,1,2,25,1,1,25,0,2,3,0,1,3,1,2,1,1,1,1,0,2,13,0,1,13,1,2,25,1,1,25,0,2,16,0,1,16,1,2,21,1,1,22,0,2,9,0,1,9,1,2,15,1,1,13,0,2,18,0,1,18,1,2,16,1,1,16,0,2,14,0,1,14,1,3,14,1,1,0,0,2,7,0,1,7,1,2,8,1,1,8,0,5,8]', '[7,-7,0,0]');
+INSERT INTO `t_games_archive` VALUES ('1486912539294262786', '0', '{\"type\":\"zjmj\",\"button\":0,\"index\":0,\"mahjongs\":[12,10,15,5,20,21,14,14,26,4,7,25,17,7,0,13,0,6,15,20,23,10,3,26,16,9,16,7,26,13,13,26,17,0,8,1,17,24,12,19,4,16,24,20,0,2,12,20,22,25,1,7,3,23,8,18,6,24,2,4,22,14,5,11,24,6,18,11,5,10,13,12,10,1,2,19,9,17,21,18,21,8,19,15,18,25,23,1,22,9,2,14,25,15,22,23,4,3,5,6,8,11,16,19,11,3,9,21],\"game_seats\":[[12,5,14,4,17,13,15,10,16,7,13,0,17,19],[10,20,14,7,7,0,20,3,9,26,26,8,24],[15,21,26,25,0,6,23,26,16,13,17,1,12]]}', '1486912687', null, '[0,1,19,1,2,4,1,1,0,2,2,16,2,1,6,0,2,24,0,1,24,1,2,20,1,1,14,2,2,0,2,1,16,0,2,2,0,1,7,1,3,7,1,1,8,2,2,12,2,1,1,0,2,20,0,1,20,1,4,20,1,2,22,1,1,22,2,2,25,2,1,21,0,2,1,0,1,10,1,2,7,1,4,7,1,2,3,1,1,24,2,2,23,2,1,13,0,3,13,0,1,12,2,3,12,2,1,26,1,3,26,1,1,4,2,2,8,2,1,8,0,2,18,0,1,18,1,2,6,1,1,6,2,2,24,2,1,26,0,2,2,0,1,2,1,2,4,1,1,4,2,2,22,2,1,25,0,2,14,0,1,14,1,2,5,1,1,5,2,2,11,2,1,11,1,5,11]', '[-9,10,-1,0]');
+INSERT INTO `t_games_archive` VALUES ('1486912539294262786', '1', '{\"type\":\"zjmj\",\"button\":1,\"index\":1,\"mahjongs\":[9,22,0,12,15,11,20,5,10,10,16,24,19,25,26,11,25,23,10,8,20,16,3,5,14,17,7,19,19,2,15,16,6,22,8,7,18,4,15,9,21,18,26,21,17,5,12,7,4,8,18,3,21,13,3,6,5,26,16,25,1,4,19,11,6,17,25,24,12,4,13,23,14,8,9,22,23,7,15,10,26,20,2,24,14,14,23,2,9,1,0,3,1,13,13,0,20,11,21,2,17,0,22,24,1,18,12,6],\"game_seats\":[[0,11,10,24,26,23,20,5,7,2,6,7,15],[9,12,20,10,19,11,10,16,14,19,15,22,18,9],[22,15,5,16,25,25,8,3,17,19,16,8,4]]}', '1486912875', null, '[1,1,22,2,2,21,2,1,19,0,2,18,0,1,15,1,2,26,1,1,26,2,2,21,2,1,16,0,2,17,0,1,17,1,2,5,1,1,5,2,2,12,2,1,12,0,2,7,0,1,26,1,2,4,1,1,4,2,2,8,2,1,8,0,2,18,0,1,20,1,2,3,1,1,3,2,2,21,2,1,22,0,2,13,0,1,13,1,2,3,1,1,3,2,2,6,2,1,6,0,2,5,0,1,6,1,2,26,1,1,26,2,2,16,2,1,16,0,2,25,0,1,0,1,2,1,1,1,19,2,2,4,2,1,4,0,2,19,0,1,2,1,2,11,1,1,1,2,2,6,2,1,6,0,2,17,0,1,17,1,2,25,1,1,25,2,3,25,2,1,17,0,2,24,0,1,19,1,2,12,1,6,12]', '[-6,9,-3,0]');
+INSERT INTO `t_games_archive` VALUES ('1486912539294262786', '2', '{\"type\":\"zjmj\",\"button\":1,\"index\":2,\"mahjongs\":[0,5,21,13,1,6,10,6,3,2,6,5,19,24,15,8,17,4,21,20,25,19,25,18,17,25,16,24,12,23,7,23,25,12,3,14,26,23,11,9,1,19,3,5,1,16,11,11,10,22,7,16,23,17,22,4,2,14,14,0,22,8,3,1,18,18,7,26,4,13,12,2,22,15,20,26,8,8,0,15,18,20,6,24,9,4,13,15,14,13,2,11,10,9,5,12,10,19,21,0,21,9,16,17,7,26,24,20],\"game_seats\":[[21,6,3,5,15,4,25,18,16,23,25,14,11],[0,13,10,2,19,8,21,19,17,24,7,12,26,9],[5,1,6,6,24,17,20,25,25,12,23,3,23]]}', '1486912988', null, '[1,1,17,2,2,1,2,1,20,0,2,19,0,1,11,1,2,3,1,1,0,2,2,5,2,1,17,0,2,1,0,1,18,1,2,16,1,1,16,2,2,11,2,1,3,0,2,11,0,1,11,1,2,10,1,1,9,2,2,22,2,1,22,0,2,7,0,1,1,2,3,1,2,1,11,0,2,16,0,1,16,1,2,23,1,1,26,2,2,17,2,1,17,0,2,22,0,1,19,1,3,19,1,1,21,2,2,4,2,1,12,0,2,2,0,6,2]', '[8,-5,-3,0]');
+INSERT INTO `t_games_archive` VALUES ('1486912539294262786', '3', '{\"type\":\"zjmj\",\"button\":0,\"index\":3,\"mahjongs\":[15,14,12,1,2,8,18,16,15,20,21,3,10,14,25,6,23,25,23,14,21,24,12,4,22,26,11,16,4,5,20,22,12,7,17,1,20,2,23,16,22,6,8,15,9,26,17,1,24,4,2,4,3,3,18,7,0,6,10,7,25,9,0,0,11,15,19,17,21,13,8,24,2,7,10,5,24,13,9,25,26,13,26,10,0,18,21,17,12,11,22,20,13,5,16,11,19,23,14,18,19,1,19,8,9,3,5,6],\"game_seats\":[[15,1,18,20,10,6,23,24,22,16,20,7,20,16],[14,2,16,21,14,23,14,12,26,4,22,17,2],[12,8,15,3,25,25,21,4,11,5,12,1,23]]}', '1486913081', null, '[0,1,1,1,2,22,1,1,26,2,2,6,2,1,15,0,2,8,0,1,18,1,2,15,1,1,12,2,3,12,2,1,11,0,2,9,0,1,9,1,2,26,1,1,26,2,2,17,2,1,17,0,2,1,0,1,10,1,2,24,1,1,4,2,2,4,2,1,8,0,2,2,0,1,15,1,2,4,1,1,4,2,3,4,2,1,1,0,2,3,0,6,3]', '[7,-2,-5,0]');
+INSERT INTO `t_games_archive` VALUES ('1486912539294262786', '4', '{\"type\":\"zjmj\",\"button\":0,\"index\":4,\"mahjongs\":[12,19,17,1,24,19,23,24,9,7,22,18,4,4,17,10,20,7,15,16,19,15,9,1,17,18,3,25,25,9,16,16,2,24,13,0,21,7,18,22,8,11,12,21,1,13,0,2,9,13,6,19,10,23,1,25,25,14,21,21,18,2,26,10,11,17,23,14,11,7,5,6,3,22,14,6,26,24,15,11,8,15,6,8,0,22,16,26,2,26,12,3,5,12,5,14,20,5,10,0,4,20,13,4,3,23,8,20],\"game_seats\":[[12,1,23,7,4,10,15,15,17,25,16,24,21,22],[19,24,24,22,4,20,16,9,18,25,16,13,7],[17,19,9,18,17,7,19,1,3,9,2,0,18]]}', '1486913214', null, '[0,1,1,1,2,8,1,1,9,2,3,9,2,1,7,0,2,11,0,1,7,1,2,12,1,1,22,2,2,21,2,1,21,0,2,1,0,1,1,1,2,13,1,1,4,2,2,0,2,1,3,0,2,2,0,1,15,1,2,9,1,1,9,2,2,13,2,1,13,1,3,13,1,1,12,2,2,6,2,1,6,0,2,19,0,1,19,2,3,19,2,1,0,0,2,10,0,1,10,1,2,23,1,1,24,2,2,1,2,1,1,0,2,25,0,1,24,1,2,25,1,1,25,0,3,25,0,1,4,1,2,14,1,1,14,2,2,21,2,1,21,0,2,21,0,1,21,1,2,18,1,1,18,2,3,18,2,1,0,0,2,2,0,6,2]', '[-4,-5,9,0]');
+INSERT INTO `t_games_archive` VALUES ('1486912539294262786', '5', '{\"type\":\"zjmj\",\"button\":0,\"index\":5,\"mahjongs\":[8,0,18,2,23,9,21,3,15,10,5,7,1,24,24,17,17,2,19,9,10,14,16,9,22,6,4,5,18,26,25,6,13,26,17,22,25,5,21,19,11,24,18,2,12,1,16,24,9,1,11,20,14,23,7,15,4,3,26,22,20,10,11,23,7,10,12,13,17,23,14,21,11,25,8,4,2,13,20,12,21,16,22,8,13,0,0,15,6,19,14,12,5,4,8,16,18,6,3,1,7,15,3,25,0,20,19,26],\"game_seats\":[[8,2,21,10,1,17,19,14,22,5,25,26,25,19],[0,23,3,5,24,17,9,16,6,18,6,17,5],[18,9,15,7,24,2,10,9,4,26,13,22,21]]}', '1486913401', null, '[0,1,17,1,3,17,1,1,18,2,2,11,2,1,18,0,2,24,0,1,8,1,2,18,1,1,18,2,2,2,2,1,7,0,2,12,0,1,5,1,3,5,1,1,9,2,3,9,2,1,10,0,2,1,0,1,25,1,2,16,1,1,0,2,2,24,2,1,4,0,2,9,0,1,9,1,2,1,1,1,1,0,3,1,0,1,2,2,3,2,2,1,26,0,2,11,0,1,14,1,2,20,1,1,20,2,2,14,2,1,11,0,2,23,0,6,23]', '[5,-8,3,0]');
+INSERT INTO `t_games_archive` VALUES ('1486912539294262786', '6', '{\"type\":\"zjmj\",\"button\":0,\"index\":6,\"mahjongs\":[8,10,5,25,2,23,1,6,15,4,8,14,4,24,19,1,17,3,2,5,22,10,23,12,2,23,22,9,10,25,6,16,1,6,22,0,20,24,3,7,7,14,11,13,17,12,12,21,26,13,26,24,15,23,16,4,9,21,22,20,13,11,18,4,19,14,0,21,3,15,2,24,7,0,19,17,14,9,16,3,6,8,13,10,12,1,15,21,19,26,0,18,16,5,20,25,11,18,5,7,17,26,8,20,11,25,9,18],\"game_seats\":[[8,25,1,4,4,1,2,10,2,9,6,6,20,7],[10,2,6,8,24,17,5,23,23,10,16,22,24],[5,23,15,14,19,3,22,12,22,25,1,0,3]]}', '1486913555', null, '[0,1,9,1,2,7,1,1,2,0,3,2,0,1,10,1,3,10,1,1,8,2,2,14,2,1,12,0,2,11,0,1,25,1,2,13,1,1,13,2,2,17,2,1,17,0,2,12,0,1,20,1,2,12,1,1,12,2,2,21,2,1,19,0,2,26,0,1,26,1,2,13,1,1,13,2,2,26,2,1,26,0,2,24,0,1,24,1,3,24,1,1,22,2,3,22,2,1,21,0,2,15,0,1,15,1,2,23,1,1,17,2,2,16,2,1,5,0,2,4,0,1,12,1,2,9,1,1,9,2,2,21,2,1,21,0,2,22,0,1,11,1,2,20,1,1,20,2,2,13,2,1,0,0,2,11,0,1,11,1,2,18,1,1,18,2,2,4,2,1,1,0,3,1,0,1,22,1,2,19,1,1,19,2,2,14,2,1,4,0,4,4,0,2,0,0,1,6,1,2,21,1,1,21,2,2,3,2,1,13,0,2,15,0,1,15,1,2,2,1,1,2,2,2,24,2,6,24]', '[5,-1,-4,0]');
+INSERT INTO `t_games_archive` VALUES ('1486912539294262786', '7', '{\"type\":\"zjmj\",\"button\":2,\"index\":7,\"mahjongs\":[0,17,0,21,17,24,13,11,25,18,23,15,10,14,13,19,4,26,22,9,14,6,12,15,14,10,9,2,12,8,11,0,5,14,15,3,1,5,22,11,23,8,1,0,1,3,24,6,18,25,8,9,13,20,25,26,24,1,21,20,21,8,23,15,18,10,12,6,19,26,7,7,17,12,25,23,5,10,20,16,16,26,20,16,18,3,4,2,19,4,5,19,13,9,2,16,2,24,6,17,7,4,21,7,22,3,11,22],\"game_seats\":[[17,17,11,23,14,4,9,12,10,12,0,15,5],[0,24,25,15,13,26,14,15,9,8,5,3,22],[0,21,13,18,10,19,22,6,14,2,11,14,1,11]]}', '1486913778', null, '[2,1,18,0,2,23,0,1,0,1,2,8,1,1,0,2,2,1,2,1,6,0,2,0,0,1,0,1,2,1,1,1,22,2,2,3,2,1,19,0,2,24,0,1,24,1,2,6,1,1,9,2,2,18,2,1,18,0,2,25,0,1,25,1,2,8,1,1,15,2,2,9,2,1,1,0,2,13,0,1,23,1,2,20,1,1,20,2,2,25,2,1,25,0,2,26,0,1,23,1,2,24,1,1,24,2,2,1,2,1,0,0,2,21,0,1,26,1,2,20,1,1,20,2,2,21,2,1,1,0,2,8,0,1,21,2,3,21,2,1,22,0,2,23,0,1,8,1,4,8,1,2,15,1,1,6,2,2,18,2,1,18,0,2,10,0,1,23,1,2,12,1,1,5,2,2,6,2,1,6,0,2,19,0,1,19,1,2,26,1,1,26,2,2,7,2,1,7,0,2,7,0,1,7,1,2,17,1,1,17,0,3,17,0,1,4,1,2,12,1,1,12,0,3,12,0,1,5,1,2,25,1,1,25,2,2,23,2,1,23,0,2,5,0,1,5,1,2,10,1,1,10,0,5,10]', '[3,-8,5,0]');
+INSERT INTO `t_games_archive` VALUES ('1486913989170398650', '0', '{\"type\":\"zjmj\",\"button\":0,\"index\":0,\"mahjongs\":[5,2,24,11,24,21,17,10,10,8,13,14,19,26,18,15,11,6,6,22,3,12,7,19,3,15,13,13,26,0,17,9,1,5,7,3,0,20,11,20,13,4,19,26,3,9,15,16,26,25,11,6,23,0,20,18,22,2,7,1,6,16,10,22,17,4,21,21,22,9,12,2,14,23,25,1,0,23,2,17,25,8,7,8,19,15,18,16,12,10,5,18,24,14,4,21,5,14,16,23,9,25,24,8,1,20,12,4],\"game_seats\":[[5,11,17,8,19,15,6,12,3,13,17,5,0,20],[2,24,10,13,26,11,22,7,15,26,9,7,20],[24,21,10,14,18,6,3,19,13,0,1,3,11]]}', '1486914081', null, '[0,1,20,1,2,13,1,1,2,2,2,4,2,1,18,0,2,19,0,1,0,1,2,26,1,1,20,2,2,3,2,1,24,0,2,9,0,1,9,1,2,15,1,1,22,2,2,16,2,1,16,0,2,26,0,1,26,1,4,26,1,2,25,1,1,25,2,2,11,2,1,6,0,2,6,0,1,8,1,2,23,1,1,24,2,2,0,2,1,10,0,2,20,0,1,3,2,4,3,2,2,18,2,1,18,0,2,22,0,1,22,1,2,2,1,1,23,2,2,7,2,1,7,1,3,7,1,1,2,2,2,1,2,1,4,0,2,6,0,1,20,1,2,16,1,1,15,2,2,10,2,1,10,0,2,22,0,1,22,1,2,17,1,6,17]', '[-8,11,-3,0]');
+INSERT INTO `t_games_archive` VALUES ('1486913989170398650', '1', '{\"type\":\"zjmj\",\"button\":1,\"index\":1,\"mahjongs\":[22,0,1,19,14,1,6,25,13,9,25,23,3,22,24,6,18,23,3,21,2,15,13,8,15,26,21,16,5,11,19,7,0,9,17,21,15,12,25,7,5,4,10,19,17,20,14,14,26,0,12,16,24,19,16,2,10,1,6,9,7,2,5,24,4,4,11,5,14,4,25,0,23,11,10,23,26,8,24,13,15,3,16,8,12,13,18,20,20,26,9,3,20,22,12,18,8,18,10,11,17,17,22,6,7,21,1,2],\"game_seats\":[[1,1,13,23,24,23,2,8,21,11,0,21,25],[22,19,6,9,3,6,3,15,15,16,19,9,15,7],[0,14,25,25,22,18,21,13,26,5,7,17,12]]}', '1486914373', null, '[1,1,22,2,2,5,2,1,0,0,2,4,0,1,8,1,2,10,1,1,16,2,2,19,2,1,18,0,2,17,0,1,17,1,2,20,1,1,10,2,2,14,2,1,17,0,2,14,0,1,11,1,2,26,1,1,26,2,2,0,2,1,0,0,2,12,0,1,1,1,2,16,1,1,16,2,2,24,2,1,25,0,2,19,0,1,19,1,3,19,1,1,20,2,2,16,2,1,19,0,2,2,0,1,23,1,2,10,1,1,10,2,2,1,2,1,1,0,2,6,0,1,2,1,2,9,1,1,7,2,2,7,2,1,16,0,2,2,0,1,2,1,2,5,1,1,5,2,3,5,2,1,14,0,2,24,0,1,24,1,2,4,1,1,4,2,2,4,2,1,4,0,2,11,0,1,11,1,2,5,1,1,5,2,2,14,2,1,14,0,2,4,0,1,4,1,2,25,1,1,25,2,2,0,2,1,0,0,2,23,0,1,23,1,2,11,1,1,11,2,2,10,2,1,10,0,2,23,0,1,23,1,2,26,1,1,26,2,2,8,2,1,8,0,2,24,0,1,24,1,2,13,1,1,13,2,2,15,2,1,12,0,2,3,0,1,6,1,5,6]', '[-7,9,-2,0]');
+INSERT INTO `t_games_archive` VALUES ('1486913989170398650', '2', '{\"type\":\"zjmj\",\"button\":1,\"index\":2,\"mahjongs\":[20,4,10,11,3,6,3,14,14,24,1,11,26,22,6,6,7,22,17,23,18,24,18,5,21,11,0,4,2,25,18,1,21,2,13,14,13,9,15,14,11,5,20,10,25,7,16,24,8,1,23,13,19,17,24,9,15,9,16,8,0,21,25,1,16,7,15,6,12,5,2,0,16,10,12,19,26,12,23,3,20,0,8,26,22,12,23,20,5,21,7,26,3,19,8,2,4,19,18,9,17,17,22,25,15,4,10,13],\"game_seats\":[[10,6,14,11,6,22,18,5,0,25,21,14,15],[20,11,3,24,26,6,17,24,21,4,18,2,13,14],[4,3,14,1,22,7,23,18,11,2,1,13,9]]}', '1486914520', null, '[1,1,18,2,2,11,2,1,18,0,2,5,0,1,18,1,2,20,1,1,17,2,2,10,2,1,11,0,2,25,0,1,21,1,2,7,1,1,26,2,2,16,2,1,16,0,2,24,0,1,15,1,2,8,1,1,11,2,2,1,2,1,7,0,2,23,0,1,11,1,2,13,1,1,21,2,2,19,2,1,19,0,2,17,0,1,10,1,2,24,1,1,13,2,2,9,2,1,9,0,2,15,0,1,15,1,2,9,1,1,9,2,2,16,2,1,16,0,2,8,0,1,17,1,2,0,1,1,0,2,2,21,2,1,14,0,3,14,0,1,0,1,2,25,1,1,25,0,3,25,0,1,8,1,2,1,1,1,1,2,4,1,2,2,16,2,1,13,0,2,7,0,1,7,1,2,15,1,6,15]', '[-6,0,6,0]');
+INSERT INTO `t_games_archive` VALUES ('1486913989170398650', '3', '{\"type\":\"zjmj\",\"button\":1,\"index\":3,\"mahjongs\":[13,25,18,12,22,9,25,20,21,19,8,11,18,11,16,5,8,17,15,14,2,26,20,10,7,2,8,8,1,9,3,2,3,17,7,24,23,1,13,22,25,7,13,12,26,1,23,9,11,7,21,4,22,19,20,17,19,4,1,16,15,5,2,14,10,6,12,21,18,6,11,6,23,24,10,18,6,22,5,20,0,21,24,10,0,16,15,26,9,19,26,17,23,14,3,25,15,12,0,24,3,4,16,14,0,13,4,5],\"game_seats\":[[18,9,21,11,16,17,2,10,8,9,3,24,13],[13,12,25,19,18,5,15,26,7,8,3,17,23,22],[25,22,20,8,11,8,14,20,2,1,2,7,1]]}', '1486915714', null, '[1,1,26,2,2,25,2,1,14,0,2,7,0,1,18,1,2,13,1,1,25,2,3,25,2,1,11,0,2,12,0,1,24,1,2,26,1,1,26,2,2,1,2,1,22,0,2,23,0,1,8,2,3,8,2,1,7,0,2,9,0,1,7,1,2,11,1,1,8,2,2,7,2,1,7,0,2,21,0,1,23,1,2,4,1,1,18,2,2,22,2,1,22,0,2,19,0,1,19,1,2,20,1,1,7,2,2,17,2,1,17,0,2,19,0,1,19,1,2,4,1,1,4,2,2,1,2,4,1,2,2,16,2,1,16,0,2,15,0,1,13,1,3,13,1,1,17,2,2,5,2,1,5,0,2,2,0,1,2,2,3,2,2,1,20,0,2,14,0,1,17,1,2,10,1,1,15,2,2,6,2,1,6,0,2,12,0,1,12,1,2,21,1,1,23,2,2,18,2,1,20,0,2,6,0,1,6,1,2,11,1,1,11,2,2,6,2,1,6,0,2,23,0,1,23,1,2,24,1,1,24,2,2,10,2,1,10,0,2,18,0,1,18,2,5,18]', '[-8,-7,15,0]');
+INSERT INTO `t_games_archive` VALUES ('1486913989170398650', '4', '{\"type\":\"zjmj\",\"button\":2,\"index\":4,\"mahjongs\":[14,8,16,7,15,20,14,2,12,18,9,1,2,10,21,22,3,4,19,21,26,3,15,8,16,17,4,1,16,15,0,20,22,1,10,19,3,5,0,13,5,0,23,0,10,21,20,11,5,20,25,8,13,7,15,7,4,22,2,5,4,13,9,14,26,1,25,23,6,12,6,6,17,22,17,24,16,2,25,11,18,26,9,8,21,13,26,19,19,14,7,11,24,24,23,25,18,12,11,3,6,9,12,23,18,24,17,10],\"game_seats\":[[8,15,2,9,10,3,21,15,17,16,20,10,5],[16,20,12,1,21,4,26,8,4,15,22,19,0],[14,7,14,18,2,22,19,3,16,1,0,1,3,13]]}', '1486915926', null, '[2,1,22,0,2,5,0,1,8,1,2,0,1,1,8,2,2,23,2,1,23,0,2,0,0,1,9,1,2,10,1,1,10,0,3,10,0,1,0,1,3,0,1,1,26,2,2,21,2,1,18,0,2,20,0,1,15,1,2,11,1,1,19,2,2,5,2,1,7,0,2,20,0,1,21,1,2,25,1,1,25,2,2,8,2,1,16,0,2,13,0,1,13,1,2,7,1,1,7,2,2,15,2,1,14,0,2,7,0,1,7,1,2,4,1,1,1,2,3,1,2,1,8,0,2,22,0,1,22,1,2,2,1,1,2,2,2,5,2,1,0,0,2,4,0,6,4]', '[8,-4,-4,0]');
+INSERT INTO `t_games_archive` VALUES ('1486913989170398650', '5', '{\"type\":\"zjmj\",\"button\":0,\"index\":5,\"mahjongs\":[8,9,13,6,16,11,20,20,20,23,4,21,24,7,25,1,0,18,10,12,8,14,22,24,10,14,5,19,9,0,5,7,25,20,12,18,1,8,15,4,17,4,11,22,16,21,19,12,16,15,2,26,6,19,26,17,2,6,8,13,7,9,7,24,18,15,22,22,13,10,3,14,23,14,0,1,23,26,1,23,17,9,24,21,3,5,19,12,11,15,13,2,25,10,16,6,21,3,0,5,18,25,11,17,26,2,4,3],\"game_seats\":[[8,6,20,23,24,1,10,14,10,19,5,20,1,4],[9,16,20,4,7,0,12,22,14,9,7,12,8],[13,11,20,21,25,18,8,24,5,0,25,18,15]]}', '1486916046', null, '[0,1,8,1,2,17,1,1,0,2,2,4,2,1,0,0,2,11,0,1,14,1,2,22,1,1,17,2,2,16,2,1,8,0,2,21,0,1,20,1,2,19,1,1,8,2,2,12,2,1,21,0,2,16,0,1,16,1,2,15,1,1,4,2,2,2,2,1,2,0,2,26,0,1,26,1,2,6,1,1,19,2,2,19,2,1,18,0,2,26,0,1,26,1,2,17,1,1,17,2,2,2,2,1,2,0,2,6,0,1,6,1,2,8,1,1,7,2,2,13,2,1,13,0,2,7,0,1,7,1,2,9,1,1,22,2,2,7,2,1,7,0,2,24,0,1,10,1,2,18,1,1,22,2,2,15,2,1,24,0,3,24,0,1,23,1,2,22,1,1,22,2,2,22,2,1,22,0,2,13,0,1,13,1,2,10,1,1,10,2,2,3,2,1,15,0,2,14,0,1,14,1,2,23,1,1,23,2,2,14,2,6,14]', '[-1,2,-1,0]');
+INSERT INTO `t_games_archive` VALUES ('1486913989170398650', '6', '{\"type\":\"zjmj\",\"button\":2,\"index\":6,\"mahjongs\":[19,24,14,20,7,2,18,12,3,11,3,13,1,4,15,21,14,16,23,18,13,7,16,10,12,2,18,0,1,2,0,24,1,13,26,4,20,5,6,16,4,2,19,8,26,24,3,4,16,26,10,22,5,26,15,9,22,6,18,13,14,22,11,5,8,12,10,7,9,0,15,6,25,21,15,21,20,7,24,9,0,20,25,9,8,25,6,17,12,23,3,10,17,17,19,19,23,8,21,22,14,11,23,25,5,1,11,17],\"game_seats\":[[24,7,12,3,4,14,18,16,2,1,24,26,5],[14,2,3,13,15,16,13,10,18,2,1,4,6],[19,20,18,11,1,21,23,7,12,0,0,13,20,16]]}', '1486916110', null, '[2,1,16,0,2,4,0,1,18,1,2,2,1,1,18,2,2,19,2,1,7,0,2,8,0,1,26,1,2,26,1,1,26,2,2,24,2,1,1,0,2,3,0,1,16,1,2,4,1,1,10,2,2,16,2,1,16,0,2,26,0,1,26,1,2,10,1,1,10,2,2,22,2,6,22]', '[-2,-2,4,0]');
+INSERT INTO `t_games_archive` VALUES ('1486913989170398650', '7', '{\"type\":\"zjmj\",\"button\":2,\"index\":7,\"mahjongs\":[22,16,26,13,9,25,14,4,8,0,19,2,3,5,23,21,2,9,0,5,20,7,12,15,11,19,24,1,15,4,16,17,0,10,1,13,10,12,6,26,12,21,21,23,15,25,8,4,20,9,18,3,20,3,14,1,24,11,22,17,8,25,7,20,18,22,0,6,19,15,10,22,3,23,14,17,24,5,9,11,6,13,16,2,14,21,7,2,8,4,1,11,13,26,26,12,25,23,16,17,24,19,18,7,18,10,6,5],\"game_seats\":[[16,9,4,19,5,2,5,12,19,15,17,1,12],[26,25,8,2,23,9,20,15,24,4,0,13,6],[22,13,14,0,3,21,0,7,11,1,16,10,10,26]]}', '1486916203', null, '[2,1,26,0,2,12,0,1,9,1,2,21,1,1,9,2,2,21,2,1,16,0,2,23,0,1,23,1,2,15,1,1,13,2,2,25,2,1,25,0,2,8,0,1,8,1,2,4,1,1,0,2,3,0,2,1,7,0,2,20,0,1,20,1,2,9,1,1,2,2,2,18,2,1,18,0,2,3,0,1,5,1,2,20,1,1,23,2,2,3,2,1,1,0,2,14,0,1,17,1,2,1,1,1,1,2,2,24,2,1,24,0,2,11,0,1,11,1,2,22,1,1,20,2,2,17,2,1,17,0,2,8,0,1,8,1,2,25,1,1,25,2,2,7,2,1,7,0,2,20,0,1,20,1,2,18,1,1,18,2,2,22,2,1,14,0,2,0,0,6,0]', '[9,-5,-4,0]');
+
+-- ----------------------------
+-- Table structure for t_guests
+-- ----------------------------
+DROP TABLE IF EXISTS `t_guests`;
+CREATE TABLE `t_guests` (
+  `guest_account` varchar(255) NOT NULL,
+  PRIMARY KEY (`guest_account`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_guests
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for t_menu
+-- ----------------------------
+DROP TABLE IF EXISTS `t_menu`;
+CREATE TABLE `t_menu` (
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
+  `name` char(40) NOT NULL DEFAULT '',
+  `parentid` smallint(6) DEFAULT '0',
+  `icon` varchar(20) NOT NULL DEFAULT '',
+  `c` varchar(20) DEFAULT NULL,
+  `a` varchar(20) DEFAULT NULL,
+  `data` varchar(50) NOT NULL DEFAULT '',
+  `tip` varchar(255) NOT NULL DEFAULT '' COMMENT '提示',
+  `group` varchar(50) DEFAULT '' COMMENT '分组',
+  `listorder` smallint(6) unsigned NOT NULL DEFAULT '999',
+  `display` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否显示(1:显示,2:不显示)',
+  `updatetime` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `listorder` (`listorder`),
+  KEY `parentid` (`parentid`)
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_menu
+-- ----------------------------
+INSERT INTO `t_menu` VALUES ('1', '管理设置', '0', 'fa-users', 'Admin', 'admin', '', '', '', '1', '1', '1476175413');
+INSERT INTO `t_menu` VALUES ('2', '管理员管理', '1', '', 'Admin', 'index', '', '', '', '0', '1', '1476175413');
+INSERT INTO `t_menu` VALUES ('3', '详情', '2', '', 'Admin', 'info', '', '', '', '0', '2', '1476175413');
+INSERT INTO `t_menu` VALUES ('4', '添加', '2', '', 'Admin', 'add', '', '', '', '0', '2', '1476175413');
+INSERT INTO `t_menu` VALUES ('5', '修改', '2', '', 'Admin', 'edit', '', '', '', '0', '2', '1476175413');
+INSERT INTO `t_menu` VALUES ('6', '删除', '2', '', 'Admin', 'del', '', '', '', '0', '2', '1476175413');
+INSERT INTO `t_menu` VALUES ('7', '分组管理', '1', '', 'Group', 'index', '', '', '', '0', '1', '1476175413');
+INSERT INTO `t_menu` VALUES ('8', '详情', '7', '', 'Group', 'info', '', '', '', '0', '2', '1476175413');
+INSERT INTO `t_menu` VALUES ('9', '添加', '7', '', 'Group', 'add', '', '', '', '0', '2', '1476175413');
+INSERT INTO `t_menu` VALUES ('10', '修改', '7', '', 'Group', 'edit', '', '', '', '0', '2', '1476175413');
+INSERT INTO `t_menu` VALUES ('11', '删除', '7', '', 'Group', 'del', '', '', '', '0', '2', '1476175413');
+INSERT INTO `t_menu` VALUES ('12', '菜单管理', '18', '', 'Menu', 'index', '', '', '', '0', '1', '1476175413');
+INSERT INTO `t_menu` VALUES ('13', '查看', '12', '', 'Menu', 'info', '', '', '', '0', '2', '1476175413');
+INSERT INTO `t_menu` VALUES ('14', '添加', '12', '', 'Menu', 'add', '', '', '', '0', '2', '1476175413');
+INSERT INTO `t_menu` VALUES ('15', '修改', '12', '', 'Menu', 'edit', '', '', '', '0', '2', '1476175413');
+INSERT INTO `t_menu` VALUES ('16', '删除', '12', '', 'Menu', 'del', '', '', '', '0', '2', '1476175413');
+INSERT INTO `t_menu` VALUES ('18', '系统设置', '0', 'fa-cogs', 'Menu', 'index', '', '', '', '2', '1', '1476175413');
+INSERT INTO `t_menu` VALUES ('22', '权限设置', '2', '', 'Group', 'rule', '', '', '', '999', '2', '1476175413');
+INSERT INTO `t_menu` VALUES ('23', '个人设置', '1', '', 'Admin', 'public_edit_info', '', '', '', '999', '1', '1476175413');
+INSERT INTO `t_menu` VALUES ('27', '日志管理', '18', '', 'Log', 'index', '', '', '', '999', '1', '1476175413');
+INSERT INTO `t_menu` VALUES ('31', '系统首页', '0', 'fa-bank', 'Index', 'index', '', '', '', '0', '1', '1476175413');
+INSERT INTO `t_menu` VALUES ('32', '用户管理', '0', 'fa-user', 'Users', 'index', '', '', '', '999', '1', '1487645892');
+INSERT INTO `t_menu` VALUES ('33', '游戏房间', '0', 'fa-home', 'GameRoom', 'index', '', '', '', '999', '1', null);
+
+-- ----------------------------
+-- Table structure for t_message
+-- ----------------------------
+DROP TABLE IF EXISTS `t_message`;
+CREATE TABLE `t_message` (
+  `type` varchar(32) NOT NULL,
+  `msg` varchar(1024) NOT NULL,
+  `version` varchar(32) NOT NULL,
+  PRIMARY KEY (`type`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_message
+-- ----------------------------
+INSERT INTO `t_message` VALUES ('notice', '测试测试测试测试测试测试测试测试测试测试测试测试测试', '20161128');
+INSERT INTO `t_message` VALUES ('fkgm', '测试测试测试测试测试测试测试测试测试测试测试测试测试', '20161128');
+
+-- ----------------------------
+-- Table structure for t_rooms
+-- ----------------------------
+DROP TABLE IF EXISTS `t_rooms`;
+CREATE TABLE `t_rooms` (
+  `uuid` char(20) NOT NULL COMMENT '房间唯一id',
+  `id` char(8) NOT NULL COMMENT '房间id号',
+  `base_info` varchar(256) NOT NULL DEFAULT '' COMMENT '房间基本信息',
+  `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '房间创建时间',
+  `num_of_turns` int(11) NOT NULL DEFAULT '0' COMMENT '房间局数',
+  `next_button` int(11) NOT NULL DEFAULT '0' COMMENT '下一个庄家',
+  `user_id0` int(11) NOT NULL DEFAULT '0' COMMENT '第一个位置的玩家id',
+  `user_score0` int(11) NOT NULL DEFAULT '0' COMMENT '第一个位置的玩家分数',
+  `user_id1` int(11) NOT NULL DEFAULT '0' COMMENT '第二个位置的玩家id',
+  `user_score1` int(11) NOT NULL DEFAULT '0' COMMENT '第二个位置的玩家分数',
+  `user_id2` int(11) NOT NULL DEFAULT '0' COMMENT '第三个位置的玩家id',
+  `user_score2` int(11) NOT NULL DEFAULT '0' COMMENT '第三个位置的玩家分数',
+  `user_id3` int(11) NOT NULL DEFAULT '0' COMMENT '第四个位置的玩家ID',
+  `user_score3` int(11) NOT NULL DEFAULT '0' COMMENT '第四个位置的玩家分数',
+  `ip` varchar(16) DEFAULT NULL,
+  `port` int(11) DEFAULT '0',
+  PRIMARY KEY (`uuid`),
+  UNIQUE KEY `uuid` (`uuid`),
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_rooms
+-- ----------------------------
+INSERT INTO `t_rooms` VALUES ('1486734667361220135', '220135', '{\"type\":\"zjmj\",\"baseScore\":1,\"manTangJi\":true,\"ziMoJiaDi\":true,\"fanJi\":0,\"numOfPpl\":4,\"maxGames\":8,\"lianzhuang\":false,\"jiangli3zhiji\":false,\"wuguji\":false,\"benji\":false,\"erfangmajiang\":false,\"huan3zhang\":false,\"queyimen\":false,\"cost\":3,\"creator\":100007}', '1486734668', '0', '0', '100007', '0', '0', '0', '0', '0', '0', '0', '127.0.0.1', '10001');
+
+-- ----------------------------
+-- Table structure for t_users
+-- ----------------------------
+DROP TABLE IF EXISTS `t_users`;
+CREATE TABLE `t_users` (
+  `userid` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户ID',
+  `account` varchar(64) NOT NULL DEFAULT '' COMMENT '账号',
+  `name` varchar(128) DEFAULT NULL COMMENT '用户昵称',
+  `sex` int(1) DEFAULT NULL COMMENT '用户性别',
+  `headimg` varchar(256) DEFAULT NULL COMMENT '用户头像',
+  `lv` smallint(6) DEFAULT '1' COMMENT '用户等级',
+  `exp` int(11) DEFAULT '0' COMMENT '用户经验',
+  `coins` int(11) DEFAULT '0' COMMENT '用户金币',
+  `gems` int(11) DEFAULT '0' COMMENT '用户钻石',
+  `roomid` varchar(8) DEFAULT NULL COMMENT '用户当前所在的房间ID',
+  `history` varchar(4096) NOT NULL DEFAULT '' COMMENT '玩家历史记录',
+  PRIMARY KEY (`userid`),
+  UNIQUE KEY `account` (`account`)
+) ENGINE=InnoDB AUTO_INCREMENT=100021 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_users
+-- ----------------------------
+INSERT INTO `t_users` VALUES ('100000', '', null, null, null, '1', '0', '0', '0', null, '');
+INSERT INTO `t_users` VALUES ('100001', 'guest_123456', '5LiK5a6Y6ZuA5Zyj', '0', null, '1', '0', '1000', '21', null, '');
+INSERT INTO `t_users` VALUES ('100002', 'guest_111', '5Lic6YOt56iz6LWi', '0', null, '1', '0', '1000', '21', null, '');
+INSERT INTO `t_users` VALUES ('100003', 'wx_oJ4m7vxEKRrPLKsSvSpzJnXe6oP8', '5YiY54K87oCR', '1', 'http://wx.qlogo.cn/mmopen/H5ePGzbXMsTX9iaSpTg37iaA7ockgZ9QOuic71PL4Zxwk0LcLXZVl9wibJ6vTVEFmicf8jiaaZMgxhCPMERYLmk0CYWyJhVymFiaTIa/0', '1', '0', '1000', '21', null, '');
+INSERT INTO `t_users` VALUES ('100004', 'wx_oJ4m7v79OtTdZ2olS5V6ptgurotY', '5Lq65LiN55+l6ICM5LiN5oSg', '1', 'http://wx.qlogo.cn/mmopen/ibb9IQko99Rhn3ox5iczmbiayiaYHuWricOBWo3LN0clUcMYEHRqj4vc2Z6Lslm4PnV1aYsTGyqOA1oabz25S9ibamQGmAZrHg4TJY/0', '1', '0', '1000', '21', null, '[{\"uuid\":\"1486740039722357968\",\"id\":\"357968\",\"time\":1486740040,\"seats\":[{\"userid\":100009,\"name\":\"56aF5oSP5Lq655Sf\",\"score\":-7},{\"userid\":100004,\"name\":\"5Lq65LiN55+l6ICM5LiN5oSg\",\"score\":7}]},{\"uuid\":\"1486740560148691404\",\"id\":\"691404\",\"time\":1486740561,\"seats\":[{\"userid\":100012,\"name\":\"5Lqt5a2Q\",\"score\":24},{\"userid\":100004,\"name\":\"5Lq65LiN55+l6ICM5LiN5oSg\",\"score\":-24}]}]');
+INSERT INTO `t_users` VALUES ('100005', 'wx_oJ4m7vyeAMZo61JD8fEJpZaKFkmE', 'c291bG1hdGU=', '2', 'http://wx.qlogo.cn/mmopen/ibIGiaf12Ncfic0t1gssyjQqZB6gWFWlnViapibqFKSyZkxtnvbDfD7ia75c1Rjo14kvXcgY3KPPeiaibqbPnX9eSuztqlGlIzXmjvBic/0', '1', '0', '1000', '21', null, '');
+INSERT INTO `t_users` VALUES ('100006', 'wx_oJ4m7vw6lC0UgRo2TAN-6HbBMm1A', '5pif6L6w', '1', 'http://wx.qlogo.cn/mmopen/H5ePGzbXMsTCZnUC6nJicxBCwmDDM8m55N7Y4DdbgX3o0ic8GSyMoD7trnRmWB34m6vRqvOCZoMbGIH1pF1JYe61Y3v8U1Lasj/0', '1', '0', '1000', '21', null, '');
+INSERT INTO `t_users` VALUES ('100007', 'wx_oJ4m7v22BBu0dreS-ODe5_ZA22PI', '57Sr5LqR5Lya5pu8', '0', 'http://wx.qlogo.cn/mmopen/H5ePGzbXMsTX9iaSpTg37iaPKDYKL8TgIDcSx6QdNIebYvM08YoMr9INu5qcUOy6IJhEfibUIgxSnU6jI2Qg71EtpyvWCsxGbGI/0', '1', '0', '1000', '21', '220135', '');
+INSERT INTO `t_users` VALUES ('100008', 'wx_oJ4m7v3aj_KnR84qxvkWXOnJUIIo', 'R3Jpbm5pbmc=', '1', 'http://wx.qlogo.cn/mmopen/H5ePGzbXMsTX9iaSpTg37iaJq6E4N7m2hDLV46yxXDoJlE54Lhd0BNZIWVNkYs0ILkuFKmjV9IfwFRPRlicMh06gotIqAiacXNg3/0', '1', '0', '1000', '21', null, '');
+INSERT INTO `t_users` VALUES ('100009', 'wx_oJ4m7v4kEWVzSCiPks1DpBpZaIOQ', '56aF5oSP5Lq655Sf', '1', 'http://wx.qlogo.cn/mmopen/84eDlIMage1ibb1hCJIeeyeIV6GOUlZMIEv5tZVjttCzHrAicM6vJDGcD2KMXRu9PJkZiaZK2LcKd63srpeZQCynDUG0bm0H5uo/0', '1', '0', '1000', '18', null, '[{\"uuid\":\"1486740039722357968\",\"id\":\"357968\",\"time\":1486740040,\"seats\":[{\"userid\":100009,\"name\":\"56aF5oSP5Lq655Sf\",\"score\":-7},{\"userid\":100004,\"name\":\"5Lq65LiN55+l6ICM5LiN5oSg\",\"score\":7}]}]');
+INSERT INTO `t_users` VALUES ('100010', 'wx_oJ4m7v5Z8NUOoDm2CeuiMFiMaedg', '57Gz5rij', '2', 'http://wx.qlogo.cn/mmopen/icXYsiaK2Ry6Ot7kGbibKwib8ytOj8YGCzD46aLrV88ga9icXgNAWibFZibFw2JMa69mEXOoE6Lr0slIyunlokX3vPL85hzF7FK2Mml/0', '1', '0', '1000', '6', null, '[{\"uuid\":\"1486904509698242829\",\"id\":\"242829\",\"time\":1486904510,\"seats\":[{\"userid\":100010,\"name\":\"57Gz5rij\",\"score\":40},{\"userid\":100015,\"name\":\"55S15ri4\",\"score\":-15},{\"userid\":100016,\"name\":\"TWFydGlu5Y+R5oyl5L2c55So\",\"score\":-25}]},{\"uuid\":\"1486908009260353827\",\"id\":\"353827\",\"time\":1486908010,\"seats\":[{\"userid\":100010,\"name\":\"57Gz5rij\",\"score\":-6},{\"userid\":100016,\"name\":\"TWFydGlu5Y+R5oyl5L2c55So\",\"score\":6}]},{\"uuid\":\"1486910868461770651\",\"id\":\"770651\",\"time\":1486910869,\"seats\":[{\"userid\":100010,\"name\":\"57Gz5rij\",\"score\":14},{\"userid\":100015,\"name\":\"55S15ri4\",\"score\":-14}]},{\"uuid\":\"1486912539294262786\",\"id\":\"262786\",\"time\":1486912540,\"seats\":[{\"userid\":100010,\"name\":\"57Gz5rij\",\"score\":9},{\"userid\":100015,\"name\":\"55S15ri4\",\"score\":-10},{\"userid\":100016,\"name\":\"TWFydGlu5Y+R5oyl5L2c55So\",\"score\":1}]},{\"uuid\":\"1486913989170398650\",\"id\":\"398650\",\"time\":1486913990,\"seats\":[{\"userid\":100010,\"name\":\"57Gz5rij\",\"score\":-15},{\"userid\":100015,\"name\":\"55S15ri4\",\"score\":4},{\"userid\":100016,\"name\":\"TWFydGlu5Y+R5oyl5L2c55So\",\"score\":11}]}]');
+INSERT INTO `t_users` VALUES ('100011', 'wx_oJ4m7v8rRf1aVnFo1ytgjaugKIIE', '5beb5LiK5ZaE5rK75rC08J+Ms/CfjLI=', '1', 'http://wx.qlogo.cn/mmopen/ibb9IQko99Rjg3qibl6KJUYuYZcgmm1edg3QRVDgPqAPMzx1MlTwulaveBxibMGedCAP8l09BibIqHTIHptOpxASiaYBSUJM4aS0n/0', '1', '0', '1000', '21', null, '');
+INSERT INTO `t_users` VALUES ('100012', 'wx_oJ4m7v5lphKBERWqnNMFobY4qKrU', '5Lqt5a2Q', '2', 'http://wx.qlogo.cn/mmopen/ajNVdqHZLLAtRvLWtiaUfFU1D7jKKUOzEAUTgPWaW85wWd4r9sYVB5VCVedYPr4lHmpEBFaqEZZtOiclB5DDEHwQMeGrq1Itiad5o1SMTETuWE/0', '1', '0', '1000', '18', null, '[{\"uuid\":\"1486740560148691404\",\"id\":\"691404\",\"time\":1486740561,\"seats\":[{\"userid\":100012,\"name\":\"5Lqt5a2Q\",\"score\":24},{\"userid\":100004,\"name\":\"5Lq65LiN55+l6ICM5LiN5oSg\",\"score\":-24}]}]');
+INSERT INTO `t_users` VALUES ('100013', 'wx_oJ4m7v_vghCES2JRsQZ3Wbx2EG6U', '6ZW/5a2Z6Ieq5pG4', '0', null, '1', '0', '1000', '21', null, '');
+INSERT INTO `t_users` VALUES ('100014', 'wx_oJ4m7v6y8VVzn2eBRrOpoKP8pVDo', '5p2o6JOd5a6a5a2Q', '2', 'http://wx.qlogo.cn/mmopen/H5ePGzbXMsTX9iaSpTg37iaLUlLWUJZBibbMImC9iaKWtaIcyh7uicyv2woSM3ibYrV0r7KZWvho26UVbSibbm8C3ibicICzgWOVNLXZh/0', '1', '0', '1000', '21', null, '');
+INSERT INTO `t_users` VALUES ('100015', 'wx_oJ4m7vw-7SU7bZIzf76l0eKiMP90', '55S15ri4', '0', null, '1', '0', '1000', '21', null, '[{\"uuid\":\"1486904509698242829\",\"id\":\"242829\",\"time\":1486904510,\"seats\":[{\"userid\":100010,\"name\":\"57Gz5rij\",\"score\":40},{\"userid\":100015,\"name\":\"55S15ri4\",\"score\":-15},{\"userid\":100016,\"name\":\"TWFydGlu5Y+R5oyl5L2c55So\",\"score\":-25}]},{\"uuid\":\"1486910868461770651\",\"id\":\"770651\",\"time\":1486910869,\"seats\":[{\"userid\":100010,\"name\":\"57Gz5rij\",\"score\":14},{\"userid\":100015,\"name\":\"55S15ri4\",\"score\":-14}]},{\"uuid\":\"1486912539294262786\",\"id\":\"262786\",\"time\":1486912540,\"seats\":[{\"userid\":100010,\"name\":\"57Gz5rij\",\"score\":9},{\"userid\":100015,\"name\":\"55S15ri4\",\"score\":-10},{\"userid\":100016,\"name\":\"TWFydGlu5Y+R5oyl5L2c55So\",\"score\":1}]},{\"uuid\":\"1486913989170398650\",\"id\":\"398650\",\"time\":1486913990,\"seats\":[{\"userid\":100010,\"name\":\"57Gz5rij\",\"score\":-15},{\"userid\":100015,\"name\":\"55S15ri4\",\"score\":4},{\"userid\":100016,\"name\":\"TWFydGlu5Y+R5oyl5L2c55So\",\"score\":11}]}]');
+INSERT INTO `t_users` VALUES ('100016', 'wx_oJ4m7vymLzMa8V4wrS5wl8UBzg_s', 'TWFydGlu5Y+R5oyl5L2c55So', '1', 'http://wx.qlogo.cn/mmopen/JRicrayPGR3Ocm0a8mB7RricFVVH3IfDk9LmG3B7bBpuibt2ibDicJNyC8uic0sYqS2elXUhcQhFicicfmmLOWHWG4erqDBzNXpsE2ld/0', '1', '0', '1000', '21', null, '[{\"uuid\":\"1486904509698242829\",\"id\":\"242829\",\"time\":1486904510,\"seats\":[{\"userid\":100010,\"name\":\"57Gz5rij\",\"score\":40},{\"userid\":100015,\"name\":\"55S15ri4\",\"score\":-15},{\"userid\":100016,\"name\":\"TWFydGlu5Y+R5oyl5L2c55So\",\"score\":-25}]},{\"uuid\":\"1486908009260353827\",\"id\":\"353827\",\"time\":1486908010,\"seats\":[{\"userid\":100010,\"name\":\"57Gz5rij\",\"score\":-6},{\"userid\":100016,\"name\":\"TWFydGlu5Y+R5oyl5L2c55So\",\"score\":6}]},{\"uuid\":\"1486912539294262786\",\"id\":\"262786\",\"time\":1486912540,\"seats\":[{\"userid\":100010,\"name\":\"57Gz5rij\",\"score\":9},{\"userid\":100015,\"name\":\"55S15ri4\",\"score\":-10},{\"userid\":100016,\"name\":\"TWFydGlu5Y+R5oyl5L2c55So\",\"score\":1}]},{\"uuid\":\"1486913989170398650\",\"id\":\"398650\",\"time\":1486913990,\"seats\":[{\"userid\":100010,\"name\":\"57Gz5rij\",\"score\":-15},{\"userid\":100015,\"name\":\"55S15ri4\",\"score\":4},{\"userid\":100016,\"name\":\"TWFydGlu5Y+R5oyl5L2c55So\",\"score\":11}]}]');
+INSERT INTO `t_users` VALUES ('100017', 'wx_oJ4m7v1DlDTIlGKVuZ0OTs58eaNc', '5LiK5a6Y6LWM5L6g', '0', null, '1', '0', '1000', '21', null, '');
+INSERT INTO `t_users` VALUES ('100018', 'wx_oJ4m7v5kW7bk1eWWgaqmJKaLuYGc', '5byg5YWI55Sf44CB', '0', null, '1', '0', '1000', '21', null, '');
+INSERT INTO `t_users` VALUES ('100019', 'wx_oJ4m7v5F3mU9v_hnwHW8ursnxZ4E', '5by15YWI55Sf44CB', '1', 'http://wx.qlogo.cn/mmopen/jicicgRosXaWhMMvIQz6JFibM6fY9RI7MoVVynnib9Tnq7kZhR3ztTtmDMaEYG9L92KfGDMoc0SeahicPqKIpauAfuibVjRZpjIENS/0', '1', '0', '1000', '21', null, '');
+INSERT INTO `t_users` VALUES ('100020', 'wx_oJ4m7v9RZwqzWCgZTKtruoEpWXzk', '56uv5pyo5pyJ6ZKx', '0', null, '1', '0', '1000', '21', null, '');

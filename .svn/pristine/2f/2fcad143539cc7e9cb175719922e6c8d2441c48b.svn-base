@@ -1,0 +1,66 @@
+
+<div class="page-content">
+    <div class="col-sm-6 pull-right">
+
+        <button class="btn btn-sm btn-primary pull-right" onclick="javascript:window.history.back(-1);">
+            返回列表
+            <i class="icon-reply icon-only"></i>
+        </button>
+
+    </div>
+    <div class="page-header">
+        <h1>
+            <!--  {:model('menu')->getParentNname()} -->
+
+            游戏
+
+            <small>
+                <i class="ace-icon fa fa-angle-double-right"></i>
+                历史详情
+            </small>
+        </h1>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <!-- PAGE CONTENT BEGINS -->
+            <div class="row">
+                <div class="col-xs-12">
+                    <table id="simple-table" class="table  table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>房间ID</th>
+                            <th class="hidden-480">房间密码</th>
+                            <th class="hidden-480">创建时间</th>
+                            <th>玩家1</th>
+                            <th>积分</th>
+                            <th>玩家2</th>
+                            <th>积分</th>
+                            <th>玩家3</th>
+                            <th>积分</th>
+                            <th>玩家4</th>
+                            <th>积分</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {volist name="GameInfo" id="vo"}
+                        <tr>
+
+                            <td>{$vo.uuid}</td>
+                            <td class="hidden-480">{$vo.id}</td>
+                            <td class="hidden-480">{:date('Y-m-d H:i:s',$vo.time)}</td>
+                            {volist name="vo.seats" id="vv"}
+                            <td>{$vv.name}</td>
+                            <td>{$vv.score}</td>
+                            {/volist}
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

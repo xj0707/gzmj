@@ -1,0 +1,86 @@
+
+<div class="page-content">
+    <div class="col-sm-6 pull-right">
+
+        <button class="btn btn-sm btn-primary pull-right" onclick="javascript:window.history.back(-1);">
+            返回列表
+            <i class="icon-reply icon-only"></i>
+        </button>
+
+    </div>
+    <div class="page-header">
+        <h1>
+            <!--  {:model('menu')->getParentNname()} -->
+
+            游戏
+
+            <small>
+                <i class="ace-icon fa fa-angle-double-right"></i>
+                历史详情
+            </small>
+        </h1>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <!-- PAGE CONTENT BEGINS -->
+            <div class="row">
+                <div class="col-xs-12">
+                    <table id="simple-table" class="table  table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>房间UUID</th>
+                            <th>房主昵称</th>
+                            <th class="hidden-480">房间号</th>
+                            <!--<th class="hidden-480">创建时间</th>-->
+                            <th>玩家1昵称</th>
+                            <th>积分</th>
+                            <th>玩家2昵称</th>
+                            <th>积分</th>
+                            <th>玩家3昵称</th>
+                            <th>积分</th>
+                            <th>玩家4昵称</th>
+                            <th>积分</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {volist name="GameInfo" id="vo"}
+                            <tr>
+                                <td>{$vo.roomuuid}</td>
+                                <td>{$vo.masterplayerid}</td>
+                                <td>{$vo.roomid}</td>
+                                <td>{$vo.player1id}</td>
+                                <td>{$vo.player1score}</td>
+                                <td>{$vo.player2id}</td>
+                                <td>{$vo.player2score}</td>
+                                <td>{$vo.player3id}</td>
+                                <td>{$vo.player3score}</td>
+                                <td>{$vo.player4id}</td>
+                                <td>{$vo.player4score}</td>
+                            </tr>
+                            {/volist}
+                        </tbody>
+                        <!--原来的-->
+                        <!--<tbody>-->
+                        <!--{volist name="GameInfo" id="vo"}-->
+                        <!--<tr>-->
+
+                            <!--<td>{$vo.uuid}</td>-->
+                            <!--<td></td>-->
+                            <!--<td class="hidden-480">{$vo.id}</td>-->
+                            <!--&lt;!&ndash;<td class="hidden-480">{:date('Y-m-d H:i:s',$vo.time)}</td>&ndash;&gt;-->
+                            <!--{volist name="vo.seats" id="vv"}-->
+                            <!--<td>{$vv.name}</td>-->
+                            <!--<td>{$vv.score}</td>-->
+                            <!--{/volist}-->
+                        <!--</tr>-->
+                        <!--{/volist}-->
+                        <!--</tbody>-->
+                    </table>
+                    {$pager}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

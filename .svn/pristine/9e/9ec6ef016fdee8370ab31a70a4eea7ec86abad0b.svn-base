@@ -1,0 +1,497 @@
+/*
+Navicat MySQL Data Transfer
+
+Source Server         : 127.0.0.1
+Source Server Version : 50617
+Source Host           : localhost:3306
+Source Database       : tp5admin
+
+Target Server Type    : MYSQL
+Target Server Version : 50617
+File Encoding         : 65001
+
+Date: 2017-02-22 10:21:35
+*/
+
+SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for zxcms_admin
+-- ----------------------------
+DROP TABLE IF EXISTS `zxcms_admin`;
+CREATE TABLE `zxcms_admin` (
+  `id` mediumint(6) unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(20) NOT NULL DEFAULT '',
+  `password` varchar(32) NOT NULL DEFAULT '',
+  `encrypt` varchar(6) NOT NULL DEFAULT '',
+  `lastloginip` int(10) NOT NULL DEFAULT '0',
+  `lastlogintime` int(10) unsigned NOT NULL DEFAULT '0',
+  `email` varchar(40) NOT NULL DEFAULT '',
+  `mobile` varchar(11) NOT NULL DEFAULT '',
+  `realname` varchar(50) NOT NULL DEFAULT '',
+  `openid` varchar(255) NOT NULL DEFAULT '',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否有效(2:无效,1:有效)',
+  `updatetime` int(10) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `username` (`username`),
+  KEY `status` (`status`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of zxcms_admin
+-- ----------------------------
+INSERT INTO `zxcms_admin` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', '', '2130706433', '1487730030', '5552123@qq.com', '18888873646', '阿杜', '', '1', '1477623198');
+INSERT INTO `zxcms_admin` VALUES ('2', 'zhenxun', 'c2785bf6585103658d34413683ac36f8', '', '2130706433', '1476067533', '', '18888873646', '', '', '1', '1476067742');
+INSERT INTO `zxcms_admin` VALUES ('3', 'zhangsan', '01d7f40760960e7bd9443513f22ab9af', '', '0', '0', '', '', '', '', '1', '0');
+
+-- ----------------------------
+-- Table structure for zxcms_admin_group
+-- ----------------------------
+DROP TABLE IF EXISTS `zxcms_admin_group`;
+CREATE TABLE `zxcms_admin_group` (
+  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `description` text,
+  `rules` varchar(500) NOT NULL DEFAULT '' COMMENT '用户组拥有的规则id，多个规则 , 隔开',
+  `listorder` smallint(5) unsigned NOT NULL DEFAULT '0',
+  `updatetime` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `listorder` (`listorder`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of zxcms_admin_group
+-- ----------------------------
+INSERT INTO `zxcms_admin_group` VALUES ('1', '普通管理员', '密码加密只是MD5', '', '0', '1477622552');
+INSERT INTO `zxcms_admin_group` VALUES ('2', '工作人员', '仅拥有日志管理权限', '18,23,27', '0', '1476067479');
+
+-- ----------------------------
+-- Table structure for zxcms_admin_group_access
+-- ----------------------------
+DROP TABLE IF EXISTS `zxcms_admin_group_access`;
+CREATE TABLE `zxcms_admin_group_access` (
+  `uid` int(10) unsigned NOT NULL COMMENT '用户id',
+  `group_id` mediumint(8) unsigned NOT NULL COMMENT '用户组id',
+  UNIQUE KEY `uid_group_id` (`uid`,`group_id`),
+  KEY `uid` (`uid`),
+  KEY `group_id` (`group_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of zxcms_admin_group_access
+-- ----------------------------
+INSERT INTO `zxcms_admin_group_access` VALUES ('2', '2');
+INSERT INTO `zxcms_admin_group_access` VALUES ('3', '2');
+
+-- ----------------------------
+-- Table structure for zxcms_admin_log
+-- ----------------------------
+DROP TABLE IF EXISTS `zxcms_admin_log`;
+CREATE TABLE `zxcms_admin_log` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `m` varchar(15) NOT NULL,
+  `c` varchar(20) NOT NULL,
+  `a` varchar(20) NOT NULL,
+  `querystring` varchar(255) NOT NULL,
+  `userid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `username` varchar(20) NOT NULL,
+  `ip` int(10) NOT NULL,
+  `time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=288 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of zxcms_admin_log
+-- ----------------------------
+INSERT INTO `zxcms_admin_log` VALUES ('1', 'admin', 'Index', 'favicon.ico', '', '1', 'admin', '2130706433', '2017-02-21 09:54:15');
+INSERT INTO `zxcms_admin_log` VALUES ('2', 'admin', 'Admin', 'public_edit_info', '', '1', 'admin', '2130706433', '2017-02-21 09:56:21');
+INSERT INTO `zxcms_admin_log` VALUES ('3', 'admin', 'Admin', 'favicon.ico', '', '1', 'admin', '2130706433', '2017-02-21 09:56:22');
+INSERT INTO `zxcms_admin_log` VALUES ('4', 'admin', 'Admin', 'public_edit_info', '', '1', 'admin', '2130706433', '2017-02-21 09:58:15');
+INSERT INTO `zxcms_admin_log` VALUES ('5', 'admin', 'Admin', 'public_edit_info', '', '1', 'admin', '2130706433', '2017-02-21 09:59:21');
+INSERT INTO `zxcms_admin_log` VALUES ('6', 'admin', 'Admin', 'public_edit_info', '', '1', 'admin', '2130706433', '2017-02-21 09:59:26');
+INSERT INTO `zxcms_admin_log` VALUES ('7', 'admin', 'Admin', 'public_edit_info', '', '1', 'admin', '2130706433', '2017-02-21 10:01:43');
+INSERT INTO `zxcms_admin_log` VALUES ('8', 'admin', 'Admin', 'public_edit_info', '', '1', 'admin', '2130706433', '2017-02-21 10:01:55');
+INSERT INTO `zxcms_admin_log` VALUES ('9', 'admin', 'Index', 'favicon.ico', '', '1', 'admin', '2130706433', '2017-02-21 10:08:34');
+INSERT INTO `zxcms_admin_log` VALUES ('10', 'admin', 'Menu', 'favicon.ico', '', '1', 'admin', '2130706433', '2017-02-21 10:24:14');
+INSERT INTO `zxcms_admin_log` VALUES ('11', 'admin', 'Admin', 'index', '', '1', 'admin', '2130706433', '2017-02-21 10:24:16');
+INSERT INTO `zxcms_admin_log` VALUES ('12', 'admin', 'Admin', 'favicon.ico', '', '1', 'admin', '2130706433', '2017-02-21 10:24:18');
+INSERT INTO `zxcms_admin_log` VALUES ('13', 'admin', 'Admin', 'index', '', '1', 'admin', '2130706433', '2017-02-21 10:24:31');
+INSERT INTO `zxcms_admin_log` VALUES ('14', 'admin', 'Group', 'index', '', '1', 'admin', '2130706433', '2017-02-21 10:24:47');
+INSERT INTO `zxcms_admin_log` VALUES ('15', 'admin', 'Group', 'favicon.ico', '', '1', 'admin', '2130706433', '2017-02-21 10:24:48');
+INSERT INTO `zxcms_admin_log` VALUES ('16', 'admin', 'Admin', 'public_edit_info', '', '1', 'admin', '2130706433', '2017-02-21 10:24:48');
+INSERT INTO `zxcms_admin_log` VALUES ('17', 'admin', 'Admin', 'index', '', '1', 'admin', '2130706433', '2017-02-21 10:25:12');
+INSERT INTO `zxcms_admin_log` VALUES ('18', 'admin', 'Group', 'index', '', '1', 'admin', '2130706433', '2017-02-21 10:25:14');
+INSERT INTO `zxcms_admin_log` VALUES ('19', 'admin', 'Group', 'info', '?id=1', '1', 'admin', '2130706433', '2017-02-21 10:25:19');
+INSERT INTO `zxcms_admin_log` VALUES ('20', 'admin', 'Group', 'index', '', '1', 'admin', '2130706433', '2017-02-21 10:25:25');
+INSERT INTO `zxcms_admin_log` VALUES ('21', 'admin', 'Group', 'rule', '?gid=1', '1', 'admin', '2130706433', '2017-02-21 10:25:28');
+INSERT INTO `zxcms_admin_log` VALUES ('22', 'admin', 'Group', 'index', '', '1', 'admin', '2130706433', '2017-02-21 10:25:33');
+INSERT INTO `zxcms_admin_log` VALUES ('23', 'admin', 'Admin', 'index', '', '1', 'admin', '2130706433', '2017-02-21 10:25:39');
+INSERT INTO `zxcms_admin_log` VALUES ('24', 'admin', 'Menu', 'info', '', '1', 'admin', '2130706433', '2017-02-21 10:25:48');
+INSERT INTO `zxcms_admin_log` VALUES ('25', 'admin', 'Menu', 'add', '', '1', 'admin', '2130706433', '2017-02-21 10:28:06');
+INSERT INTO `zxcms_admin_log` VALUES ('26', 'admin', 'User', 'index', '', '1', 'admin', '2130706433', '2017-02-21 10:47:15');
+INSERT INTO `zxcms_admin_log` VALUES ('27', 'admin', 'User', 'favicon.ico', '', '1', 'admin', '2130706433', '2017-02-21 10:47:16');
+INSERT INTO `zxcms_admin_log` VALUES ('28', 'admin', 'Menu', 'info', '?id=32', '1', 'admin', '2130706433', '2017-02-21 10:58:06');
+INSERT INTO `zxcms_admin_log` VALUES ('29', 'admin', 'Menu', 'edit', '', '1', 'admin', '2130706433', '2017-02-21 10:58:12');
+INSERT INTO `zxcms_admin_log` VALUES ('30', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 10:59:50');
+INSERT INTO `zxcms_admin_log` VALUES ('31', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:04:16');
+INSERT INTO `zxcms_admin_log` VALUES ('32', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:08:17');
+INSERT INTO `zxcms_admin_log` VALUES ('33', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:09:15');
+INSERT INTO `zxcms_admin_log` VALUES ('34', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:09:37');
+INSERT INTO `zxcms_admin_log` VALUES ('35', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:14:35');
+INSERT INTO `zxcms_admin_log` VALUES ('36', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:17:12');
+INSERT INTO `zxcms_admin_log` VALUES ('37', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:17:14');
+INSERT INTO `zxcms_admin_log` VALUES ('38', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:18:25');
+INSERT INTO `zxcms_admin_log` VALUES ('39', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:21:35');
+INSERT INTO `zxcms_admin_log` VALUES ('40', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:32:35');
+INSERT INTO `zxcms_admin_log` VALUES ('41', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:32:55');
+INSERT INTO `zxcms_admin_log` VALUES ('42', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:33:12');
+INSERT INTO `zxcms_admin_log` VALUES ('43', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:33:15');
+INSERT INTO `zxcms_admin_log` VALUES ('44', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:33:52');
+INSERT INTO `zxcms_admin_log` VALUES ('45', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:35:07');
+INSERT INTO `zxcms_admin_log` VALUES ('46', 'admin', 'Users', 'favicon.ico', '', '1', 'admin', '2130706433', '2017-02-21 11:35:08');
+INSERT INTO `zxcms_admin_log` VALUES ('47', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:35:36');
+INSERT INTO `zxcms_admin_log` VALUES ('48', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:38:19');
+INSERT INTO `zxcms_admin_log` VALUES ('49', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:39:12');
+INSERT INTO `zxcms_admin_log` VALUES ('50', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:39:34');
+INSERT INTO `zxcms_admin_log` VALUES ('51', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 11:40:07');
+INSERT INTO `zxcms_admin_log` VALUES ('52', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 13:14:42');
+INSERT INTO `zxcms_admin_log` VALUES ('53', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 13:21:25');
+INSERT INTO `zxcms_admin_log` VALUES ('54', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 13:22:50');
+INSERT INTO `zxcms_admin_log` VALUES ('55', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 13:23:39');
+INSERT INTO `zxcms_admin_log` VALUES ('56', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 13:29:57');
+INSERT INTO `zxcms_admin_log` VALUES ('57', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 13:35:04');
+INSERT INTO `zxcms_admin_log` VALUES ('58', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 13:36:20');
+INSERT INTO `zxcms_admin_log` VALUES ('59', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 13:36:54');
+INSERT INTO `zxcms_admin_log` VALUES ('60', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 13:37:11');
+INSERT INTO `zxcms_admin_log` VALUES ('61', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 13:37:30');
+INSERT INTO `zxcms_admin_log` VALUES ('62', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 13:37:41');
+INSERT INTO `zxcms_admin_log` VALUES ('63', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 13:37:51');
+INSERT INTO `zxcms_admin_log` VALUES ('64', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 13:38:00');
+INSERT INTO `zxcms_admin_log` VALUES ('65', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 13:38:13');
+INSERT INTO `zxcms_admin_log` VALUES ('66', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 13:38:24');
+INSERT INTO `zxcms_admin_log` VALUES ('67', 'admin', 'Users', 'index', '?page=2', '1', 'admin', '2130706433', '2017-02-21 13:38:27');
+INSERT INTO `zxcms_admin_log` VALUES ('68', 'admin', 'Users', 'index', '?page=1', '1', 'admin', '2130706433', '2017-02-21 13:38:31');
+INSERT INTO `zxcms_admin_log` VALUES ('69', 'admin', 'Users', 'index', '?page=1', '1', 'admin', '2130706433', '2017-02-21 13:39:44');
+INSERT INTO `zxcms_admin_log` VALUES ('70', 'admin', 'Users', 'index', '?page=1', '1', 'admin', '2130706433', '2017-02-21 13:50:48');
+INSERT INTO `zxcms_admin_log` VALUES ('71', 'admin', 'Users', 'likeuserid', '', '1', 'admin', '2130706433', '2017-02-21 13:50:53');
+INSERT INTO `zxcms_admin_log` VALUES ('72', 'admin', 'Users', 'likeuserid', '', '1', 'admin', '2130706433', '2017-02-21 13:51:07');
+INSERT INTO `zxcms_admin_log` VALUES ('73', 'admin', 'Users', 'likeuserid', '', '1', 'admin', '2130706433', '2017-02-21 13:52:31');
+INSERT INTO `zxcms_admin_log` VALUES ('74', 'admin', 'Users', 'index', '?page=1', '1', 'admin', '2130706433', '2017-02-21 13:52:33');
+INSERT INTO `zxcms_admin_log` VALUES ('75', 'admin', 'Users', 'likeuserid', '', '1', 'admin', '2130706433', '2017-02-21 13:52:39');
+INSERT INTO `zxcms_admin_log` VALUES ('76', 'admin', 'Users', 'index', '?page=1', '1', 'admin', '2130706433', '2017-02-21 13:52:41');
+INSERT INTO `zxcms_admin_log` VALUES ('77', 'admin', 'Users', 'likeuserid', '', '1', 'admin', '2130706433', '2017-02-21 13:52:50');
+INSERT INTO `zxcms_admin_log` VALUES ('78', 'admin', 'Users', 'index', '?page=1', '1', 'admin', '2130706433', '2017-02-21 13:52:53');
+INSERT INTO `zxcms_admin_log` VALUES ('79', 'admin', 'Users', 'likeuserid', '', '1', 'admin', '2130706433', '2017-02-21 13:55:02');
+INSERT INTO `zxcms_admin_log` VALUES ('80', 'admin', 'Users', 'likeuserid', '', '1', 'admin', '2130706433', '2017-02-21 13:55:56');
+INSERT INTO `zxcms_admin_log` VALUES ('81', 'admin', 'Users', 'index', '?page=1', '1', 'admin', '2130706433', '2017-02-21 13:57:03');
+INSERT INTO `zxcms_admin_log` VALUES ('82', 'admin', 'Users', 'likeuserid', '', '1', 'admin', '2130706433', '2017-02-21 13:57:11');
+INSERT INTO `zxcms_admin_log` VALUES ('83', 'admin', 'Users', 'index', '?page=1', '1', 'admin', '2130706433', '2017-02-21 13:58:03');
+INSERT INTO `zxcms_admin_log` VALUES ('84', 'admin', 'Users', 'index', '?page=1', '1', 'admin', '2130706433', '2017-02-21 13:58:35');
+INSERT INTO `zxcms_admin_log` VALUES ('85', 'admin', 'Users', 'likeuserid', '', '1', 'admin', '2130706433', '2017-02-21 13:58:41');
+INSERT INTO `zxcms_admin_log` VALUES ('86', 'admin', 'Users', 'likeuserid', '', '1', 'admin', '2130706433', '2017-02-21 14:01:48');
+INSERT INTO `zxcms_admin_log` VALUES ('87', 'admin', 'Users', 'likeuserid', '', '1', 'admin', '2130706433', '2017-02-21 14:02:06');
+INSERT INTO `zxcms_admin_log` VALUES ('88', 'admin', 'Users', 'likeuserid', '', '1', 'admin', '2130706433', '2017-02-21 14:02:22');
+INSERT INTO `zxcms_admin_log` VALUES ('89', 'admin', 'Users', 'likeuserid', '', '1', 'admin', '2130706433', '2017-02-21 14:02:30');
+INSERT INTO `zxcms_admin_log` VALUES ('90', 'admin', 'Users', 'details', '?id=wx_oJ4m7v5lphKBERWqnNMFobY4qKrU', '1', 'admin', '2130706433', '2017-02-21 14:04:06');
+INSERT INTO `zxcms_admin_log` VALUES ('91', 'admin', 'Users', 'likeaccount', '', '1', 'admin', '2130706433', '2017-02-21 14:04:14');
+INSERT INTO `zxcms_admin_log` VALUES ('92', 'admin', 'Users', 'likeaccount', '', '1', 'admin', '2130706433', '2017-02-21 14:05:08');
+INSERT INTO `zxcms_admin_log` VALUES ('93', 'admin', 'Users', 'likename', '', '1', 'admin', '2130706433', '2017-02-21 14:05:46');
+INSERT INTO `zxcms_admin_log` VALUES ('94', 'admin', 'Menu', 'info', '', '1', 'admin', '2130706433', '2017-02-21 14:26:51');
+INSERT INTO `zxcms_admin_log` VALUES ('95', 'admin', 'Menu', 'add', '', '1', 'admin', '2130706433', '2017-02-21 14:29:01');
+INSERT INTO `zxcms_admin_log` VALUES ('96', 'admin', 'Menu', 'info', '?id=33', '1', 'admin', '2130706433', '2017-02-21 14:29:55');
+INSERT INTO `zxcms_admin_log` VALUES ('97', 'admin', 'Menu', 'info', '?id=33', '1', 'admin', '2130706433', '2017-02-21 14:32:06');
+INSERT INTO `zxcms_admin_log` VALUES ('98', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 14:32:09');
+INSERT INTO `zxcms_admin_log` VALUES ('99', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 14:32:32');
+INSERT INTO `zxcms_admin_log` VALUES ('100', 'admin', 'GameRoom', 'favicon.ico', '', '1', 'admin', '2130706433', '2017-02-21 14:32:33');
+INSERT INTO `zxcms_admin_log` VALUES ('101', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 14:51:57');
+INSERT INTO `zxcms_admin_log` VALUES ('102', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 14:56:43');
+INSERT INTO `zxcms_admin_log` VALUES ('103', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 14:57:19');
+INSERT INTO `zxcms_admin_log` VALUES ('104', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 14:58:51');
+INSERT INTO `zxcms_admin_log` VALUES ('105', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 14:59:51');
+INSERT INTO `zxcms_admin_log` VALUES ('106', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 15:00:43');
+INSERT INTO `zxcms_admin_log` VALUES ('107', 'admin', 'GameRoom', 'likeroomuuid', '', '1', 'admin', '2130706433', '2017-02-21 15:10:51');
+INSERT INTO `zxcms_admin_log` VALUES ('108', 'admin', 'GameRoom', 'likeroomuuid', '', '1', 'admin', '2130706433', '2017-02-21 15:12:02');
+INSERT INTO `zxcms_admin_log` VALUES ('109', 'admin', 'GameRoom', 'likeroomuuid', '', '1', 'admin', '2130706433', '2017-02-21 15:12:10');
+INSERT INTO `zxcms_admin_log` VALUES ('110', 'admin', 'GameRoom', 'likeroomuuid', '', '1', 'admin', '2130706433', '2017-02-21 15:12:14');
+INSERT INTO `zxcms_admin_log` VALUES ('111', 'admin', 'GameRoom', 'likeroomid', '', '1', 'admin', '2130706433', '2017-02-21 15:14:20');
+INSERT INTO `zxcms_admin_log` VALUES ('112', 'admin', 'GameRoom', 'likeroomid', '', '1', 'admin', '2130706433', '2017-02-21 15:14:24');
+INSERT INTO `zxcms_admin_log` VALUES ('113', 'admin', 'GameRoom', 'likeroomid', '', '1', 'admin', '2130706433', '2017-02-21 15:14:29');
+INSERT INTO `zxcms_admin_log` VALUES ('114', 'admin', 'GameRoom', 'likeroomid', '', '1', 'admin', '2130706433', '2017-02-21 15:21:00');
+INSERT INTO `zxcms_admin_log` VALUES ('115', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 15:21:19');
+INSERT INTO `zxcms_admin_log` VALUES ('116', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 15:23:23');
+INSERT INTO `zxcms_admin_log` VALUES ('117', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 15:26:29');
+INSERT INTO `zxcms_admin_log` VALUES ('118', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 15:28:42');
+INSERT INTO `zxcms_admin_log` VALUES ('119', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 15:28:45');
+INSERT INTO `zxcms_admin_log` VALUES ('120', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 15:28:48');
+INSERT INTO `zxcms_admin_log` VALUES ('121', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 15:29:00');
+INSERT INTO `zxcms_admin_log` VALUES ('122', 'admin', 'Index', 'favicon.ico', '', '1', 'admin', '2130706433', '2017-02-21 15:31:59');
+INSERT INTO `zxcms_admin_log` VALUES ('123', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 15:32:00');
+INSERT INTO `zxcms_admin_log` VALUES ('124', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 15:40:03');
+INSERT INTO `zxcms_admin_log` VALUES ('125', 'admin', 'Index', 'favicon.ico', '', '1', 'admin', '0', '2017-02-21 15:40:43');
+INSERT INTO `zxcms_admin_log` VALUES ('126', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 15:40:44');
+INSERT INTO `zxcms_admin_log` VALUES ('127', 'admin', 'GameRoom', 'favicon.ico', '', '1', 'admin', '0', '2017-02-21 15:40:45');
+INSERT INTO `zxcms_admin_log` VALUES ('128', 'admin', 'GameRoom', 'favicon.ico', '', '1', 'admin', '0', '2017-02-21 15:41:33');
+INSERT INTO `zxcms_admin_log` VALUES ('129', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 15:42:53');
+INSERT INTO `zxcms_admin_log` VALUES ('130', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 15:45:13');
+INSERT INTO `zxcms_admin_log` VALUES ('131', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 15:45:46');
+INSERT INTO `zxcms_admin_log` VALUES ('132', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 15:47:53');
+INSERT INTO `zxcms_admin_log` VALUES ('133', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 15:48:15');
+INSERT INTO `zxcms_admin_log` VALUES ('134', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 15:49:08');
+INSERT INTO `zxcms_admin_log` VALUES ('135', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 15:52:56');
+INSERT INTO `zxcms_admin_log` VALUES ('136', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 15:53:32');
+INSERT INTO `zxcms_admin_log` VALUES ('137', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 15:53:56');
+INSERT INTO `zxcms_admin_log` VALUES ('138', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 15:56:35');
+INSERT INTO `zxcms_admin_log` VALUES ('139', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 15:56:41');
+INSERT INTO `zxcms_admin_log` VALUES ('140', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 15:56:45');
+INSERT INTO `zxcms_admin_log` VALUES ('141', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 15:58:22');
+INSERT INTO `zxcms_admin_log` VALUES ('142', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 15:58:28');
+INSERT INTO `zxcms_admin_log` VALUES ('143', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 15:59:39');
+INSERT INTO `zxcms_admin_log` VALUES ('144', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 15:59:52');
+INSERT INTO `zxcms_admin_log` VALUES ('145', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:04:09');
+INSERT INTO `zxcms_admin_log` VALUES ('146', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 16:04:28');
+INSERT INTO `zxcms_admin_log` VALUES ('147', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:05:11');
+INSERT INTO `zxcms_admin_log` VALUES ('148', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:05:35');
+INSERT INTO `zxcms_admin_log` VALUES ('149', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:05:41');
+INSERT INTO `zxcms_admin_log` VALUES ('150', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:05:59');
+INSERT INTO `zxcms_admin_log` VALUES ('151', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:06:51');
+INSERT INTO `zxcms_admin_log` VALUES ('152', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:07:36');
+INSERT INTO `zxcms_admin_log` VALUES ('153', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:08:26');
+INSERT INTO `zxcms_admin_log` VALUES ('154', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:09:37');
+INSERT INTO `zxcms_admin_log` VALUES ('155', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:10:00');
+INSERT INTO `zxcms_admin_log` VALUES ('156', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 16:10:12');
+INSERT INTO `zxcms_admin_log` VALUES ('157', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:12:23');
+INSERT INTO `zxcms_admin_log` VALUES ('158', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:12:42');
+INSERT INTO `zxcms_admin_log` VALUES ('159', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:13:36');
+INSERT INTO `zxcms_admin_log` VALUES ('160', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:14:48');
+INSERT INTO `zxcms_admin_log` VALUES ('161', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 16:17:15');
+INSERT INTO `zxcms_admin_log` VALUES ('162', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:17:50');
+INSERT INTO `zxcms_admin_log` VALUES ('163', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:18:11');
+INSERT INTO `zxcms_admin_log` VALUES ('164', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:18:42');
+INSERT INTO `zxcms_admin_log` VALUES ('165', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 16:20:10');
+INSERT INTO `zxcms_admin_log` VALUES ('166', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 16:20:46');
+INSERT INTO `zxcms_admin_log` VALUES ('167', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 16:21:24');
+INSERT INTO `zxcms_admin_log` VALUES ('168', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 16:22:50');
+INSERT INTO `zxcms_admin_log` VALUES ('169', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 16:23:16');
+INSERT INTO `zxcms_admin_log` VALUES ('170', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 16:23:45');
+INSERT INTO `zxcms_admin_log` VALUES ('171', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 16:24:24');
+INSERT INTO `zxcms_admin_log` VALUES ('172', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 16:25:02');
+INSERT INTO `zxcms_admin_log` VALUES ('173', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 16:25:18');
+INSERT INTO `zxcms_admin_log` VALUES ('174', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 16:25:28');
+INSERT INTO `zxcms_admin_log` VALUES ('175', 'admin', 'GameRoom', 'index', '', '1', 'admin', '0', '2017-02-21 16:25:57');
+INSERT INTO `zxcms_admin_log` VALUES ('176', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:25:59');
+INSERT INTO `zxcms_admin_log` VALUES ('177', 'admin', 'GameRoom', 'liketime', '', '1', 'admin', '2130706433', '2017-02-21 16:26:28');
+INSERT INTO `zxcms_admin_log` VALUES ('178', 'admin', 'GameRoom', 'liketime', '', '1', 'admin', '2130706433', '2017-02-21 16:27:24');
+INSERT INTO `zxcms_admin_log` VALUES ('179', 'admin', 'GameRoom', 'liketime', '', '1', 'admin', '2130706433', '2017-02-21 16:27:37');
+INSERT INTO `zxcms_admin_log` VALUES ('180', 'admin', 'GameRoom', 'liketime', '', '1', 'admin', '2130706433', '2017-02-21 16:27:57');
+INSERT INTO `zxcms_admin_log` VALUES ('181', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:28:11');
+INSERT INTO `zxcms_admin_log` VALUES ('182', 'admin', 'GameRoom', 'liketime', '', '1', 'admin', '2130706433', '2017-02-21 16:28:20');
+INSERT INTO `zxcms_admin_log` VALUES ('183', 'admin', 'GameRoom', 'liketime', '', '1', 'admin', '2130706433', '2017-02-21 16:29:38');
+INSERT INTO `zxcms_admin_log` VALUES ('184', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:39:35');
+INSERT INTO `zxcms_admin_log` VALUES ('185', 'admin', 'Users', 'index', '?page=2', '1', 'admin', '2130706433', '2017-02-21 16:39:43');
+INSERT INTO `zxcms_admin_log` VALUES ('186', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:39:48');
+INSERT INTO `zxcms_admin_log` VALUES ('187', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:39:54');
+INSERT INTO `zxcms_admin_log` VALUES ('188', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:39:57');
+INSERT INTO `zxcms_admin_log` VALUES ('189', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:40:02');
+INSERT INTO `zxcms_admin_log` VALUES ('190', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:40:28');
+INSERT INTO `zxcms_admin_log` VALUES ('191', 'admin', 'GameRoom', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:40:31');
+INSERT INTO `zxcms_admin_log` VALUES ('192', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:40:34');
+INSERT INTO `zxcms_admin_log` VALUES ('193', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:49:10');
+INSERT INTO `zxcms_admin_log` VALUES ('194', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:50:48');
+INSERT INTO `zxcms_admin_log` VALUES ('195', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 16:53:04');
+INSERT INTO `zxcms_admin_log` VALUES ('196', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 17:04:02');
+INSERT INTO `zxcms_admin_log` VALUES ('197', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 17:05:54');
+INSERT INTO `zxcms_admin_log` VALUES ('198', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 17:10:56');
+INSERT INTO `zxcms_admin_log` VALUES ('199', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 17:15:05');
+INSERT INTO `zxcms_admin_log` VALUES ('200', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 17:17:43');
+INSERT INTO `zxcms_admin_log` VALUES ('201', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 17:19:02');
+INSERT INTO `zxcms_admin_log` VALUES ('202', 'admin', 'Users', 'likename', '', '1', 'admin', '2130706433', '2017-02-21 17:19:08');
+INSERT INTO `zxcms_admin_log` VALUES ('203', 'admin', 'Users', 'likename', '', '1', 'admin', '2130706433', '2017-02-21 17:19:29');
+INSERT INTO `zxcms_admin_log` VALUES ('204', 'admin', 'Index', 'favicon.ico', '', '1', 'admin', '0', '2017-02-21 17:20:35');
+INSERT INTO `zxcms_admin_log` VALUES ('205', 'admin', 'Users', 'index', '', '1', 'admin', '0', '2017-02-21 17:20:36');
+INSERT INTO `zxcms_admin_log` VALUES ('206', 'admin', 'Users', 'favicon.ico', '', '1', 'admin', '0', '2017-02-21 17:20:38');
+INSERT INTO `zxcms_admin_log` VALUES ('207', 'admin', 'Users', 'likename', '', '1', 'admin', '2130706433', '2017-02-21 17:24:06');
+INSERT INTO `zxcms_admin_log` VALUES ('208', 'admin', 'Users', 'index', '', '1', 'admin', '0', '2017-02-21 17:24:24');
+INSERT INTO `zxcms_admin_log` VALUES ('209', 'admin', 'Users', 'index', '', '1', 'admin', '0', '2017-02-21 17:29:31');
+INSERT INTO `zxcms_admin_log` VALUES ('210', 'admin', 'Users', 'index', '', '1', 'admin', '0', '2017-02-21 17:30:03');
+INSERT INTO `zxcms_admin_log` VALUES ('211', 'admin', 'Users', 'index', '', '1', 'admin', '0', '2017-02-21 17:30:29');
+INSERT INTO `zxcms_admin_log` VALUES ('212', 'admin', 'Users', 'index', '', '1', 'admin', '0', '2017-02-21 17:34:28');
+INSERT INTO `zxcms_admin_log` VALUES ('213', 'admin', 'Users', 'index', '', '1', 'admin', '0', '2017-02-21 17:34:49');
+INSERT INTO `zxcms_admin_log` VALUES ('214', 'admin', 'Users', 'index', '', '1', 'admin', '0', '2017-02-21 17:42:42');
+INSERT INTO `zxcms_admin_log` VALUES ('215', 'admin', 'Users', 'index', '', '1', 'admin', '0', '2017-02-21 17:44:54');
+INSERT INTO `zxcms_admin_log` VALUES ('216', 'admin', 'Users', 'index', '', '1', 'admin', '0', '2017-02-21 17:46:15');
+INSERT INTO `zxcms_admin_log` VALUES ('217', 'admin', 'Users', 'likename', '', '1', 'admin', '2130706433', '2017-02-21 17:56:27');
+INSERT INTO `zxcms_admin_log` VALUES ('218', 'admin', 'Users', 'likename', '', '1', 'admin', '2130706433', '2017-02-21 17:58:27');
+INSERT INTO `zxcms_admin_log` VALUES ('219', 'admin', 'Users', 'likename', '', '1', 'admin', '2130706433', '2017-02-21 17:58:42');
+INSERT INTO `zxcms_admin_log` VALUES ('220', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:00:24');
+INSERT INTO `zxcms_admin_log` VALUES ('221', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:00:31');
+INSERT INTO `zxcms_admin_log` VALUES ('222', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:00:45');
+INSERT INTO `zxcms_admin_log` VALUES ('223', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:00:51');
+INSERT INTO `zxcms_admin_log` VALUES ('224', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:03:35');
+INSERT INTO `zxcms_admin_log` VALUES ('225', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:03:49');
+INSERT INTO `zxcms_admin_log` VALUES ('226', 'admin', 'Users', 'index', '', '1', 'admin', '0', '2017-02-21 18:04:12');
+INSERT INTO `zxcms_admin_log` VALUES ('227', 'admin', 'Users', 'index', '', '1', 'admin', '0', '2017-02-21 18:04:23');
+INSERT INTO `zxcms_admin_log` VALUES ('228', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:04:52');
+INSERT INTO `zxcms_admin_log` VALUES ('229', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:06:49');
+INSERT INTO `zxcms_admin_log` VALUES ('230', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:06:57');
+INSERT INTO `zxcms_admin_log` VALUES ('231', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:09:10');
+INSERT INTO `zxcms_admin_log` VALUES ('232', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:12:48');
+INSERT INTO `zxcms_admin_log` VALUES ('233', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:14:29');
+INSERT INTO `zxcms_admin_log` VALUES ('234', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:15:48');
+INSERT INTO `zxcms_admin_log` VALUES ('235', 'admin', 'Users', 'addcoins', '', '1', 'admin', '2130706433', '2017-02-21 18:16:05');
+INSERT INTO `zxcms_admin_log` VALUES ('236', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:17:53');
+INSERT INTO `zxcms_admin_log` VALUES ('237', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:18:13');
+INSERT INTO `zxcms_admin_log` VALUES ('238', 'admin', 'Users', 'addcoins', '', '1', 'admin', '2130706433', '2017-02-21 18:18:20');
+INSERT INTO `zxcms_admin_log` VALUES ('239', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:19:36');
+INSERT INTO `zxcms_admin_log` VALUES ('240', 'admin', 'Users', 'addcoins', '', '1', 'admin', '2130706433', '2017-02-21 18:19:42');
+INSERT INTO `zxcms_admin_log` VALUES ('241', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:20:35');
+INSERT INTO `zxcms_admin_log` VALUES ('242', 'admin', 'Users', 'addcoins', '', '1', 'admin', '2130706433', '2017-02-21 18:20:45');
+INSERT INTO `zxcms_admin_log` VALUES ('243', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:21:36');
+INSERT INTO `zxcms_admin_log` VALUES ('244', 'admin', 'Users', 'addcoins', '?r=userid/100000', '1', 'admin', '2130706433', '2017-02-21 18:21:42');
+INSERT INTO `zxcms_admin_log` VALUES ('245', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:22:42');
+INSERT INTO `zxcms_admin_log` VALUES ('246', 'admin', 'Users', 'addcoins,', '', '1', 'admin', '2130706433', '2017-02-21 18:22:51');
+INSERT INTO `zxcms_admin_log` VALUES ('247', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:23:01');
+INSERT INTO `zxcms_admin_log` VALUES ('248', 'admin', 'Users', 'addcoins', '', '1', 'admin', '2130706433', '2017-02-21 18:23:08');
+INSERT INTO `zxcms_admin_log` VALUES ('249', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:24:07');
+INSERT INTO `zxcms_admin_log` VALUES ('250', 'admin', 'Users', 'addcoins', '', '1', 'admin', '2130706433', '2017-02-21 18:24:16');
+INSERT INTO `zxcms_admin_log` VALUES ('251', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:25:23');
+INSERT INTO `zxcms_admin_log` VALUES ('252', 'admin', 'Users', 'addcoins', '', '1', 'admin', '2130706433', '2017-02-21 18:25:33');
+INSERT INTO `zxcms_admin_log` VALUES ('253', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:26:11');
+INSERT INTO `zxcms_admin_log` VALUES ('254', 'admin', 'Users', 'addcoins', '', '1', 'admin', '2130706433', '2017-02-21 18:26:20');
+INSERT INTO `zxcms_admin_log` VALUES ('255', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:27:34');
+INSERT INTO `zxcms_admin_log` VALUES ('256', 'admin', 'Users', 'addcoins', '?userid=100000', '1', 'admin', '2130706433', '2017-02-21 18:27:41');
+INSERT INTO `zxcms_admin_log` VALUES ('257', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:29:10');
+INSERT INTO `zxcms_admin_log` VALUES ('258', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:29:54');
+INSERT INTO `zxcms_admin_log` VALUES ('259', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:30:40');
+INSERT INTO `zxcms_admin_log` VALUES ('260', 'admin', 'Users', 'addcoins', '?userid=100000', '1', 'admin', '2130706433', '2017-02-21 18:31:00');
+INSERT INTO `zxcms_admin_log` VALUES ('261', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:32:33');
+INSERT INTO `zxcms_admin_log` VALUES ('262', 'admin', 'Users', 'addcoins', '?userid=100000', '1', 'admin', '2130706433', '2017-02-21 18:32:40');
+INSERT INTO `zxcms_admin_log` VALUES ('263', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:32:42');
+INSERT INTO `zxcms_admin_log` VALUES ('264', 'admin', 'Users', 'addcoins', '?userid=100000', '1', 'admin', '2130706433', '2017-02-21 18:32:55');
+INSERT INTO `zxcms_admin_log` VALUES ('265', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:33:01');
+INSERT INTO `zxcms_admin_log` VALUES ('266', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:33:27');
+INSERT INTO `zxcms_admin_log` VALUES ('267', 'admin', 'Users', 'addcoins', '?userid=100000', '1', 'admin', '2130706433', '2017-02-21 18:33:33');
+INSERT INTO `zxcms_admin_log` VALUES ('268', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:33:35');
+INSERT INTO `zxcms_admin_log` VALUES ('269', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:34:27');
+INSERT INTO `zxcms_admin_log` VALUES ('270', 'admin', 'Users', 'addcoins', '?userid=100000', '1', 'admin', '2130706433', '2017-02-21 18:34:35');
+INSERT INTO `zxcms_admin_log` VALUES ('271', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:34:38');
+INSERT INTO `zxcms_admin_log` VALUES ('272', 'admin', 'Users', 'addcoins', '?userid=100000', '1', 'admin', '2130706433', '2017-02-21 18:34:47');
+INSERT INTO `zxcms_admin_log` VALUES ('273', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:34:49');
+INSERT INTO `zxcms_admin_log` VALUES ('274', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:49:51');
+INSERT INTO `zxcms_admin_log` VALUES ('275', 'admin', 'Users', 'addcoins', '?userid=100000', '1', 'admin', '2130706433', '2017-02-21 18:50:24');
+INSERT INTO `zxcms_admin_log` VALUES ('276', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:50:26');
+INSERT INTO `zxcms_admin_log` VALUES ('277', 'admin', 'Users', 'addcoins', '?userid=100000', '1', 'admin', '2130706433', '2017-02-21 18:50:33');
+INSERT INTO `zxcms_admin_log` VALUES ('278', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:50:35');
+INSERT INTO `zxcms_admin_log` VALUES ('279', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:50:59');
+INSERT INTO `zxcms_admin_log` VALUES ('280', 'admin', 'Users', 'addcoins', '?userid=100000', '1', 'admin', '2130706433', '2017-02-21 18:51:07');
+INSERT INTO `zxcms_admin_log` VALUES ('281', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:51:10');
+INSERT INTO `zxcms_admin_log` VALUES ('282', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:56:19');
+INSERT INTO `zxcms_admin_log` VALUES ('283', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:58:11');
+INSERT INTO `zxcms_admin_log` VALUES ('284', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:59:02');
+INSERT INTO `zxcms_admin_log` VALUES ('285', 'admin', 'Users', 'addcoins', '?userid=100004', '1', 'admin', '2130706433', '2017-02-21 18:59:10');
+INSERT INTO `zxcms_admin_log` VALUES ('286', 'admin', 'Users', 'index', '', '1', 'admin', '2130706433', '2017-02-21 18:59:13');
+INSERT INTO `zxcms_admin_log` VALUES ('287', 'admin', 'Index', 'favicon.ico', '', '1', 'admin', '2130706433', '2017-02-22 10:20:35');
+
+-- ----------------------------
+-- Table structure for zxcms_app
+-- ----------------------------
+DROP TABLE IF EXISTS `zxcms_app`;
+CREATE TABLE `zxcms_app` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `keyword` varchar(100) NOT NULL DEFAULT '',
+  `price` decimal(10,0) NOT NULL DEFAULT '0',
+  `icon` varchar(100) NOT NULL DEFAULT '' COMMENT '图标',
+  `total` int(11) NOT NULL DEFAULT '0' COMMENT '数量',
+  `type` tinyint(2) NOT NULL DEFAULT '1' COMMENT '1软件，2游戏，3付费',
+  `add_time` datetime NOT NULL COMMENT '添加时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  `user_id` int(11) NOT NULL COMMENT '发布人ID',
+  `position` smallint(5) NOT NULL DEFAULT '0' COMMENT '位置',
+  `remark` varchar(255) NOT NULL DEFAULT '' COMMENT '标记说明',
+  `start_time` datetime DEFAULT NULL,
+  `end_time` datetime DEFAULT NULL COMMENT '开始时间',
+  `s_time` time DEFAULT NULL,
+  `date_total` int(11) DEFAULT NULL,
+  `time_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '时间类型：1全天，2时间段',
+  PRIMARY KEY (`id`),
+  KEY `nums` (`total`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of zxcms_app
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for zxcms_config
+-- ----------------------------
+DROP TABLE IF EXISTS `zxcms_config`;
+CREATE TABLE `zxcms_config` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '配置ID',
+  `name` varchar(30) NOT NULL DEFAULT '' COMMENT '配置名称',
+  `type` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '配置类型',
+  `title` varchar(50) NOT NULL DEFAULT '' COMMENT '配置说明',
+  `group` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '配置分组',
+  `extra` varchar(255) NOT NULL DEFAULT '' COMMENT '配置值',
+  `remark` varchar(100) NOT NULL COMMENT '配置说明',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '状态',
+  `value` text NOT NULL COMMENT '配置值',
+  `sort` smallint(3) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_name` (`name`),
+  KEY `type` (`type`),
+  KEY `group` (`group`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of zxcms_config
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for zxcms_menu
+-- ----------------------------
+DROP TABLE IF EXISTS `zxcms_menu`;
+CREATE TABLE `zxcms_menu` (
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
+  `name` char(40) NOT NULL DEFAULT '',
+  `parentid` smallint(6) DEFAULT '0',
+  `icon` varchar(20) NOT NULL DEFAULT '',
+  `c` varchar(20) DEFAULT NULL,
+  `a` varchar(20) DEFAULT NULL,
+  `data` varchar(50) NOT NULL DEFAULT '',
+  `tip` varchar(255) NOT NULL DEFAULT '' COMMENT '提示',
+  `group` varchar(50) DEFAULT '' COMMENT '分组',
+  `listorder` smallint(6) unsigned NOT NULL DEFAULT '999',
+  `display` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否显示(1:显示,2:不显示)',
+  `updatetime` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `listorder` (`listorder`),
+  KEY `parentid` (`parentid`)
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of zxcms_menu
+-- ----------------------------
+INSERT INTO `zxcms_menu` VALUES ('1', '管理设置', '0', 'fa-users', 'Admin', 'admin', '', '', '', '1', '1', '1476175413');
+INSERT INTO `zxcms_menu` VALUES ('2', '管理员管理', '1', '', 'Admin', 'index', '', '', '', '0', '1', '1476175413');
+INSERT INTO `zxcms_menu` VALUES ('3', '详情', '2', '', 'Admin', 'info', '', '', '', '0', '2', '1476175413');
+INSERT INTO `zxcms_menu` VALUES ('4', '添加', '2', '', 'Admin', 'add', '', '', '', '0', '2', '1476175413');
+INSERT INTO `zxcms_menu` VALUES ('5', '修改', '2', '', 'Admin', 'edit', '', '', '', '0', '2', '1476175413');
+INSERT INTO `zxcms_menu` VALUES ('6', '删除', '2', '', 'Admin', 'del', '', '', '', '0', '2', '1476175413');
+INSERT INTO `zxcms_menu` VALUES ('7', '分组管理', '1', '', 'Group', 'index', '', '', '', '0', '1', '1476175413');
+INSERT INTO `zxcms_menu` VALUES ('8', '详情', '7', '', 'Group', 'info', '', '', '', '0', '2', '1476175413');
+INSERT INTO `zxcms_menu` VALUES ('9', '添加', '7', '', 'Group', 'add', '', '', '', '0', '2', '1476175413');
+INSERT INTO `zxcms_menu` VALUES ('10', '修改', '7', '', 'Group', 'edit', '', '', '', '0', '2', '1476175413');
+INSERT INTO `zxcms_menu` VALUES ('11', '删除', '7', '', 'Group', 'del', '', '', '', '0', '2', '1476175413');
+INSERT INTO `zxcms_menu` VALUES ('12', '菜单管理', '18', '', 'Menu', 'index', '', '', '', '0', '1', '1476175413');
+INSERT INTO `zxcms_menu` VALUES ('13', '查看', '12', '', 'Menu', 'info', '', '', '', '0', '2', '1476175413');
+INSERT INTO `zxcms_menu` VALUES ('14', '添加', '12', '', 'Menu', 'add', '', '', '', '0', '2', '1476175413');
+INSERT INTO `zxcms_menu` VALUES ('15', '修改', '12', '', 'Menu', 'edit', '', '', '', '0', '2', '1476175413');
+INSERT INTO `zxcms_menu` VALUES ('16', '删除', '12', '', 'Menu', 'del', '', '', '', '0', '2', '1476175413');
+INSERT INTO `zxcms_menu` VALUES ('18', '系统设置', '0', 'fa-cogs', 'Menu', 'index', '', '', '', '2', '1', '1476175413');
+INSERT INTO `zxcms_menu` VALUES ('22', '权限设置', '2', '', 'Group', 'rule', '', '', '', '999', '2', '1476175413');
+INSERT INTO `zxcms_menu` VALUES ('23', '个人设置', '1', '', 'Admin', 'public_edit_info', '', '', '', '999', '1', '1476175413');
+INSERT INTO `zxcms_menu` VALUES ('27', '日志管理', '18', '', 'Log', 'index', '', '', '', '999', '1', '1476175413');
+INSERT INTO `zxcms_menu` VALUES ('31', '系统首页', '0', 'fa-bank', 'Index', 'index', '', '', '', '0', '1', '1476175413');
+INSERT INTO `zxcms_menu` VALUES ('32', '用户管理', '0', 'fa-user', 'Users', 'index', '', '', '', '999', '1', '1487645892');
+INSERT INTO `zxcms_menu` VALUES ('33', '游戏房间', '0', 'fa-home', 'GameRoom', 'index', '', '', '', '999', '1', null);

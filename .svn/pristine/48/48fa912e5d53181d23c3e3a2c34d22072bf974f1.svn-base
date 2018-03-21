@@ -1,0 +1,221 @@
+<div class="page-content">
+    <div class="row">
+        <form action="{:url('likeuserid')}" method="post" name='myfrom'>
+            <div class="col-lg-2">
+                <div class="input-group ">
+                    <input type="text" class="form-control" name='userid'  placeholder="输入用户ID查询玩家">
+	                    <span class="input-group-btn">
+	                        <button class="btn btn-default" type="button" id='but'>搜一搜</button>
+	                    </span>
+                </div>
+            </div>
+        </form>
+        <form action="{:url('likeaccount')}" method="post" name='myfrom1'>
+            <div class="col-lg-2">
+                <div class="input-group ">
+                    <input type="text" class="form-control" name='account'  placeholder="输入账号查询玩家">
+	                    <span class="input-group-btn">
+	                        <button class="btn btn-default" type="button" id='but1'>搜一搜</button>
+	                    </span>
+                </div>
+            </div>
+        </form>
+        <form action="{:url('likename')}" method="post" name="myfrom2">
+            <div class="col-lg-2">
+                <div class="input-group ">
+                    <input type="text" class="form-control" name='name'  placeholder="输入昵称查询玩家">
+	                    <span class="input-group-btn">
+	                        <button class="btn btn-default" type="button" id='but2'>搜一搜</button>
+	                    </span>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <!-- PAGE CONTENT BEGINS -->
+            <div class="row">
+                <div class="col-xs-12">
+                    <table id="simple-table" class="table  table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>用户ID</th>
+                            <th class="hidden-480">账号</th>
+                            <th>用户昵称</th>
+                            <th class="hidden-480">性别</th>
+                            <th>用户头像</th>
+                            <th class="hidden-480">用户等级</th>
+                            <th class="hidden-480">用户经验</th>
+                            <th class="hidden-480">用户金币</th>
+                            <th class="hidden-480">用户钻石</th>
+                            <th class="hidden-480">当前房间ID</th>
+                            <th class="hidden-480">游戏记录</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {volist name="UserInfo" id="vo"}
+                        <tr>
+
+                            <td>{$vo.userid}</td>
+                            <td class="hidden-480">{$vo.account}</td>
+                            <td>{$vo.name}</td>
+                            <td class="hidden-480">{$vo.sex}</td>
+                            <td><img src="{$vo.headimg}" width="20px"/></td>
+                            <td class="hidden-480">{$vo.lv}</td>
+                            <td class="hidden-480">{$vo.exp}</td>
+                            <td class="hidden-480">{$vo.coins}</td>
+                            <td class="hidden-480">{$vo.gems}</td>
+                            <td class="hidden-480">{$vo.roomid}</td>
+                            <td class="hidden-480"><a href="">查看</a></td>
+                            <td>
+                                <button id="button" type="button" class="btn btn-info" data-toggle="modal" data-userid="{$vo.userid}" onclick="getuserid({$vo['userid']})" data-target="#addUserModal">添加金币</button>
+                            </td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                    {$UserInfo->render()}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 模态框示例（Modal） -->
+    <form method="post" action="" class="form-horizontal" role="form" id="form_data" onsubmit="return check_form()" style="margin: 20px;">
+        <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            添加资源
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label for="jinbi" class="col-sm-3 control-label">金币</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="jinbi" name="coins" value=""
+                                           placeholder="请输入数量">
+                                </div>
+                            </div>
+                            <input type="hidden" name="userid" id="user_id"/>
+                            <div class="form-group">
+                                <label for="zuansi" class="col-sm-3 control-label">钻石</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="gems" value="" id="zuansi"
+                                           placeholder="请输入数量">
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            提交
+                        </button><span id="tip"> </span>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+    </form>
+</div>
+<script src="__ROOT__/static/ace1.4/assets/js/jquery-2.1.4.min.js"></script>
+
+<script type="text/javascript">
+    $("#but").click(function(){
+        if($("input[name='userid']").val()==''){
+            alert('用户ID不能为空');
+            $("input[name='userid']").focus();
+        }else{
+            document.myfrom.submit();
+        }
+    });
+    $("#but1").click(function(){
+        if($("input[name='account']").val()==''){
+            alert('账号不能为空');
+            $("input[name='account']").focus();
+        }else{
+            document.myfrom1.submit();
+        }
+    });
+    $("#but2").click(function(){
+        if($("input[name='name']").val()==''){
+            alert('昵称不能为空');
+            $("input[name='name']").focus();
+        }else{
+            document.myfrom2.submit();
+        }
+    });
+    $("#but3").click(function(){
+        if($("input[name='conis']").val()==''){
+            alert('昵称不能为空');
+            $("input[name='coins']").focus();
+        }else{
+            document.myfrom3.submit();
+        }
+    });
+    function getuserid($id){
+        $("#user_id").val($id);
+    }
+    // 提交表单
+    function check_form()
+    {
+       // var jinbi = $.trim($('#jinbi').val());
+       // var zuansi     = $.trim($('#zuansi').val());
+        var userid=$("#user_id").val();
+        if(!userid)
+        {
+            alert('操作异常！请重新操作');
+            return false;
+        }
+        var form_data = $('#form_data').serialize();
+        // 异步提交数据到action/add_action.php页面
+        $.ajax(
+                {
+                    url: "{:url('addcoins')}?userid="+userid,
+                    data:{"form_data":form_data},
+                    type: "post",
+                    beforeSend:function()
+                    {
+                        $("#tip").html("<span style='color:blue'>正在处理...</span>");
+                        return true;
+                    },
+                    success:function(data)
+                    {
+                        alert(data);
+                        if(data > 0)
+                        {
+                            //$("#tip").html("<span style='color:blueviolet'>恭喜操作成功！</span>");
+                            // document.location.href='system_notice.php'
+                            alert("操作成功");
+                            location.reload();
+                        }
+                        else
+                        {
+                           // $("#tip").html("<span style='color:red'>失败，请重试</span>");
+                            alert('操作失败');
+                        }
+                    },
+                    error:function()
+                    {
+                        alert('请求出错');
+                    },
+                    complete:function()
+                    {
+                        $('#acting_tips').hide();
+                    }
+                });
+
+        return false;
+    }
+
+</script>
+

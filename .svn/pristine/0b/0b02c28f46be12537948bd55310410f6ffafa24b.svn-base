@@ -1,0 +1,107 @@
+<link rel="stylesheet" href="__ROOT__/js/picker/jquery.datetimepicker.css">
+<script src="__ROOT__/js/jquery.js"></script>
+<script src="__ROOT__/js/picker/jquery.datetimepicker.js"></script>
+<div class="page-content">
+    <div class="row">
+        <form action="{:url('likeroomuuid')}" method="post" name='myfrom'>
+            <div class="col-lg-2">
+                <div class="input-group ">
+                    <input type="text" class="form-control" name='uuid'  placeholder="房间ID查询房间">
+	                    <span class="input-group-btn">
+	                        <button class="btn btn-default" type="button" id='but'>搜一搜</button>
+	                    </span>
+                </div>
+            </div>
+        </form>
+        <form action="{:url('likeroomid')}" method="post" name='myfrom1'>
+            <div class="col-lg-2">
+                <div class="input-group ">
+                    <input type="text" class="form-control" name='id'  placeholder="房间密码查询房间">
+	                    <span class="input-group-btn">
+	                        <button class="btn btn-default" type="button" id='but1'>搜一搜</button>
+	                    </span>
+                </div>
+            </div>
+
+        </form>
+        <form action="{:url('liketime')}" method="post" name="myfrom2">
+            <div class="col-lg-2">
+                <div class="input-group ">
+                    <input type="text" class="form-control" id="start_time" name='create_time'  placeholder="起始时间">
+	                    <span class="input-group-btn">
+	                        <button class="btn btn-default" type="button" id='but2'>搜一搜</button>
+	                    </span>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <!-- PAGE CONTENT BEGINS -->
+            <div class="row">
+                <div class="col-xs-12">
+                    <table id="simple-table" class="table  table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>房间ID</th>
+                            <th class="hidden-480">房间密码</th>
+                            <th>房间局数</th>
+                            <th class="hidden-480">房间创建时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {volist name="Rooms" id="vo"}
+                        <tr>
+
+                            <td>{$vo.uuid}</td>
+                            <td class="hidden-480">{$vo.id}</td>
+                            <td>{$vo.num_of_turns}</td>
+                            <td class="hidden-480">{:date('Y-m-d H:i:s',$vo.create_time)}</td>
+                            <td>
+                               <a href="">游戏详情</a>
+                            </td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                    {$Rooms->render()}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $("#but").click(function(){
+        if($("input[name='uuid']").val()==''){
+            alert('房间id不能为空');
+            $("input[name='uuid']").focus();
+        }else{
+            document.myfrom.submit();
+        }
+    });
+    $("#but1").click(function(){
+        if($("input[name='id']").val()==''){
+            alert('房间密码不能为空');
+            $("input[name='id']").focus();
+        }else{
+            document.myfrom1.submit();
+        }
+    });
+    $("#but2").click(function(){
+        if($("input[name='create_time']").val()==''){
+            alert('时间不能为空');
+            $("input[name='create_time']").focus();
+        }else{
+            document.myfrom2.submit();
+        }
+    });
+    $('#start_time').datetimepicker({
+        dayOfWeekStart : 1,
+        lang:'ch',
+        startDate:	'2016/11/21 '
+    });
+</script>
+

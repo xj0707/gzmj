@@ -1,0 +1,76 @@
+<link rel="stylesheet" href="__ROOT__/js/picker/jquery.datetimepicker.css">
+<script src="__ROOT__/js/jquery.js"></script>
+<script src="__ROOT__/js/picker/jquery.datetimepicker.js"></script>
+<div class="page-content">
+    <div class="row">
+        <form class="form-inline" role="form" action="{:url('liketime')}" method="post" name="myfrom2">
+            <div class="form-group">
+                <label class="sr-only" for="name">起始时间</label>
+                <input type="text" class="form-control" id="name" name="create_time" placeholder="起始时间">
+            </div>
+            <div class="form-group">
+                <label class="sr-only" for="name1">结束时间</label>
+                <input type="text" class="form-control" id="name1" name="e_time" placeholder="结束时间，可不填">
+            </div>
+                 <button class="btn btn-default" type="button" id='but2'>搜一搜</button>
+        </form>
+
+    </div>
+    <div class="top-20"></div>
+    <div class="row">
+        <div class="col-xs-12">
+            <!-- PAGE CONTENT BEGINS -->
+            <div class="row">
+                <div class="col-xs-12">
+                    <table id="simple-table" class="table  table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th class="hidden-480">管理员</th>
+                            <th>用户ID</th>
+                            <th class="hidden-480">购买钻石数量</th>
+                            <th>购买时间</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {volist name="BuyGems" id="vo"}
+                        <tr>
+                            <td>{$vo.id}</td>
+                            <td class="hidden-480">{$vo.admin_id}</td>
+                            <td>{$vo.user_id}</td>
+                            <td>{$vo.gem_number}</td>
+                            <td class="hidden-480">{:date('Y-m-d H:i:s',$vo.create_time)}</td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                    {$BuyGems->render()}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $("#but2").click(function(){
+        if($("input[name='create_time']").val()==''){
+            alert('起始时间不能为空');
+            $("input[name='create_time']").focus();
+        }else{
+            document.myfrom2.submit();
+        }
+    });
+    $('#name').datetimepicker({
+        dayOfWeekStart : 1,
+        lang:'ch',
+        startDate:	'2016/11/21 '
+    });
+    $('#name1').datetimepicker({
+        dayOfWeekStart : 1,
+        lang:'ch',
+        startDate:	'2016/11/21 '
+    });
+</script>
+
